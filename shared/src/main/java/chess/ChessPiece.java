@@ -1,7 +1,6 @@
 package chess;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Represents a single chess piece
@@ -11,7 +10,12 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
+    private final ChessGame.TeamColor pieceColor;
+    private final PieceType type;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.type = type;
     }
 
     /**
@@ -30,14 +34,16 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+
+       return pieceColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+
+       return type;
     }
 
     /**
@@ -47,7 +53,114 @@ public class ChessPiece {
      *
      * @return Collection of valid moves
      */
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return new ArrayList<>();
+    public HashSet<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+       HashSet<ChessMove> moves =  new HashSet<>();
+       switch (type) {
+           case PAWN:
+               break;
+           case ROOK:
+               break;
+           case KNIGHT:
+               break;
+           case BISHOP:
+               var start = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1);
+               //up and left
+               for(int i = 1; i < 8; i++) {
+                   if (start.getRow() - i > 0 && start.getColumn() - i > 0) {
+                       var position = new ChessPosition(start.getRow() - i, start.getRow() - i);
+                       if (board.getPiece(position) == null) {
+                           var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                           var move = new ChessMove(myPosition, next, type);
+                           moves.add(move);
+                       } else {
+                            if(board.getPiece(position).getTeamColor() != pieceColor){
+                                var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                                var move = new ChessMove(myPosition, next, type);
+                                moves.add(move);
+                            }
+                            else{
+                                break;
+                            }
+
+                       }
+                   }
+                   else{
+                       break;
+                   }
+
+           }
+               // up and right
+               for(int i = 1; i < 8; i++) {
+                   if (start.getRow() - i > 0 && start.getColumn() + i < 7) {
+                       var position = new ChessPosition(start.getRow() + i, start.getRow() - i);
+                       if (board.getPiece(position) == null) {
+                           var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                           var move = new ChessMove(myPosition, next, type);
+                           moves.add(move);
+                       } else {
+                           if (board.getPiece(position).getTeamColor() != pieceColor) {
+                               var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                               var move = new ChessMove(myPosition, next, type);
+                               moves.add(move);
+                           } else {
+                               break;
+                           }
+
+                       }
+                   } else {
+                       break;
+                   }
+               }
+               // down and left
+               for(int i = 1; i < 8; i++) {
+                   if (start.getRow() + i < 7 && start.getColumn() - i > 0) {
+                       var position = new ChessPosition(start.getRow() + i, start.getRow() - i);
+                       if (board.getPiece(position) == null) {
+                           var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                           var move = new ChessMove(myPosition, next, type);
+                           moves.add(move);
+                       } else {
+                           if (board.getPiece(position).getTeamColor() != pieceColor) {
+                               var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                               var move = new ChessMove(myPosition, next, type);
+                               moves.add(move);
+                           } else {
+                               break;
+                           }
+
+                       }
+                   } else {
+                       break;
+                   }
+               }
+                   // down and right
+                   for(int i = 1; i < 8; i++) {
+                       if (start.getRow() + i < 7 && start.getColumn() + i < 7) {
+                           var position = new ChessPosition(start.getRow() + i, start.getRow() + i);
+                           if (board.getPiece(position) == null) {
+                               var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                               var move = new ChessMove(myPosition, next, type);
+                               moves.add(move);
+                           } else {
+                               if (board.getPiece(position).getTeamColor() != pieceColor) {
+                                   var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
+                                   var move = new ChessMove(myPosition, next, type);
+                                   moves.add(move);
+                               } else {
+                                   break;
+                               }
+
+                           }
+                       } else {
+                           break;
+                       }
+                   }
+               break;
+           case QUEEN:
+               break;
+           case KING:
+               break;
+       }
+       return moves;
     }
 }

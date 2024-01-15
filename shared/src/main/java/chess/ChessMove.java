@@ -8,22 +8,31 @@ package chess;
  */
 public class ChessMove {
 
+    private final ChessPosition startPosition;
+    private final ChessPosition endPosition;
+    private final ChessPiece.PieceType promotionPiece;
+
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
     }
 
     /**
      * @return ChessPosition of starting location
      */
     public ChessPosition getStartPosition() {
-        throw new RuntimeException("Not implemented");
+
+        return startPosition;
     }
 
     /**
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
-        throw new RuntimeException("Not implemented");
+
+        return endPosition;
     }
 
     /**
@@ -33,6 +42,22 @@ public class ChessMove {
      * @return Type of piece to promote a pawn to, or null if no promotion
      */
     public ChessPiece.PieceType getPromotionPiece() {
-        throw new RuntimeException("Not implemented");
+
+        return promotionPiece;
+    }
+
+    @Override
+
+    public String toString(){
+        var start_row = getStartPosition().getRow();
+        var start_col = getStartPosition().getColumn();
+        var end_row = getEndPosition().getRow();
+        var end_col = getEndPosition().getColumn();
+
+        var startString = "{" + String.valueOf(start_row) + ", " + String.valueOf(start_col) + "}";
+        var endString = "{" + String.valueOf(end_row) + ", " + String.valueOf(end_col) + "}";
+        var tran = "->";
+
+        return startString + tran + endString;
     }
 }

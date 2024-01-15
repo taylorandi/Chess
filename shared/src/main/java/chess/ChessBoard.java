@@ -8,6 +8,7 @@ package chess;
  */
 public class ChessBoard {
     private ChessPiece[][] squares = new ChessPiece[8][8];
+
     public ChessBoard() {
         
     }
@@ -18,7 +19,7 @@ public class ChessBoard {
      * @param position where to add the piece to
      * @param piece    the piece to add
      */
-    public void addPiece(ChessPosition position, ChessPiece piece) {
+    public void addPiece(ChessPosition position, ChessPiece piece){
         squares[position.getRow()][position.getColumn()] = piece;
     }
 
