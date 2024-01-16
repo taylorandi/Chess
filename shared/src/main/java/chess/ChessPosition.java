@@ -32,4 +32,17 @@ public class ChessPosition {
 
        return col;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (obj == this) {
+            return true;
+        } else if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        ChessPosition p = (ChessPosition)obj;
+        return (this.getRow() == p.getRow() && this.getColumn() == p.getColumn());
+
+    }
 }

@@ -63,19 +63,16 @@ public class ChessPiece {
            case KNIGHT:
                break;
            case BISHOP:
-               var start = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1);
                //up and left
                for(int i = 1; i < 8; i++) {
-                   if (start.getRow() - i > 0 && start.getColumn() - i > 0) {
-                       var position = new ChessPosition(start.getRow() - i, start.getRow() - i);
+                   if (myPosition.getRow() - i > 0 && myPosition.getColumn() - i > 0) {
+                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() - i);
                        if (board.getPiece(position) == null) {
-                           var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                           var move = new ChessMove(myPosition, next, type);
+                           var move = new ChessMove(myPosition, position, null);
                            moves.add(move);
                        } else {
                             if(board.getPiece(position).getTeamColor() != pieceColor){
-                                var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                                var move = new ChessMove(myPosition, next, type);
+                                var move = new ChessMove(myPosition, position, null);
                                 moves.add(move);
                             }
                             else{
@@ -91,16 +88,14 @@ public class ChessPiece {
            }
                // up and right
                for(int i = 1; i < 8; i++) {
-                   if (start.getRow() - i > 0 && start.getColumn() + i < 7) {
-                       var position = new ChessPosition(start.getRow() + i, start.getRow() - i);
+                   if (myPosition.getRow() - i > 0 && myPosition.getColumn() + i < 9) {
+                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() + i);
                        if (board.getPiece(position) == null) {
-                           var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                           var move = new ChessMove(myPosition, next, type);
+                           var move = new ChessMove(myPosition, position, null);
                            moves.add(move);
                        } else {
                            if (board.getPiece(position).getTeamColor() != pieceColor) {
-                               var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                               var move = new ChessMove(myPosition, next, type);
+                               var move = new ChessMove(myPosition, position, null);
                                moves.add(move);
                            } else {
                                break;
@@ -113,16 +108,14 @@ public class ChessPiece {
                }
                // down and left
                for(int i = 1; i < 8; i++) {
-                   if (start.getRow() + i < 7 && start.getColumn() - i > 0) {
-                       var position = new ChessPosition(start.getRow() + i, start.getRow() - i);
+                   if (myPosition.getRow() + i < 9 && myPosition.getColumn() - i > 0) {
+                       var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() - i);
                        if (board.getPiece(position) == null) {
-                           var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                           var move = new ChessMove(myPosition, next, type);
+                           var move = new ChessMove(myPosition, position, null);
                            moves.add(move);
                        } else {
                            if (board.getPiece(position).getTeamColor() != pieceColor) {
-                               var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                               var move = new ChessMove(myPosition, next, type);
+                               var move = new ChessMove(myPosition, position, null);
                                moves.add(move);
                            } else {
                                break;
@@ -135,16 +128,14 @@ public class ChessPiece {
                }
                    // down and right
                    for(int i = 1; i < 8; i++) {
-                       if (start.getRow() + i < 7 && start.getColumn() + i < 7) {
-                           var position = new ChessPosition(start.getRow() + i, start.getRow() + i);
+                       if (myPosition.getRow() + i < 9 && myPosition.getColumn() + i < 9) {
+                           var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + i);
                            if (board.getPiece(position) == null) {
-                               var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                               var move = new ChessMove(myPosition, next, type);
+                               var move = new ChessMove(myPosition, position, null);
                                moves.add(move);
                            } else {
                                if (board.getPiece(position).getTeamColor() != pieceColor) {
-                                   var next = new ChessPosition(position.getRow() + 1, position.getColumn() + 1);
-                                   var move = new ChessMove(myPosition, next, type);
+                                   var move = new ChessMove(myPosition, position, null);
                                    moves.add(move);
                                } else {
                                    break;

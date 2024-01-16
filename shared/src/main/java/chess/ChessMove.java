@@ -48,7 +48,7 @@ public class ChessMove {
 
     @Override
 
-    public String toString(){
+    public String toString() {
         var start_row = getStartPosition().getRow();
         var start_col = getStartPosition().getColumn();
         var end_row = getEndPosition().getRow();
@@ -58,6 +58,20 @@ public class ChessMove {
         var endString = "{" + String.valueOf(end_row) + ", " + String.valueOf(end_col) + "}";
         var tran = "->";
 
-        return startString + tran + endString;
+        return endString;
     }
-}
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            } else if (obj == this) {
+                return true;
+            } else if (obj.getClass() != this.getClass()) {
+                return false;
+            }
+            ChessMove p = (ChessMove)obj;
+            return (this.getEndPosition().equals(p.getEndPosition()) && this.getStartPosition().equals(p.getStartPosition()) && this.getPromotionPiece().equals(p.getPromotionPiece()));
+
+        }
+    }
