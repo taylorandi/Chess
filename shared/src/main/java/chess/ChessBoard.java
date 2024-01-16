@@ -91,10 +91,10 @@ public class ChessBoard {
         piece = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP);
         addPiece(position, piece);
         position = new ChessPosition(8, 4);
-        piece = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING);
+        piece = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN);
         addPiece(position, piece);
         position = new ChessPosition(8, 5);
-        piece = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN);
+        piece = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING);
         addPiece(position, piece);
         position = new ChessPosition(8, 6);
         piece = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP);
@@ -109,9 +109,19 @@ public class ChessBoard {
 
     @Override
     public String toString() {
-        return "ChessBoard{" +
-                "squares=" + Arrays.toString(squares) +
-                '}';
+        var words = " ";
+        for (int i = 0; i < 8; i++) {
+                words += "|";
+                for (int k = 0; k < 8; k++) {
+                    if(squares[i][k] == null){words += " |";}
+                    else {
+                        words += squares[i][k].toString();
+                        words += "|";
+                    }
+                }
+                words += "\n";
+            }
+        return words;
     }
 
     @Override
@@ -119,7 +129,7 @@ public class ChessBoard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessBoard that = (ChessBoard) o;
-        return Arrays.equals(squares, that.squares);
+        return Arrays.deepEquals(squares, that.squares);
     }
 
     @Override

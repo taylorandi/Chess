@@ -464,10 +464,46 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return "ChessPiece{" +
-                "pieceColor=" + pieceColor +
-                ", type=" + type +
-                '}';
+        if(this.getTeamColor() == ChessGame.TeamColor.WHITE){
+            if(this.getPieceType() == type.BISHOP){
+                return "B";
+            }
+            else if(this.getPieceType() == type.KNIGHT){
+                return "N";
+            }
+            else if(this.getPieceType() == type.ROOK){
+                return "R";
+            }
+            else if(this.getPieceType() == type.QUEEN){
+                return "Q";
+            }
+            else if(this.getPieceType() == type.KING){
+                return "K";
+            }
+            else {
+                return "P";
+            }
+        }
+        else  {
+            if (this.getPieceType() == type.BISHOP) {
+                return "b";
+            }
+            else if (this.getPieceType() == type.KNIGHT) {
+                return "n";
+            }
+            else if (this.getPieceType() == type.ROOK) {
+                return "r";
+            }
+            else if (this.getPieceType() == type.QUEEN) {
+                return "q";
+            }
+            else if (this.getPieceType() == type.KING) {
+                return "k";
+            }
+            else {
+                return "p";
+            }
+        }
     }
 
     @Override
