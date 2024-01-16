@@ -49,18 +49,12 @@ public class ChessMove {
     }
 
     @Override
-
     public String toString() {
-        var start_row = getStartPosition().getRow();
-        var start_col = getStartPosition().getColumn();
-        var end_row = getEndPosition().getRow();
-        var end_col = getEndPosition().getColumn();
-
-        var startString = "{" + String.valueOf(start_row) + ", " + String.valueOf(start_col) + "}";
-        var endString = "{" + String.valueOf(end_row) + ", " + String.valueOf(end_col) + "}";
-        var tran = "->";
-
-        return endString;
+        return "ChessMove{" +
+                "startPosition=" + startPosition +
+                ", endPosition=" + endPosition +
+                ", promotionPiece=" + promotionPiece +
+                '}';
     }
 
     @Override
