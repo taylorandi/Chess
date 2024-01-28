@@ -16,8 +16,9 @@ public class ChessGame {
     private ChessBoard board = new ChessBoard();
 
     public ChessGame() {
-
-
+        setTeamTurn(TeamColor.WHITE);
+        board.resetBoard();
+        setBoard(this.board);
     }
 
     /**
@@ -33,7 +34,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-       teamColor = team;
+       this.teamColor = team;
     }
 
     /**
@@ -63,21 +64,30 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        var validMoves = validMoves(move.getStartPosition());
         var piece = board.getPiece(move.getStartPosition());
+        if(piece.getTeamColor() != this.getTeamTurn()){
+            throw new InvalidMoveException("color: " + piece.getTeamColor() + " doesn't match: " + teamColor);
+        }
+        var validMoves = validMoves(move.getStartPosition());
         if(validMoves.contains(move)){
-
                 board.addPiece(move.getStartPosition(), null);
             if(move.getPromotionPiece() == null) {
                 board.addPiece(move.getEndPosition(), piece);
+
             }
             else{
                  piece = new ChessPiece(teamColor, move.getPromotionPiece());
                 board.addPiece(move.getEndPosition(), piece);
             }
+            if(getTeamTurn() == TeamColor.BLACK){
+                setTeamTurn(TeamColor.WHITE);
+            }
+            else{
+                setTeamTurn(TeamColor.BLACK);
+            }
         }
         else{
-            throw new InvalidMoveException("Move" + move.getStartPosition() + "to" + move.getEndPosition() + "not possible" + piece.getPieceType());
+            throw new InvalidMoveException();
         }
     }
 
@@ -88,8 +98,33 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
-    }
+        var king = new ChessPosition(1,1);
+        for(int i = 1; i < 9; i++){
+            for(int j = 1; j < 9; j++){
+                var position = new ChessPosition(i,j);
+                var piece = board.getPiece(position);
+                if(piece != null) {
+                    if (piece.getTeamColor() == teamColor && piece.getPieceType() == ChessPiece.PieceType.KING) {
+                        king = new ChessPosition(position.getRow(), position.getColumn());
+                    }
+                }
+            }
+        }
+        for(int i = 1; i < 9; i++){
+            for(int j = 1; j < 9; j++){
+                var position = new ChessPosition(i,j);
+                var piece = board.getPiece(position);
+                if((piece != null) && (piece.getTeamColor() != teamColor)){
+                    var validMov = validMoves(position);
+                    var move = new ChessMove(position, king, null);
+                    if(validMov.contains(move)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+        }
 
     /**
      * Determines if the given team is in checkmate
@@ -119,7 +154,6 @@ public class ChessGame {
      */
     public void setBoard(ChessBoard board) {
        this.board = board;
-
     }
 
     /**
