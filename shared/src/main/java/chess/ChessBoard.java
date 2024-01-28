@@ -134,6 +134,6 @@ public class ChessBoard {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(squares);
+        return Arrays.deepHashCode(squares);
     }
 }
