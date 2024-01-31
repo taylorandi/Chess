@@ -105,7 +105,7 @@ public class ChessPiece {
                            moves.add(newMove);
                        }
                    }
-                   if (myPosition.getRow() + 1 == 9 && myPosition.getColumn() + 1 < 9) {
+                   if (myPosition.getRow() + 1 == 8 && myPosition.getColumn() + 1 < 9) {
                        var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
                        if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
                            var newMove = new ChessMove(myPosition, position, type.QUEEN);
@@ -116,10 +116,12 @@ public class ChessPiece {
                            moves.add(newMove);
                            newMove = new ChessMove(myPosition, position, type.KNIGHT);
                            moves.add(newMove);
+                           newMove = new ChessMove(myPosition, position, null);
+                           moves.add(newMove);
                        }
                    }
-                       if (myPosition.getRow() + 1 == 9 && myPosition.getColumn() - 1 < 9) {
-                           var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
+                       if (myPosition.getRow() + 1 == 8 && myPosition.getColumn() - 1 > 0) {
+                           var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1);
                            if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
                                var newMove = new ChessMove(myPosition, position, type.QUEEN);
                                moves.add(newMove);
@@ -129,10 +131,13 @@ public class ChessPiece {
                                moves.add(newMove);
                                newMove = new ChessMove(myPosition, position, type.KNIGHT);
                                moves.add(newMove);
+                               newMove = new ChessMove(myPosition, position, null);
+                               moves.add(newMove);
                            }
                    }
                }
 
+                //black pieces
                else{
                    if (myPosition.getRow() == 7) {
                        var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
@@ -193,6 +198,8 @@ public class ChessPiece {
                            moves.add(newMove);
                            newMove = new ChessMove(myPosition, position, type.KNIGHT);
                            moves.add(newMove);
+                           newMove = new ChessMove(myPosition, position, null);
+                           moves.add(newMove);
                        }
                         position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
                        if (board.getPiece(position) == null) {
@@ -203,6 +210,8 @@ public class ChessPiece {
                            newMove = new ChessMove(myPosition, position, type.BISHOP);
                            moves.add(newMove);
                            newMove = new ChessMove(myPosition, position, type.KNIGHT);
+                           moves.add(newMove);
+                           newMove = new ChessMove(myPosition, position, null);
                            moves.add(newMove);
                        }
 

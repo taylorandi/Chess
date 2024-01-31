@@ -117,6 +117,7 @@ public class ChessGame {
                 if(piece != null) {
                     if (piece.getTeamColor() == teamColor && piece.getPieceType() == ChessPiece.PieceType.KING) {
                         king = new ChessPosition(position.getRow(), position.getColumn());
+                        break;
                     }
                 }
             }
@@ -153,24 +154,32 @@ public class ChessGame {
                 if (board.getPiece(position) != null && board.getPiece(position).getTeamColor() == teamColor) {
                     var piece = board.getPiece(position);
                     var moves = piece.pieceMoves(board, position);
+
                     for (var move : moves) {
+                        var replacedPiece = board.getPiece(move.getEndPosition());
                         board.addPiece(move.getStartPosition(), null);
                         if (move.getPromotionPiece() == null) {
                             board.addPiece(move.getEndPosition(), piece);
                         }
-                        else if(move.getPromotionPiece() != null) {
+                        if(move.getPromotionPiece() != null) {
                             piece = new ChessPiece(teamColor, move.getPromotionPiece());
                             board.addPiece(move.getEndPosition(), piece);
                         }
                         boolean checkCheck = isInCheck(teamColor);
                             board.addPiece(move.getEndPosition(), null);
-                            if (move.getPromotionPiece() == null) {
+                        if(replacedPiece != null){
+                            board.addPiece(move.getEndPosition(), replacedPiece);
+                        }
+                        if (move.getPromotionPiece() == null) {
                                 board.addPiece(move.getStartPosition(), piece);
-                            } else {
+                            }
+                        if(null != move.getPromotionPiece()) {
                                 piece = new ChessPiece(teamColor, ChessPiece.PieceType.PAWN);
                                 board.addPiece(move.getStartPosition(), piece);
                             }
-                            if(!checkCheck) return false;
+                        if(!checkCheck) {
+                            return false;
+                        }
                             }
                         }
                     }
@@ -186,7 +195,19 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+                var position = new ChessPosition(i, j);
+                var piece = board.getPiece(position);
+                if (piece != null && piece.getTeamColor() == teamColor) {
+                    var moves = piece.pieceMoves(board, position);
+                    if (!moves.isEmpty()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
