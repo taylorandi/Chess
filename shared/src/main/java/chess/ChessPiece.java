@@ -132,6 +132,7 @@ public class ChessPiece {
                            }
                    }
                }
+
                else{
                    if (myPosition.getRow() == 7) {
                        var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
@@ -206,7 +207,7 @@ public class ChessPiece {
                        }
 
                    }
-                   if (myPosition.getRow() - 1 == 0 && myPosition.getColumn() + 1 < 9) {
+                   if (myPosition.getRow() - 1 == 1 && myPosition.getColumn() + 1 < 9) {
                        var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1);
                        if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
                            var newMove = new ChessMove(myPosition, position, type.QUEEN);
