@@ -116,8 +116,6 @@ public class ChessPiece {
                            moves.add(newMove);
                            newMove = new ChessMove(myPosition, position, type.KNIGHT);
                            moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
                        }
                    }
                        if (myPosition.getRow() + 1 == 8 && myPosition.getColumn() - 1 > 0) {
@@ -130,8 +128,6 @@ public class ChessPiece {
                                newMove = new ChessMove(myPosition, position, type.BISHOP);
                                moves.add(newMove);
                                newMove = new ChessMove(myPosition, position, type.KNIGHT);
-                               moves.add(newMove);
-                               newMove = new ChessMove(myPosition, position, null);
                                moves.add(newMove);
                            }
                    }
@@ -198,8 +194,6 @@ public class ChessPiece {
                            moves.add(newMove);
                            newMove = new ChessMove(myPosition, position, type.KNIGHT);
                            moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
                        }
                         position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
                        if (board.getPiece(position) == null) {
@@ -210,8 +204,6 @@ public class ChessPiece {
                            newMove = new ChessMove(myPosition, position, type.BISHOP);
                            moves.add(newMove);
                            newMove = new ChessMove(myPosition, position, type.KNIGHT);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, null);
                            moves.add(newMove);
                        }
 

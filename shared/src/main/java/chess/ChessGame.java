@@ -129,7 +129,7 @@ public class ChessGame {
                 if((piece != null) && (piece.getTeamColor() != teamColor)){
                     var validMov = validMoves(position);
                     var move = new ChessMove(position, king, null);
-                    if(validMov.contains(move)){
+                    if(validMov.contains(move) || validMov.contains(new ChessMove(position, king, ChessPiece.PieceType.QUEEN))){
                         return true;
                     }
                 }
