@@ -161,18 +161,12 @@ public class ChessGame {
         if (!isInCheck(teamColor)) {
             return false;
         }
-        for (int i = 1; i < 9; i++) {
-            for (int j = 1; j < 9; j++) {
-                var position = new ChessPosition(i, j);
-                if (board.getPiece(position) != null && board.getPiece(position).getTeamColor() == teamColor) {
-                    var moves = validMoves(position);
-                    if (!moves.isEmpty()) {
-                        return false;
-                    }
-                }
-            }
+        if(isInStalemate(teamColor)){
+            return true;
         }
-        return true;
+        else{
+            return false;
+        }
     }
 
     /**
