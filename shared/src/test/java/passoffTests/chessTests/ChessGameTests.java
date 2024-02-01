@@ -1,1 +1,782 @@
-{"payload":{"allShortcutsEnabled":true,"fileTree":{"chess/1-chess-game/starter-code/passoffTests/chessTests":{"items":[{"name":"chessExtraCredit","path":"chess/1-chess-game/starter-code/passoffTests/chessTests/chessExtraCredit","contentType":"directory"},{"name":"ChessGameTests.java","path":"chess/1-chess-game/starter-code/passoffTests/chessTests/ChessGameTests.java","contentType":"file"}],"totalCount":2},"chess/1-chess-game/starter-code/passoffTests":{"items":[{"name":"chessTests","path":"chess/1-chess-game/starter-code/passoffTests/chessTests","contentType":"directory"}],"totalCount":1},"chess/1-chess-game/starter-code":{"items":[{"name":"passoffTests","path":"chess/1-chess-game/starter-code/passoffTests","contentType":"directory"}],"totalCount":1},"chess/1-chess-game":{"items":[{"name":"starter-code","path":"chess/1-chess-game/starter-code","contentType":"directory"},{"name":"chess-game.md","path":"chess/1-chess-game/chess-game.md","contentType":"file"},{"name":"directory.png","path":"chess/1-chess-game/directory.png","contentType":"file"},{"name":"getting-started.md","path":"chess/1-chess-game/getting-started.md","contentType":"file"},{"name":"model-rule.uml","path":"chess/1-chess-game/model-rule.uml","contentType":"file"}],"totalCount":5},"chess":{"items":[{"name":"0-chess-moves","path":"chess/0-chess-moves","contentType":"directory"},{"name":"1-chess-game","path":"chess/1-chess-game","contentType":"directory"},{"name":"2-server-design","path":"chess/2-server-design","contentType":"directory"},{"name":"3-web-api","path":"chess/3-web-api","contentType":"directory"},{"name":"4-database","path":"chess/4-database","contentType":"directory"},{"name":"5-pregame","path":"chess/5-pregame","contentType":"directory"},{"name":"6-gameplay","path":"chess/6-gameplay","contentType":"directory"},{"name":"chess-github-repository","path":"chess/chess-github-repository","contentType":"directory"},{"name":"chess-demo.gif","path":"chess/chess-demo.gif","contentType":"file"},{"name":"chess.md","path":"chess/chess.md","contentType":"file"},{"name":"code-quality-rubric.md","path":"chess/code-quality-rubric.md","contentType":"file"},{"name":"deliverables.png","path":"chess/deliverables.png","contentType":"file"}],"totalCount":12},"":{"items":[{"name":"chess","path":"chess","contentType":"directory"},{"name":"instruction","path":"instruction","contentType":"directory"},{"name":"petshop","path":"petshop","contentType":"directory"},{"name":"schedule","path":"schedule","contentType":"directory"},{"name":".gitignore","path":".gitignore","contentType":"file"},{"name":"LICENSE","path":"LICENSE","contentType":"file"},{"name":"README.md","path":"README.md","contentType":"file"},{"name":"byuLogo.png","path":"byuLogo.png","contentType":"file"},{"name":"softwareconstructioncover.jpg","path":"softwareconstructioncover.jpg","contentType":"file"}],"totalCount":9}},"fileTreeProcessingTime":10.116958,"foldersToFetch":[],"reducedMotionEnabled":"system","repo":{"id":685244944,"defaultBranch":"main","name":"softwareconstruction","ownerLogin":"softwareconstruction240","currentUserCanPush":false,"isFork":false,"isEmpty":false,"createdAt":"2023-08-30T14:16:44.000-06:00","ownerAvatar":"https://avatars.githubusercontent.com/u/140553296?v=4","public":true,"private":false,"isOrgOwned":true},"symbolsExpanded":false,"treeExpanded":true,"refInfo":{"name":"main","listCacheKey":"v0:1706571789.0","canEdit":true,"refType":"branch","currentOid":"8454fe453ce44204c8447ecad39be91fdad59adb"},"path":"chess/1-chess-game/starter-code/passoffTests/chessTests/ChessGameTests.java","currentUser":{"id":144944550,"login":"taylorandi","userEmail":"taylorj.anderton@gmail.com"},"blob":{"rawLines":["package passoffTests.chessTests;","","import chess.*;","import org.junit.jupiter.api.*;","import org.junit.jupiter.params.ParameterizedTest;","import org.junit.jupiter.params.provider.EnumSource;","","import java.util.HashSet;","import java.util.Set;","","import static passoffTests.TestFactory.*;","","public class ChessGameTests {","    @Test","    public void makeValidMoves() throws InvalidMoveException {","","        var game = getNewGame();","        game.setBoard(loadBoard(\"\"\"","                | | | | | | | | |","                | | | | | | | |q|","                | | |n| | | |p| |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | |B| | | | | |","                | |K| | | | | |R|","                \"\"\"));","        game.setTeamTurn(ChessGame.TeamColor.WHITE);","","        //king","        var kingStartPosition = getNewPosition(1, 2);","        var kingEndPosition = getNewPosition(1, 1);","        game.makeMove(getNewMove(kingStartPosition, kingEndPosition, null));","","        Assertions.assertEquals(game.getBoard(), loadBoard(\"\"\"","                | | | | | | | | |","                | | | | | | | |q|","                | | |n| | | |p| |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | |B| | | | | |","                |K| | | | | | |R|","                \"\"\"));","","        //queen","        var queenStartPosition = getNewPosition(7, 8);","        var queenEndPosition = getNewPosition(8, 7);","        game.makeMove(getNewMove(queenStartPosition, queenEndPosition, null));","","        Assertions.assertEquals(game.getBoard(), loadBoard(\"\"\"","                | | | | | | |q| |","                | | | | | | | | |","                | | |n| | | |p| |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | |B| | | | | |","                |K| | | | | | |R|","                \"\"\"));","","        //rook","        var rookStartPosition = getNewPosition(1, 8);","        ChessPosition rookEndPosition = getNewPosition(3, 8);","        game.makeMove(getNewMove(rookStartPosition, rookEndPosition, null));","","        Assertions.assertEquals(game.getBoard(), loadBoard(\"\"\"","                | | | | | | |q| |","                | | | | | | | | |","                | | |n| | | |p| |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | |R|","                | | |B| | | | | |","                |K| | | | | | | |","                \"\"\"));","","        //knight","        var knightStartPosition = getNewPosition(6, 3);","        ChessPosition knightEndPosition = getNewPosition(7, 5);","        game.makeMove(getNewMove(knightStartPosition, knightEndPosition, null));","","        Assertions.assertEquals(game.getBoard(), loadBoard(\"\"\"","                | | | | | | |q| |","                | | | | |n| | | |","                | | | | | | |p| |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | |R|","                | | |B| | | | | |","                |K| | | | | | | |","                \"\"\"));","","","        //bishop","        var bishopStartPosition = getNewPosition(2, 3);","        ChessPosition bishopEndPosition = getNewPosition(1, 2);","        game.makeMove(getNewMove(bishopStartPosition, bishopEndPosition, null));","","        Assertions.assertEquals(game.getBoard(), loadBoard(\"\"\"","                | | | | | | |q| |","                | | | | |n| | | |","                | | | | | | |p| |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | |R|","                | | | | | | | | |","                |K|B| | | | | | |","                \"\"\"));","","        //pawn","        var pawnStartPosition = getNewPosition(6, 7);","        var pawnEndPosition = getNewPosition(5, 7);","        game.makeMove(getNewMove(pawnStartPosition, pawnEndPosition, null));","","        Assertions.assertEquals(game.getBoard(), loadBoard(\"\"\"","                | | | | | | |q| |","                | | | | |n| | | |","                | | | | | | | | |","                | | | | | | |p| |","                | | | | | | | | |","                | | | | | | | |R|","                | | | | | | | | |","                |K|B| | | | | | |","                \"\"\"));","    }","","","    @Test","    @DisplayName(\"Invalid Make Move\")","    public void invalidMoves() throws InvalidMoveException {","        var board = getNewBoard();","        board.resetBoard();","        var game = getNewGame();","        game.setBoard(board);","        game.setTeamTurn(ChessGame.TeamColor.WHITE);","","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n|b|q|k|b|n|r|","                        |p|p|p|p|p|p|p|p|","                        | | | | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P|P|P|P|P|P|P|P|","                        |R|N|B|Q|K|B|N|R|","                        \"\"\"));","","        //move further than can go","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(2, 1), getNewPosition(5, 1), null)));","","        game.makeMove(getNewMove(getNewPosition(2, 1), getNewPosition(3, 1), null));","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n|b|q|k|b|n|r|","                        |p|p|p|p|p|p|p|p|","                        | | | | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P| | | | | | | |","                        | |P|P|P|P|P|P|P|","                        |R|N|B|Q|K|B|N|R|","                        \"\"\"));","","        //pawn diagonal when no capture","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(7, 2), getNewPosition(6, 3), null)));","","        game.makeMove(getNewMove(getNewPosition(7, 2), getNewPosition(6, 2), null));","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n|b|q|k|b|n|r|","                        |p| |p|p|p|p|p|p|","                        | |p| | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P| | | | | | | |","                        | |P|P|P|P|P|P|P|","                        |R|N|B|Q|K|B|N|R|","                        \"\"\"));","","        //make move out of turn","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(6, 2), getNewPosition(5, 2), null)));","","        //pawn in way","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(1, 1), getNewPosition(4, 1), null)));","","","        game.makeMove(getNewMove(getNewPosition(1, 1), getNewPosition(2, 1), null));","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n|b|q|k|b|n|r|","                        |p| |p|p|p|p|p|p|","                        | |p| | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P| | | | | | | |","                        |R|P|P|P|P|P|P|P|","                        | |N|B|Q|K|B|N|R|","                        \"\"\"));","","        //not a move the piece can ever take","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(8, 7), getNewPosition(5, 5), null)));","","","        game.makeMove(getNewMove(getNewPosition(8, 7), getNewPosition(6, 6), null));","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n|b|q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        | |p| | | |n| | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P| | | | | | | |","                        |R|P|P|P|P|P|P|P|","                        | |N|B|Q|K|B|N|R|","                        \"\"\"));","","        //same team at destination","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(1, 6), getNewPosition(2, 5), null)));","","","        game.makeMove(getNewMove(getNewPosition(2, 5), getNewPosition(4, 5), null));","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n|b|q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        | |p| | | |n| | |","                        | | | | | | | | |","                        | | | | |P| | | |","                        |P| | | | | | | |","                        |R|P|P|P| |P|P|P|","                        | |N|B|Q|K|B|N|R|","                        \"\"\"));","","        //same team blocking path","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(8, 4), getNewPosition(6, 4), null)));","","","        game.makeMove(getNewMove(getNewPosition(6, 6), getNewPosition(4, 5), null));","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n|b|q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        | |p| | | | | | |","                        | | | | | | | | |","                        | | | | |n| | | |","                        |P| | | | | | | |","                        |R|P|P|P| |P|P|P|","                        | |N|B|Q|K|B|N|R|","                        \"\"\"));","","        //try moving captured piece","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(4, 5), getNewPosition(5, 5), null)));","","        game.makeMove(getNewMove(getNewPosition(1, 6), getNewPosition(3, 4), null));","        game.makeMove(getNewMove(getNewPosition(8, 3), getNewPosition(6, 1), null));","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n| |q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        |b|p| | | | | | |","                        | | | | | | | | |","                        | | | | |n| | | |","                        |P| | |B| | | | |","                        |R|P|P|P| |P|P|P|","                        | |N|B|Q|K| |N|R|","                        \"\"\"));","","        //try moving through enemy piece","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(3, 4), getNewPosition(5, 6), null)));","","        game.makeMove(getNewMove(getNewPosition(1, 7), getNewPosition(3, 6), null));","        game.makeMove(getNewMove(getNewPosition(4, 5), getNewPosition(2, 4), null));","        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.WHITE),","                \"White is not in check but isInCheck returned true\");","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n| |q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        |b|p| | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P| | |B| |N| | |","                        |R|P|P|n| |P|P|P|","                        | |N|B|Q|K| | |R|","                        \"\"\"));","","        game.makeMove(getNewMove(getNewPosition(1, 8), getNewPosition(1, 7), null));","        game.makeMove(getNewMove(getNewPosition(2, 4), getNewPosition(3, 6), null));","        Assertions.assertTrue(game.isInCheck(ChessGame.TeamColor.WHITE),","                \"White is in check but isInCheck returned false\");","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n| |q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        |b|p| | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P| | |B| |n| | |","                        |R|P|P| | |P|P|P|","                        | |N|B|Q|K| |R| |","                        \"\"\"));","","        //try not getting out of check","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(1, 7), getNewPosition(1, 8), null)));","","        game.makeMove(getNewMove(getNewPosition(2, 7), getNewPosition(3, 6), null));","        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.WHITE),","                \"White is not in check but isInCheck returned true\");","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n| |q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        |b|p| | | | | | |","                        | | | | | | | | |","                        | | | | | | | | |","                        |P| | |B| |P| | |","                        |R|P|P| | |P| |P|","                        | |N|B|Q|K| |R| |","                        \"\"\"));","","        //try double-moving moved pawn","        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(","                getNewMove(getNewPosition(6, 2), getNewPosition(4, 2), null)));","","        //few more moves to try","        game.makeMove(getNewMove(getNewPosition(6, 2), getNewPosition(5, 2), null));","        game.makeMove(getNewMove(getNewPosition(1, 7), getNewPosition(1, 8), null));","        game.makeMove(getNewMove(getNewPosition(5, 2), getNewPosition(4, 2), null));","","        Assertions.assertEquals(game.getBoard(),","                loadBoard(\"\"\"","                        |r|n| |q|k|b| |r|","                        |p| |p|p|p|p|p|p|","                        |b| | | | | | | |","                        | | | | | | | | |","                        | |p| | | | | | |","                        |P| | |B| |P| | |","                        |R|P|P| | |P| |P|","                        | |N|B|Q|K| | |R|","                        \"\"\"));","    }","","","    @ParameterizedTest","    @EnumSource(value = ChessPiece.PieceType.class, names = {\"QUEEN\", \"ROOK\", \"KNIGHT\", \"BISHOP\"})","    @DisplayName(\"Pawn Promotion\")","    public void promotionMoves(ChessPiece.PieceType promotionType) throws InvalidMoveException {","        var game = getNewGame();","        game.setBoard(loadBoard(\"\"\"","                | | | | | | | | |","                | | |P| | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | | | |p| | | |","                | | | | | |Q| | |","                \"\"\"));","        game.setTeamTurn(ChessGame.TeamColor.WHITE);","","        //White promotion","        ChessMove whitePromotion = getNewMove(getNewPosition(7, 3),","                getNewPosition(8, 3), promotionType);","        game.makeMove(whitePromotion);","","        Assertions.assertNull(game.getBoard().getPiece(whitePromotion.getStartPosition()),","                \"After move, a piece is still present in the start position\");","        ChessPiece whiteEndPiece = game.getBoard().getPiece(whitePromotion.getEndPosition());","        Assertions.assertNotNull(whiteEndPiece, \"After move, no piece found at the end position\");","        Assertions.assertEquals(promotionType, whiteEndPiece.getPieceType(),","                \"Found piece at end position is not the correct piece type\");","        Assertions.assertEquals(ChessGame.TeamColor.WHITE, whiteEndPiece.getTeamColor(),","                \"Found piece at end position is the wrong team color\");","","","        //Black take + promotion","        ChessMove blackPromotion = getNewMove(getNewPosition(2, 5),","                getNewPosition(1, 6), promotionType);","        game.makeMove(blackPromotion);","","        Assertions.assertNull(game.getBoard().getPiece(blackPromotion.getStartPosition()),","                \"After move, a piece is still present in the start position\");","        ChessPiece blackEndPiece = game.getBoard().getPiece(blackPromotion.getEndPosition());","        Assertions.assertNotNull(blackEndPiece, \"After move, no piece found at the end position\");","        Assertions.assertEquals(promotionType, blackEndPiece.getPieceType(),","                \"Found piece at end position is not the correct piece type\");","        Assertions.assertEquals(ChessGame.TeamColor.BLACK, blackEndPiece.getTeamColor(),","                \"Found piece at end position is the wrong team color\");","    }","","","    @Test","    @DisplayName(\"White in Check\")","    public void whiteCheck() {","        var game = getNewGame();","        game.setBoard(loadBoard(\"\"\"","                | | | | | | | |k|","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | |K| | | |r| | |","                | | | | | | | | |","                | | | | | | | | |","                \"\"\"));","","        Assertions.assertTrue(game.isInCheck(ChessGame.TeamColor.WHITE),","                \"White is in check but isInCheck returned false\");","        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.BLACK),","                \"Black is not in check but isInCheck returned true\");","    }","","","    @Test","    @DisplayName(\"Black in Check\")","    public void blackCheck() {","        var game = getNewGame();","        game.setBoard(loadBoard(\"\"\"","                | | | |K| | | | |","                | | | | | | | | |","                | | | |k| | | | |","                | | | | | | | | |","                | | | | | | | | |","                |B| | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                \"\"\"));","","        Assertions.assertTrue(game.isInCheck(ChessGame.TeamColor.BLACK),","                \"Black is in check but isInCheck returned false\");","        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.WHITE),","                \"White is not in check but isInCheck returned true\");","    }","","","    @Test","    @DisplayName(\"White in Checkmate\")","    public void whiteTeamCheckmate() {","","        var game = getNewGame();","        game.setBoard(loadBoard(\"\"\"","                | | | | | | | | |","                | | |b|q| | | | |","                | | | | | | | | |","                | | | |p| | | |k|","                | | | | | |K| | |","                | | |r| | | | | |","                | | | | |n| | | |","                | | | | | | | | |","                \"\"\"));","        game.setTeamTurn(ChessGame.TeamColor.WHITE);","","        Assertions.assertTrue(game.isInCheckmate(ChessGame.TeamColor.WHITE),","                \"White is in checkmate but isInCheckmate returned false\");","        Assertions.assertFalse(game.isInCheckmate(ChessGame.TeamColor.BLACK),","                \"Black is not in checkmate but isInCheckmate returned true\");","    }","","","    @Test","    @DisplayName(\"Black in Checkmate by Pawns\")","    public void blackTeamPawnCheckmate() {","        var game = getNewGame();","        game.setBoard(loadBoard(\"\"\"","                | | | |k| | | | |","                | | | |P|P| | | |","                | |P| | |P|P| | |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | | | | | | | |","                | | | |K| | | | |","                \"\"\"));","        game.setTeamTurn(ChessGame.TeamColor.BLACK);","","        Assertions.assertTrue(game.isInCheckmate(ChessGame.TeamColor.BLACK),","                \"Black is in checkmate but isInCheckmate returned false\");","        Assertions.assertFalse(game.isInCheckmate(ChessGame.TeamColor.WHITE),","                \"White is not in checkmate but isInCheckmate returned true\");","","    }","","","    @Test","    @DisplayName(\"Pinned King Causes Stalemate\")","    public void stalemate() {","        var game = getNewGame();","        game.setBoard(loadBoard(\"\"\"","                |k| | | | | | | |","                | | | | | | | |r|","                | | | | | | | | |","                | | | | |q| | | |","                | | | |n| | |K| |","                | | | | | | | | |","                | | | | | | | | |","                | | | | |b| | | |","                \"\"\"));","        game.setTeamTurn(ChessGame.TeamColor.WHITE);","","        Assertions.assertTrue(game.isInStalemate(ChessGame.TeamColor.WHITE),","                \"White is in a stalemate but isInStalemate returned false\");","        Assertions.assertFalse(game.isInStalemate(ChessGame.TeamColor.BLACK),","                \"Black is not in a stalemate but isInStalemate returned true\");","    }","","","    @Test","    @DisplayName(\"Full Game Checkmate\")","    public void scholarsMate() throws InvalidMoveException {","        var board = getNewBoard();","        board.resetBoard();","        var game = getNewGame();","        game.setBoard(board);","        game.setTeamTurn(ChessGame.TeamColor.WHITE);","","        Assertions.assertFalse(game.isInCheckmate(ChessGame.TeamColor.BLACK),","                \"Black is not in checkmate but isInCheckmate returned true\");","","        /*","        |r|n|b|q|k|b|n|r|","\t\t|p|p|p|p|p|p|p|p|","\t\t| | | | | | | | |","\t\t| | | | | | | | |","\t\t| | | | | | | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P|P|P|P|P|","\t\t|R|N|B|Q|K|B|N|R|","         */","","        game.makeMove(getNewMove(getNewPosition(2, 5), getNewPosition(4, 5), null));","        /*","        |r|n|b|q|k|b|n|r|","\t\t|p|p|p|p|p|p|p|p|","\t\t| | | | | | | | |","\t\t| | | | | | | | |","\t\t| | | | |P| | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P| |P|P|P|","\t\t|R|N|B|Q|K|B|N|R|","         */","","        game.makeMove(getNewMove(getNewPosition(7, 5), getNewPosition(5, 5), null));","        /*","        |r|n|b|q|k|b|n|r|","\t\t|p|p|p|p| |p|p|p|","\t\t| | | | | | | | |","\t\t| | | | |p| | | |","\t\t| | | | |P| | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P| |P|P|P|","\t\t|R|N|B|Q|K|B|N|R|","         */","","        game.makeMove(getNewMove(getNewPosition(1, 6), getNewPosition(4, 3), null));","        /*","        |r|n|b|q|k|b|n|r|","\t\t|p|p|p|p| |p|p|p|","\t\t| | | | | | | | |","\t\t| | | | |p| | | |","\t\t| | |B| |P| | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P| |P|P|P|","\t\t|R|N|B|Q|K| |N|R|","         */","","        game.makeMove(getNewMove(getNewPosition(8, 7), getNewPosition(6, 6), null));","        /*","        |r|n|b|q|k|b| |r|","\t\t|p|p|p|p| |p|p|p|","\t\t| | | | | |n| | |","\t\t| | | | |p| | | |","\t\t| | |B| |P| | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P| |P|P|P|","\t\t|R|N|B|Q|K| |N|R|","         */","","        game.makeMove(getNewMove(getNewPosition(1, 4), getNewPosition(5, 8), null));","        /*","        |r|n|b|q|k|b| |r|","\t\t|p|p|p|p| |p|p|p|","\t\t| | | | | |n| | |","\t\t| | | | |p| | |Q|","\t\t| | |B| |P| | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P| |P|P|P|","\t\t|R|N|B| |K| |N|R|","         */","","        game.makeMove(getNewMove(getNewPosition(8, 2), getNewPosition(6, 3), null));","        /*","        |r| |b|q|k|b| |r|","\t\t|p|p|p|p| |p|p|p|","\t\t| | |n| | |n| | |","\t\t| | | | |p| | |Q|","\t\t| | |B| |P| | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P| |P|P|P|","\t\t|R|N|B| |K| |N|R|","         */","","        game.makeMove(getNewMove(getNewPosition(5, 8), getNewPosition(7, 6), null));","        /*","        |r| |b|q|k|b| |r|","\t\t|p|p|p|p| |Q|p|p|","\t\t| | |n| | |n| | |","\t\t| | | | |p| | | |","\t\t| | |B| |P| | | |","\t\t| | | | | | | | |","\t\t|P|P|P|P| |P|P|P|","\t\t|R|N|B| |K| |N|R|","         */","","        Assertions.assertTrue(game.isInCheckmate(ChessGame.TeamColor.BLACK),","                \"Black is in checkmate but isInCheckmate returned false\");","    }","","","    @Nested","    @DisplayName(\"Valid Move Tests\")","    public class ValidMoveTests {","        @Test","        @DisplayName(\"Check Forces Movement\")","        public void forcedMove() {","","            var game = getNewGame();","            game.setBoard(loadBoard(\"\"\"","                    | | | | | | | | |","                    | | | | | | | | |","                    | |B| | | | | | |","                    | | | | | |K| | |","                    | | |n| | | | | |","                    | | | | | | | | |","                    | | | |q| |k| | |","                    | | | | | | | | |","                    \"\"\"));","","            // Knight moves","            ChessPosition knightPosition = getNewPosition(4, 3);","            var validMoves = loadMoves(knightPosition, new int[][]{{3, 5}, {6, 2}});","            assertMoves(game, validMoves, knightPosition);","","            // Queen Moves","            ChessPosition queenPosition = getNewPosition(2, 4);","            validMoves = loadMoves(queenPosition, new int[][]{{3, 5}, {4, 4}});","            assertMoves(game, validMoves, queenPosition);","        }","","","        @Test","        @DisplayName(\"Piece Partially Trapped\")","        public void moveIntoCheck() {","","            var game = getNewGame();","            game.setBoard(loadBoard(\"\"\"","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | | | | | | |","                    | |r| | | |R| |K|","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | | | | | | |","                    \"\"\"));","","            ChessPosition rookPosition = getNewPosition(5, 6);","            var validMoves = loadMoves(rookPosition, new int[][]{","                    {5, 7}, {5, 5}, {5, 4}, {5, 3}, {5, 2}","            });","","            assertMoves(game, validMoves, rookPosition);","        }","","        @Test","        @DisplayName(\"Piece Completely Trapped\")","        public void rookPinnedToKing() {","","            var game = getNewGame();","            game.setBoard(loadBoard(\"\"\"","                    | | | | | | | |Q|","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | |r| | | | |","                    | | | | | | | | |","                    | |k| | | | | | |","                    | | | | | | | | |","                    \"\"\"));","","            ChessPosition position = getNewPosition(4, 4);","            Assertions.assertTrue(game.validMoves(position).isEmpty(),","                    \"ChessGame validMoves returned valid moves for a trapped piece\");","        }","","","        @Test","        @DisplayName(\"Pieces Cannot Eliminate Check\")","        public void kingInDanger() {","","            var game = getNewGame();","            game.setBoard(loadBoard(\"\"\"","                    |R| | | | | | | |","                    | | | |k| | | |b|","                    | | | | |P| | | |","                    | | |Q|n| | | | |","                    | | | | | | | | |","                    | | | | | | | |r|","                    | | | | | |p| | |","                    | |q| | | | | | |","                    \"\"\"));","","            //get positions","            ChessPosition kingPosition = getNewPosition(7, 4);","            ChessPosition pawnPosition = getNewPosition(2, 6);","            ChessPosition bishopPosition = getNewPosition(7, 8);","            ChessPosition queenPosition = getNewPosition(1, 2);","            ChessPosition knightPosition = getNewPosition(5, 4);","            ChessPosition rookPosition = getNewPosition(3, 8);","","","            var validMoves = loadMoves(kingPosition, new int[][]{{6, 5}});","","            assertMoves(game, validMoves, kingPosition);","","            //make sure teams other pieces are not allowed to move","            Assertions.assertTrue(game.validMoves(pawnPosition).isEmpty(),","                    \"ChessGame validMoves returned valid moves for a trapped piece\");","            Assertions.assertTrue(game.validMoves(bishopPosition).isEmpty(),","                    \"ChessGame validMoves returned valid moves for a trapped piece\");","            Assertions.assertTrue(game.validMoves(queenPosition).isEmpty(),","                    \"ChessGame validMoves returned valid moves for a trapped piece\");","            Assertions.assertTrue(game.validMoves(knightPosition).isEmpty(),","                    \"ChessGame validMoves returned valid moves for a trapped piece\");","            Assertions.assertTrue(game.validMoves(rookPosition).isEmpty(),","                    \"ChessGame validMoves returned valid moves for a trapped piece\");","        }","","","        @Test","        @DisplayName(\"King Cannot Move Into Check\")","        public void noPutSelfInDanger() {","","            var game = getNewGame();","            game.setBoard(loadBoard(\"\"\"","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | | | | | | |","                    | | | | | |k| | |","                    | | | | | | | | |","                    | | | | | |K| | |","                    | | | | | | | | |","                    \"\"\"));","","            ChessPosition position = getNewPosition(2, 6);","            var validMoves = loadMoves(position, new int[][]{","                    {1, 5}, {1, 6}, {1, 7}, {2, 5}, {2, 7},","            });","            assertMoves(game, validMoves, position);","        }","    }","","","    private void assertMoves(ChessGame game, Set<ChessMove> validMoves, ChessPosition position) {","        var actualMoves = new HashSet<>(game.validMoves(position));","        Assertions.assertEquals(validMoves, actualMoves,","                \"ChessGame validMoves did not return the correct moves\");","    }","}"],"stylingDirectives":[[{"start":0,"end":7,"cssClass":"pl-k"},{"start":8,"end":20,"cssClass":"pl-s1"},{"start":21,"end":31,"cssClass":"pl-s1"}],[],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":12,"cssClass":"pl-s1"}],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":10,"cssClass":"pl-s1"},{"start":11,"end":16,"cssClass":"pl-s1"},{"start":17,"end":24,"cssClass":"pl-s1"},{"start":25,"end":28,"cssClass":"pl-s1"}],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":10,"cssClass":"pl-s1"},{"start":11,"end":16,"cssClass":"pl-s1"},{"start":17,"end":24,"cssClass":"pl-s1"},{"start":25,"end":31,"cssClass":"pl-s1"},{"start":32,"end":49,"cssClass":"pl-s1"}],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":10,"cssClass":"pl-s1"},{"start":11,"end":16,"cssClass":"pl-s1"},{"start":17,"end":24,"cssClass":"pl-s1"},{"start":25,"end":31,"cssClass":"pl-s1"},{"start":32,"end":40,"cssClass":"pl-s1"},{"start":41,"end":51,"cssClass":"pl-s1"}],[],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":11,"cssClass":"pl-s1"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":17,"end":24,"cssClass":"pl-s1"}],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":11,"cssClass":"pl-s1"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":17,"end":20,"cssClass":"pl-s1"}],[],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":13,"cssClass":"pl-k"},{"start":14,"end":26,"cssClass":"pl-s1"},{"start":27,"end":38,"cssClass":"pl-s1"}],[],[{"start":0,"end":6,"cssClass":"pl-k"},{"start":7,"end":12,"cssClass":"pl-k"},{"start":13,"end":27,"cssClass":"pl-smi"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":30,"cssClass":"pl-en"},{"start":33,"end":39,"cssClass":"pl-k"},{"start":40,"end":60,"cssClass":"pl-smi"}],[],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":31,"cssClass":"pl-en"},{"start":32,"end":35,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":24,"cssClass":"pl-en"},{"start":25,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-s1"},{"start":45,"end":50,"cssClass":"pl-c1"}],[],[{"start":8,"end":14,"cssClass":"pl-c"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":29,"cssClass":"pl-s1"},{"start":32,"end":46,"cssClass":"pl-en"},{"start":47,"end":48,"cssClass":"pl-c1"},{"start":50,"end":51,"cssClass":"pl-c1"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":27,"cssClass":"pl-s1"},{"start":30,"end":44,"cssClass":"pl-en"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":48,"end":49,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":50,"cssClass":"pl-s1"},{"start":52,"end":67,"cssClass":"pl-s1"},{"start":69,"end":73,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-en"},{"start":59,"end":62,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[{"start":8,"end":15,"cssClass":"pl-c"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":30,"cssClass":"pl-s1"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":28,"cssClass":"pl-s1"},{"start":31,"end":45,"cssClass":"pl-en"},{"start":46,"end":47,"cssClass":"pl-c1"},{"start":49,"end":50,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":51,"cssClass":"pl-s1"},{"start":53,"end":69,"cssClass":"pl-s1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-en"},{"start":59,"end":62,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[{"start":8,"end":14,"cssClass":"pl-c"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":29,"cssClass":"pl-s1"},{"start":32,"end":46,"cssClass":"pl-en"},{"start":47,"end":48,"cssClass":"pl-c1"},{"start":50,"end":51,"cssClass":"pl-c1"}],[{"start":8,"end":21,"cssClass":"pl-smi"},{"start":22,"end":37,"cssClass":"pl-s1"},{"start":40,"end":54,"cssClass":"pl-en"},{"start":55,"end":56,"cssClass":"pl-c1"},{"start":58,"end":59,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":50,"cssClass":"pl-s1"},{"start":52,"end":67,"cssClass":"pl-s1"},{"start":69,"end":73,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-en"},{"start":59,"end":62,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[{"start":8,"end":16,"cssClass":"pl-c"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":31,"cssClass":"pl-s1"},{"start":34,"end":48,"cssClass":"pl-en"},{"start":49,"end":50,"cssClass":"pl-c1"},{"start":52,"end":53,"cssClass":"pl-c1"}],[{"start":8,"end":21,"cssClass":"pl-smi"},{"start":22,"end":39,"cssClass":"pl-s1"},{"start":42,"end":56,"cssClass":"pl-en"},{"start":57,"end":58,"cssClass":"pl-c1"},{"start":60,"end":61,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":52,"cssClass":"pl-s1"},{"start":54,"end":71,"cssClass":"pl-s1"},{"start":73,"end":77,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-en"},{"start":59,"end":62,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[],[{"start":8,"end":16,"cssClass":"pl-c"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":31,"cssClass":"pl-s1"},{"start":34,"end":48,"cssClass":"pl-en"},{"start":49,"end":50,"cssClass":"pl-c1"},{"start":52,"end":53,"cssClass":"pl-c1"}],[{"start":8,"end":21,"cssClass":"pl-smi"},{"start":22,"end":39,"cssClass":"pl-s1"},{"start":42,"end":56,"cssClass":"pl-en"},{"start":57,"end":58,"cssClass":"pl-c1"},{"start":60,"end":61,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":52,"cssClass":"pl-s1"},{"start":54,"end":71,"cssClass":"pl-s1"},{"start":73,"end":77,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-en"},{"start":59,"end":62,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[{"start":8,"end":14,"cssClass":"pl-c"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":29,"cssClass":"pl-s1"},{"start":32,"end":46,"cssClass":"pl-en"},{"start":47,"end":48,"cssClass":"pl-c1"},{"start":50,"end":51,"cssClass":"pl-c1"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":27,"cssClass":"pl-s1"},{"start":30,"end":44,"cssClass":"pl-en"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":48,"end":49,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":50,"cssClass":"pl-s1"},{"start":52,"end":67,"cssClass":"pl-s1"},{"start":69,"end":73,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-en"},{"start":59,"end":62,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":36,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":28,"cssClass":"pl-en"},{"start":31,"end":37,"cssClass":"pl-k"},{"start":38,"end":58,"cssClass":"pl-smi"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":17,"cssClass":"pl-s1"},{"start":20,"end":31,"cssClass":"pl-en"}],[{"start":8,"end":13,"cssClass":"pl-s1"},{"start":14,"end":24,"cssClass":"pl-en"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":27,"cssClass":"pl-s1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":24,"cssClass":"pl-en"},{"start":25,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-s1"},{"start":45,"end":50,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":34,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":39,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":31,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":21,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":44,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":34,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":33,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":35,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":40,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":45,"cssClass":"pl-en"},{"start":46,"end":55,"cssClass":"pl-smi"},{"start":56,"end":65,"cssClass":"pl-s1"},{"start":66,"end":71,"cssClass":"pl-c1"}],[{"start":16,"end":67,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":44,"cssClass":"pl-en"},{"start":45,"end":54,"cssClass":"pl-smi"},{"start":55,"end":64,"cssClass":"pl-s1"},{"start":65,"end":70,"cssClass":"pl-c1"}],[{"start":16,"end":64,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":38,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":45,"cssClass":"pl-en"},{"start":46,"end":55,"cssClass":"pl-smi"},{"start":56,"end":65,"cssClass":"pl-s1"},{"start":66,"end":71,"cssClass":"pl-c1"}],[{"start":16,"end":67,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[{"start":8,"end":38,"cssClass":"pl-c"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":52,"cssClass":"pl-smi"},{"start":53,"end":58,"cssClass":"pl-k"},{"start":66,"end":70,"cssClass":"pl-s1"},{"start":71,"end":79,"cssClass":"pl-en"}],[{"start":16,"end":26,"cssClass":"pl-en"},{"start":27,"end":41,"cssClass":"pl-en"},{"start":42,"end":43,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":49,"end":63,"cssClass":"pl-en"},{"start":64,"end":65,"cssClass":"pl-c1"},{"start":67,"end":68,"cssClass":"pl-c1"},{"start":71,"end":75,"cssClass":"pl-c1"}],[],[{"start":8,"end":31,"cssClass":"pl-c"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":36,"cssClass":"pl-s1"},{"start":37,"end":45,"cssClass":"pl-en"}],[{"start":16,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":41,"cssClass":"pl-s"}],[{"start":0,"end":27,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":22,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":15,"cssClass":"pl-c1"},{"start":16,"end":21,"cssClass":"pl-s1"},{"start":24,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-smi"},{"start":45,"end":50,"cssClass":"pl-k"},{"start":52,"end":57,"cssClass":"pl-s1"},{"start":61,"end":68,"cssClass":"pl-s"},{"start":70,"end":76,"cssClass":"pl-s"},{"start":78,"end":86,"cssClass":"pl-s"},{"start":88,"end":96,"cssClass":"pl-s"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":33,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":30,"cssClass":"pl-en"},{"start":31,"end":41,"cssClass":"pl-smi"},{"start":42,"end":51,"cssClass":"pl-smi"},{"start":52,"end":65,"cssClass":"pl-s1"},{"start":67,"end":73,"cssClass":"pl-k"},{"start":74,"end":94,"cssClass":"pl-smi"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":31,"cssClass":"pl-en"},{"start":32,"end":35,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":24,"cssClass":"pl-en"},{"start":25,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-s1"},{"start":45,"end":50,"cssClass":"pl-c1"}],[],[{"start":8,"end":25,"cssClass":"pl-c"}],[{"start":8,"end":17,"cssClass":"pl-smi"},{"start":18,"end":32,"cssClass":"pl-s1"},{"start":35,"end":45,"cssClass":"pl-en"},{"start":46,"end":60,"cssClass":"pl-en"},{"start":61,"end":62,"cssClass":"pl-c1"},{"start":64,"end":65,"cssClass":"pl-c1"}],[{"start":16,"end":30,"cssClass":"pl-en"},{"start":31,"end":32,"cssClass":"pl-c1"},{"start":34,"end":35,"cssClass":"pl-c1"},{"start":38,"end":51,"cssClass":"pl-s1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":36,"cssClass":"pl-s1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":43,"cssClass":"pl-en"},{"start":46,"end":54,"cssClass":"pl-en"},{"start":55,"end":69,"cssClass":"pl-s1"},{"start":70,"end":86,"cssClass":"pl-en"}],[{"start":16,"end":76,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":32,"cssClass":"pl-s1"},{"start":35,"end":39,"cssClass":"pl-s1"},{"start":40,"end":48,"cssClass":"pl-en"},{"start":51,"end":59,"cssClass":"pl-en"},{"start":60,"end":74,"cssClass":"pl-s1"},{"start":75,"end":89,"cssClass":"pl-en"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":32,"cssClass":"pl-en"},{"start":33,"end":46,"cssClass":"pl-s1"},{"start":48,"end":96,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":45,"cssClass":"pl-s1"},{"start":47,"end":60,"cssClass":"pl-s1"},{"start":61,"end":73,"cssClass":"pl-en"}],[{"start":16,"end":75,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":41,"cssClass":"pl-smi"},{"start":42,"end":51,"cssClass":"pl-s1"},{"start":52,"end":57,"cssClass":"pl-c1"},{"start":59,"end":72,"cssClass":"pl-s1"},{"start":73,"end":85,"cssClass":"pl-en"}],[{"start":16,"end":69,"cssClass":"pl-s"}],[],[],[{"start":8,"end":32,"cssClass":"pl-c"}],[{"start":8,"end":17,"cssClass":"pl-smi"},{"start":18,"end":32,"cssClass":"pl-s1"},{"start":35,"end":45,"cssClass":"pl-en"},{"start":46,"end":60,"cssClass":"pl-en"},{"start":61,"end":62,"cssClass":"pl-c1"},{"start":64,"end":65,"cssClass":"pl-c1"}],[{"start":16,"end":30,"cssClass":"pl-en"},{"start":31,"end":32,"cssClass":"pl-c1"},{"start":34,"end":35,"cssClass":"pl-c1"},{"start":38,"end":51,"cssClass":"pl-s1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":36,"cssClass":"pl-s1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":43,"cssClass":"pl-en"},{"start":46,"end":54,"cssClass":"pl-en"},{"start":55,"end":69,"cssClass":"pl-s1"},{"start":70,"end":86,"cssClass":"pl-en"}],[{"start":16,"end":76,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":32,"cssClass":"pl-s1"},{"start":35,"end":39,"cssClass":"pl-s1"},{"start":40,"end":48,"cssClass":"pl-en"},{"start":51,"end":59,"cssClass":"pl-en"},{"start":60,"end":74,"cssClass":"pl-s1"},{"start":75,"end":89,"cssClass":"pl-en"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":32,"cssClass":"pl-en"},{"start":33,"end":46,"cssClass":"pl-s1"},{"start":48,"end":96,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":45,"cssClass":"pl-s1"},{"start":47,"end":60,"cssClass":"pl-s1"},{"start":61,"end":73,"cssClass":"pl-en"}],[{"start":16,"end":75,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":41,"cssClass":"pl-smi"},{"start":42,"end":51,"cssClass":"pl-s1"},{"start":52,"end":57,"cssClass":"pl-c1"},{"start":59,"end":72,"cssClass":"pl-s1"},{"start":73,"end":85,"cssClass":"pl-en"}],[{"start":16,"end":69,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":33,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":26,"cssClass":"pl-en"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":31,"cssClass":"pl-en"},{"start":32,"end":35,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":44,"cssClass":"pl-en"},{"start":45,"end":54,"cssClass":"pl-smi"},{"start":55,"end":64,"cssClass":"pl-s1"},{"start":65,"end":70,"cssClass":"pl-c1"}],[{"start":16,"end":64,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":45,"cssClass":"pl-en"},{"start":46,"end":55,"cssClass":"pl-smi"},{"start":56,"end":65,"cssClass":"pl-s1"},{"start":66,"end":71,"cssClass":"pl-c1"}],[{"start":16,"end":67,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":33,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":26,"cssClass":"pl-en"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":31,"cssClass":"pl-en"},{"start":32,"end":35,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":44,"cssClass":"pl-en"},{"start":45,"end":54,"cssClass":"pl-smi"},{"start":55,"end":64,"cssClass":"pl-s1"},{"start":65,"end":70,"cssClass":"pl-c1"}],[{"start":16,"end":64,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":45,"cssClass":"pl-en"},{"start":46,"end":55,"cssClass":"pl-smi"},{"start":56,"end":65,"cssClass":"pl-s1"},{"start":66,"end":71,"cssClass":"pl-c1"}],[{"start":16,"end":67,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":37,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":34,"cssClass":"pl-en"}],[],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":31,"cssClass":"pl-en"},{"start":32,"end":35,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":24,"cssClass":"pl-en"},{"start":25,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-s1"},{"start":45,"end":50,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":48,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-smi"},{"start":59,"end":68,"cssClass":"pl-s1"},{"start":69,"end":74,"cssClass":"pl-c1"}],[{"start":16,"end":72,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":49,"cssClass":"pl-en"},{"start":50,"end":59,"cssClass":"pl-smi"},{"start":60,"end":69,"cssClass":"pl-s1"},{"start":70,"end":75,"cssClass":"pl-c1"}],[{"start":16,"end":75,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":46,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":38,"cssClass":"pl-en"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":31,"cssClass":"pl-en"},{"start":32,"end":35,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":24,"cssClass":"pl-en"},{"start":25,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-s1"},{"start":45,"end":50,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":48,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-smi"},{"start":59,"end":68,"cssClass":"pl-s1"},{"start":69,"end":74,"cssClass":"pl-c1"}],[{"start":16,"end":72,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":49,"cssClass":"pl-en"},{"start":50,"end":59,"cssClass":"pl-smi"},{"start":60,"end":69,"cssClass":"pl-s1"},{"start":70,"end":75,"cssClass":"pl-c1"}],[{"start":16,"end":75,"cssClass":"pl-s"}],[],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":47,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":25,"cssClass":"pl-en"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":31,"cssClass":"pl-en"},{"start":32,"end":35,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":33,"cssClass":"pl-s"}],[{"start":0,"end":19,"cssClass":"pl-s"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":24,"cssClass":"pl-en"},{"start":25,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-s1"},{"start":45,"end":50,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":48,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-smi"},{"start":59,"end":68,"cssClass":"pl-s1"},{"start":69,"end":74,"cssClass":"pl-c1"}],[{"start":16,"end":74,"cssClass":"pl-s"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":49,"cssClass":"pl-en"},{"start":50,"end":59,"cssClass":"pl-smi"},{"start":60,"end":69,"cssClass":"pl-s1"},{"start":70,"end":75,"cssClass":"pl-c1"}],[{"start":16,"end":77,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":9,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":38,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":15,"cssClass":"pl-smi"},{"start":16,"end":28,"cssClass":"pl-en"},{"start":31,"end":37,"cssClass":"pl-k"},{"start":38,"end":58,"cssClass":"pl-smi"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":17,"cssClass":"pl-s1"},{"start":20,"end":31,"cssClass":"pl-en"}],[{"start":8,"end":13,"cssClass":"pl-s1"},{"start":14,"end":24,"cssClass":"pl-en"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":16,"cssClass":"pl-s1"},{"start":19,"end":29,"cssClass":"pl-en"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":27,"cssClass":"pl-s1"}],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":24,"cssClass":"pl-en"},{"start":25,"end":34,"cssClass":"pl-smi"},{"start":35,"end":44,"cssClass":"pl-s1"},{"start":45,"end":50,"cssClass":"pl-c1"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":30,"cssClass":"pl-en"},{"start":31,"end":35,"cssClass":"pl-s1"},{"start":36,"end":49,"cssClass":"pl-en"},{"start":50,"end":59,"cssClass":"pl-smi"},{"start":60,"end":69,"cssClass":"pl-s1"},{"start":70,"end":75,"cssClass":"pl-c1"}],[{"start":16,"end":75,"cssClass":"pl-s"}],[],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":21,"cssClass":"pl-en"},{"start":22,"end":32,"cssClass":"pl-en"},{"start":33,"end":47,"cssClass":"pl-en"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":51,"end":52,"cssClass":"pl-c1"},{"start":55,"end":69,"cssClass":"pl-en"},{"start":70,"end":71,"cssClass":"pl-c1"},{"start":73,"end":74,"cssClass":"pl-c1"},{"start":77,"end":81,"cssClass":"pl-c1"}],[{"start":8,"end":10,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":11,"cssClass":"pl-c"}],[],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":29,"cssClass":"pl-en"},{"start":30,"end":34,"cssClass":"pl-s1"},{"start":35,"end":48,"cssClass":"pl-en"},{"start":49,"end":58,"cssClass":"pl-smi"},{"start":59,"end":68,"cssClass":"pl-s1"},{"start":69,"end":74,"cssClass":"pl-c1"}],[{"start":16,"end":72,"cssClass":"pl-s"}],[],[],[],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":11,"cssClass":"pl-c1"}],[{"start":4,"end":5,"cssClass":"pl-c1"},{"start":5,"end":16,"cssClass":"pl-c1"},{"start":17,"end":35,"cssClass":"pl-s"}],[{"start":4,"end":10,"cssClass":"pl-k"},{"start":11,"end":16,"cssClass":"pl-k"},{"start":17,"end":31,"cssClass":"pl-smi"}],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-c1"}],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":20,"cssClass":"pl-c1"},{"start":21,"end":44,"cssClass":"pl-s"}],[{"start":8,"end":14,"cssClass":"pl-k"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":30,"cssClass":"pl-en"}],[],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":20,"cssClass":"pl-s1"},{"start":23,"end":33,"cssClass":"pl-en"}],[{"start":12,"end":16,"cssClass":"pl-s1"},{"start":17,"end":25,"cssClass":"pl-en"},{"start":26,"end":35,"cssClass":"pl-en"},{"start":36,"end":39,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":23,"cssClass":"pl-s"}],[],[{"start":12,"end":27,"cssClass":"pl-c"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":40,"cssClass":"pl-s1"},{"start":43,"end":57,"cssClass":"pl-en"},{"start":58,"end":59,"cssClass":"pl-c1"},{"start":61,"end":62,"cssClass":"pl-c1"}],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":26,"cssClass":"pl-s1"},{"start":29,"end":38,"cssClass":"pl-en"},{"start":39,"end":53,"cssClass":"pl-s1"},{"start":55,"end":58,"cssClass":"pl-k"},{"start":59,"end":62,"cssClass":"pl-smi"},{"start":68,"end":69,"cssClass":"pl-c1"},{"start":71,"end":72,"cssClass":"pl-c1"},{"start":76,"end":77,"cssClass":"pl-c1"},{"start":79,"end":80,"cssClass":"pl-c1"}],[{"start":12,"end":23,"cssClass":"pl-en"},{"start":24,"end":28,"cssClass":"pl-s1"},{"start":30,"end":40,"cssClass":"pl-s1"},{"start":42,"end":56,"cssClass":"pl-s1"}],[],[{"start":12,"end":26,"cssClass":"pl-c"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":39,"cssClass":"pl-s1"},{"start":42,"end":56,"cssClass":"pl-en"},{"start":57,"end":58,"cssClass":"pl-c1"},{"start":60,"end":61,"cssClass":"pl-c1"}],[{"start":12,"end":22,"cssClass":"pl-s1"},{"start":25,"end":34,"cssClass":"pl-en"},{"start":35,"end":48,"cssClass":"pl-s1"},{"start":50,"end":53,"cssClass":"pl-k"},{"start":54,"end":57,"cssClass":"pl-smi"},{"start":63,"end":64,"cssClass":"pl-c1"},{"start":66,"end":67,"cssClass":"pl-c1"},{"start":71,"end":72,"cssClass":"pl-c1"},{"start":74,"end":75,"cssClass":"pl-c1"}],[{"start":12,"end":23,"cssClass":"pl-en"},{"start":24,"end":28,"cssClass":"pl-s1"},{"start":30,"end":40,"cssClass":"pl-s1"},{"start":42,"end":55,"cssClass":"pl-s1"}],[],[],[],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-c1"}],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":20,"cssClass":"pl-c1"},{"start":21,"end":46,"cssClass":"pl-s"}],[{"start":8,"end":14,"cssClass":"pl-k"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":33,"cssClass":"pl-en"}],[],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":20,"cssClass":"pl-s1"},{"start":23,"end":33,"cssClass":"pl-en"}],[{"start":12,"end":16,"cssClass":"pl-s1"},{"start":17,"end":25,"cssClass":"pl-en"},{"start":26,"end":35,"cssClass":"pl-en"},{"start":36,"end":39,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":23,"cssClass":"pl-s"}],[],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":38,"cssClass":"pl-s1"},{"start":41,"end":55,"cssClass":"pl-en"},{"start":56,"end":57,"cssClass":"pl-c1"},{"start":59,"end":60,"cssClass":"pl-c1"}],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":26,"cssClass":"pl-s1"},{"start":29,"end":38,"cssClass":"pl-en"},{"start":39,"end":51,"cssClass":"pl-s1"},{"start":53,"end":56,"cssClass":"pl-k"},{"start":57,"end":60,"cssClass":"pl-smi"}],[{"start":21,"end":22,"cssClass":"pl-c1"},{"start":24,"end":25,"cssClass":"pl-c1"},{"start":29,"end":30,"cssClass":"pl-c1"},{"start":32,"end":33,"cssClass":"pl-c1"},{"start":37,"end":38,"cssClass":"pl-c1"},{"start":40,"end":41,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":53,"end":54,"cssClass":"pl-c1"},{"start":56,"end":57,"cssClass":"pl-c1"}],[],[],[{"start":12,"end":23,"cssClass":"pl-en"},{"start":24,"end":28,"cssClass":"pl-s1"},{"start":30,"end":40,"cssClass":"pl-s1"},{"start":42,"end":54,"cssClass":"pl-s1"}],[],[],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-c1"}],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":20,"cssClass":"pl-c1"},{"start":21,"end":47,"cssClass":"pl-s"}],[{"start":8,"end":14,"cssClass":"pl-k"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":36,"cssClass":"pl-en"}],[],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":20,"cssClass":"pl-s1"},{"start":23,"end":33,"cssClass":"pl-en"}],[{"start":12,"end":16,"cssClass":"pl-s1"},{"start":17,"end":25,"cssClass":"pl-en"},{"start":26,"end":35,"cssClass":"pl-en"},{"start":36,"end":39,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":23,"cssClass":"pl-s"}],[],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":34,"cssClass":"pl-s1"},{"start":37,"end":51,"cssClass":"pl-en"},{"start":52,"end":53,"cssClass":"pl-c1"},{"start":55,"end":56,"cssClass":"pl-c1"}],[{"start":12,"end":22,"cssClass":"pl-smi"},{"start":23,"end":33,"cssClass":"pl-en"},{"start":34,"end":38,"cssClass":"pl-s1"},{"start":39,"end":49,"cssClass":"pl-en"},{"start":50,"end":58,"cssClass":"pl-s1"},{"start":60,"end":67,"cssClass":"pl-en"}],[{"start":20,"end":83,"cssClass":"pl-s"}],[],[],[],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-c1"}],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":20,"cssClass":"pl-c1"},{"start":21,"end":52,"cssClass":"pl-s"}],[{"start":8,"end":14,"cssClass":"pl-k"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":32,"cssClass":"pl-en"}],[],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":20,"cssClass":"pl-s1"},{"start":23,"end":33,"cssClass":"pl-en"}],[{"start":12,"end":16,"cssClass":"pl-s1"},{"start":17,"end":25,"cssClass":"pl-en"},{"start":26,"end":35,"cssClass":"pl-en"},{"start":36,"end":39,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":23,"cssClass":"pl-s"}],[],[{"start":12,"end":27,"cssClass":"pl-c"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":38,"cssClass":"pl-s1"},{"start":41,"end":55,"cssClass":"pl-en"},{"start":56,"end":57,"cssClass":"pl-c1"},{"start":59,"end":60,"cssClass":"pl-c1"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":38,"cssClass":"pl-s1"},{"start":41,"end":55,"cssClass":"pl-en"},{"start":56,"end":57,"cssClass":"pl-c1"},{"start":59,"end":60,"cssClass":"pl-c1"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":40,"cssClass":"pl-s1"},{"start":43,"end":57,"cssClass":"pl-en"},{"start":58,"end":59,"cssClass":"pl-c1"},{"start":61,"end":62,"cssClass":"pl-c1"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":39,"cssClass":"pl-s1"},{"start":42,"end":56,"cssClass":"pl-en"},{"start":57,"end":58,"cssClass":"pl-c1"},{"start":60,"end":61,"cssClass":"pl-c1"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":40,"cssClass":"pl-s1"},{"start":43,"end":57,"cssClass":"pl-en"},{"start":58,"end":59,"cssClass":"pl-c1"},{"start":61,"end":62,"cssClass":"pl-c1"}],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":38,"cssClass":"pl-s1"},{"start":41,"end":55,"cssClass":"pl-en"},{"start":56,"end":57,"cssClass":"pl-c1"},{"start":59,"end":60,"cssClass":"pl-c1"}],[],[],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":26,"cssClass":"pl-s1"},{"start":29,"end":38,"cssClass":"pl-en"},{"start":39,"end":51,"cssClass":"pl-s1"},{"start":53,"end":56,"cssClass":"pl-k"},{"start":57,"end":60,"cssClass":"pl-smi"},{"start":66,"end":67,"cssClass":"pl-c1"},{"start":69,"end":70,"cssClass":"pl-c1"}],[],[{"start":12,"end":23,"cssClass":"pl-en"},{"start":24,"end":28,"cssClass":"pl-s1"},{"start":30,"end":40,"cssClass":"pl-s1"},{"start":42,"end":54,"cssClass":"pl-s1"}],[],[{"start":12,"end":66,"cssClass":"pl-c"}],[{"start":12,"end":22,"cssClass":"pl-smi"},{"start":23,"end":33,"cssClass":"pl-en"},{"start":34,"end":38,"cssClass":"pl-s1"},{"start":39,"end":49,"cssClass":"pl-en"},{"start":50,"end":62,"cssClass":"pl-s1"},{"start":64,"end":71,"cssClass":"pl-en"}],[{"start":20,"end":83,"cssClass":"pl-s"}],[{"start":12,"end":22,"cssClass":"pl-smi"},{"start":23,"end":33,"cssClass":"pl-en"},{"start":34,"end":38,"cssClass":"pl-s1"},{"start":39,"end":49,"cssClass":"pl-en"},{"start":50,"end":64,"cssClass":"pl-s1"},{"start":66,"end":73,"cssClass":"pl-en"}],[{"start":20,"end":83,"cssClass":"pl-s"}],[{"start":12,"end":22,"cssClass":"pl-smi"},{"start":23,"end":33,"cssClass":"pl-en"},{"start":34,"end":38,"cssClass":"pl-s1"},{"start":39,"end":49,"cssClass":"pl-en"},{"start":50,"end":63,"cssClass":"pl-s1"},{"start":65,"end":72,"cssClass":"pl-en"}],[{"start":20,"end":83,"cssClass":"pl-s"}],[{"start":12,"end":22,"cssClass":"pl-smi"},{"start":23,"end":33,"cssClass":"pl-en"},{"start":34,"end":38,"cssClass":"pl-s1"},{"start":39,"end":49,"cssClass":"pl-en"},{"start":50,"end":64,"cssClass":"pl-s1"},{"start":66,"end":73,"cssClass":"pl-en"}],[{"start":20,"end":83,"cssClass":"pl-s"}],[{"start":12,"end":22,"cssClass":"pl-smi"},{"start":23,"end":33,"cssClass":"pl-en"},{"start":34,"end":38,"cssClass":"pl-s1"},{"start":39,"end":49,"cssClass":"pl-en"},{"start":50,"end":62,"cssClass":"pl-s1"},{"start":64,"end":71,"cssClass":"pl-en"}],[{"start":20,"end":83,"cssClass":"pl-s"}],[],[],[],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-c1"}],[{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":20,"cssClass":"pl-c1"},{"start":21,"end":50,"cssClass":"pl-s"}],[{"start":8,"end":14,"cssClass":"pl-k"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":37,"cssClass":"pl-en"}],[],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":20,"cssClass":"pl-s1"},{"start":23,"end":33,"cssClass":"pl-en"}],[{"start":12,"end":16,"cssClass":"pl-s1"},{"start":17,"end":25,"cssClass":"pl-en"},{"start":26,"end":35,"cssClass":"pl-en"},{"start":36,"end":39,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":37,"cssClass":"pl-s"}],[{"start":0,"end":23,"cssClass":"pl-s"}],[],[{"start":12,"end":25,"cssClass":"pl-smi"},{"start":26,"end":34,"cssClass":"pl-s1"},{"start":37,"end":51,"cssClass":"pl-en"},{"start":52,"end":53,"cssClass":"pl-c1"},{"start":55,"end":56,"cssClass":"pl-c1"}],[{"start":12,"end":15,"cssClass":"pl-smi"},{"start":16,"end":26,"cssClass":"pl-s1"},{"start":29,"end":38,"cssClass":"pl-en"},{"start":39,"end":47,"cssClass":"pl-s1"},{"start":49,"end":52,"cssClass":"pl-k"},{"start":53,"end":56,"cssClass":"pl-smi"}],[{"start":21,"end":22,"cssClass":"pl-c1"},{"start":24,"end":25,"cssClass":"pl-c1"},{"start":29,"end":30,"cssClass":"pl-c1"},{"start":32,"end":33,"cssClass":"pl-c1"},{"start":37,"end":38,"cssClass":"pl-c1"},{"start":40,"end":41,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"},{"start":48,"end":49,"cssClass":"pl-c1"},{"start":53,"end":54,"cssClass":"pl-c1"},{"start":56,"end":57,"cssClass":"pl-c1"}],[],[{"start":12,"end":23,"cssClass":"pl-en"},{"start":24,"end":28,"cssClass":"pl-s1"},{"start":30,"end":40,"cssClass":"pl-s1"},{"start":42,"end":50,"cssClass":"pl-s1"}],[],[],[],[],[{"start":4,"end":11,"cssClass":"pl-k"},{"start":12,"end":16,"cssClass":"pl-smi"},{"start":17,"end":28,"cssClass":"pl-en"},{"start":29,"end":38,"cssClass":"pl-smi"},{"start":39,"end":43,"cssClass":"pl-s1"},{"start":45,"end":48,"cssClass":"pl-smi"},{"start":49,"end":58,"cssClass":"pl-smi"},{"start":60,"end":70,"cssClass":"pl-s1"},{"start":72,"end":85,"cssClass":"pl-smi"},{"start":86,"end":94,"cssClass":"pl-s1"}],[{"start":8,"end":11,"cssClass":"pl-smi"},{"start":12,"end":23,"cssClass":"pl-s1"},{"start":26,"end":29,"cssClass":"pl-k"},{"start":30,"end":37,"cssClass":"pl-smi"},{"start":40,"end":44,"cssClass":"pl-s1"},{"start":45,"end":55,"cssClass":"pl-en"},{"start":56,"end":64,"cssClass":"pl-s1"}],[{"start":8,"end":18,"cssClass":"pl-smi"},{"start":19,"end":31,"cssClass":"pl-en"},{"start":32,"end":42,"cssClass":"pl-s1"},{"start":44,"end":55,"cssClass":"pl-s1"}],[{"start":16,"end":71,"cssClass":"pl-s"}],[],[],[]],"csv":null,"csvError":null,"dependabotInfo":{"showConfigurationBanner":false,"configFilePath":null,"networkDependabotPath":"/softwareconstruction240/softwareconstruction/network/updates","dismissConfigurationNoticePath":"/settings/dismiss-notice/dependabot_configuration_notice","configurationNoticeDismissed":false,"repoAlertsPath":"/softwareconstruction240/softwareconstruction/security/dependabot","repoSecurityAndAnalysisPath":"/softwareconstruction240/softwareconstruction/settings/security_analysis","repoOwnerIsOrg":true,"currentUserCanAdminRepo":false},"displayName":"ChessGameTests.java","displayUrl":"https://github.com/softwareconstruction240/softwareconstruction/blob/main/chess/1-chess-game/starter-code/passoffTests/chessTests/ChessGameTests.java?raw=true","headerInfo":{"blobSize":"27.9 KB","deleteInfo":{"deleteTooltip":"Fork this repository and delete the file"},"editInfo":{"editTooltip":"Fork this repository and edit the file"},"ghDesktopPath":"https://desktop.github.com","gitLfsPath":null,"onBranch":true,"shortPath":"f55e8d3","siteNavLoginPath":"/login?return_to=https%3A%2F%2Fgithub.com%2Fsoftwareconstruction240%2Fsoftwareconstruction%2Fblob%2Fmain%2Fchess%2F1-chess-game%2Fstarter-code%2FpassoffTests%2FchessTests%2FChessGameTests.java","isCSV":false,"isRichtext":false,"toc":null,"lineInfo":{"truncatedLoc":"782","truncatedSloc":"670"},"mode":"file"},"image":false,"isCodeownersFile":null,"isPlain":false,"isValidLegacyIssueTemplate":false,"issueTemplateHelpUrl":"https://docs.github.com/articles/about-issue-and-pull-request-templates","issueTemplate":null,"discussionTemplate":null,"language":"Java","languageID":181,"large":false,"loggedIn":true,"newDiscussionPath":"/softwareconstruction240/softwareconstruction/discussions/new","newIssuePath":"/softwareconstruction240/softwareconstruction/issues/new","planSupportInfo":{"repoIsFork":null,"repoOwnedByCurrentUser":null,"requestFullPath":"/softwareconstruction240/softwareconstruction/blob/main/chess/1-chess-game/starter-code/passoffTests/chessTests/ChessGameTests.java","showFreeOrgGatedFeatureMessage":null,"showPlanSupportBanner":null,"upgradeDataAttributes":null,"upgradePath":null},"publishBannersInfo":{"dismissActionNoticePath":"/settings/dismiss-notice/publish_action_from_dockerfile","dismissStackNoticePath":"/settings/dismiss-notice/publish_stack_from_file","releasePath":"/softwareconstruction240/softwareconstruction/releases/new?marketplace=true","showPublishActionBanner":false,"showPublishStackBanner":false},"rawBlobUrl":"https://github.com/softwareconstruction240/softwareconstruction/raw/main/chess/1-chess-game/starter-code/passoffTests/chessTests/ChessGameTests.java","renderImageOrRaw":false,"richText":null,"renderedFileInfo":null,"shortPath":null,"symbolsEnabled":true,"tabSize":8,"topBannersInfo":{"overridingGlobalFundingFile":false,"globalPreferredFundingPath":null,"repoOwner":"softwareconstruction240","repoName":"softwareconstruction","showInvalidCitationWarning":false,"citationHelpUrl":"https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files","showDependabotConfigurationBanner":false,"actionsOnboardingTip":null},"truncated":false,"viewable":true,"workflowRedirectUrl":null,"symbols":{"timed_out":false,"not_analyzed":false,"symbols":[{"name":"ChessGameTests","kind":"class","ident_start":292,"ident_end":306,"extent_start":279,"extent_end":28608,"fully_qualified_name":"ChessGameTests","ident_utf16":{"start":{"line_number":12,"utf16_col":13},"end":{"line_number":12,"utf16_col":27}},"extent_utf16":{"start":{"line_number":12,"utf16_col":0},"end":{"line_number":780,"utf16_col":1}}},{"name":"makeValidMoves","kind":"method","ident_start":335,"ident_end":349,"extent_start":313,"extent_end":4209,"fully_qualified_name":"ChessGameTests::makeValidMoves","ident_utf16":{"start":{"line_number":14,"utf16_col":16},"end":{"line_number":14,"utf16_col":30}},"extent_utf16":{"start":{"line_number":13,"utf16_col":4},"end":{"line_number":125,"utf16_col":5}}},{"name":"invalidMoves","kind":"method","ident_start":4276,"ident_end":4288,"extent_start":4216,"extent_end":13874,"fully_qualified_name":"ChessGameTests::invalidMoves","ident_utf16":{"start":{"line_number":130,"utf16_col":16},"end":{"line_number":130,"utf16_col":28}},"extent_utf16":{"start":{"line_number":128,"utf16_col":4},"end":{"line_number":352,"utf16_col":5}}},{"name":"promotionMoves","kind":"method","ident_start":14050,"ident_end":14064,"extent_start":13881,"extent_end":16297,"fully_qualified_name":"ChessGameTests::promotionMoves","ident_utf16":{"start":{"line_number":358,"utf16_col":16},"end":{"line_number":358,"utf16_col":30}},"extent_utf16":{"start":{"line_number":355,"utf16_col":4},"end":{"line_number":400,"utf16_col":5}}},{"name":"whiteCheck","kind":"method","ident_start":16361,"ident_end":16371,"extent_start":16304,"extent_end":17030,"fully_qualified_name":"ChessGameTests::whiteCheck","ident_utf16":{"start":{"line_number":405,"utf16_col":16},"end":{"line_number":405,"utf16_col":26}},"extent_utf16":{"start":{"line_number":403,"utf16_col":4},"end":{"line_number":422,"utf16_col":5}}},{"name":"blackCheck","kind":"method","ident_start":17094,"ident_end":17104,"extent_start":17037,"extent_end":17763,"fully_qualified_name":"ChessGameTests::blackCheck","ident_utf16":{"start":{"line_number":427,"utf16_col":16},"end":{"line_number":427,"utf16_col":26}},"extent_utf16":{"start":{"line_number":425,"utf16_col":4},"end":{"line_number":444,"utf16_col":5}}},{"name":"whiteTeamCheckmate","kind":"method","ident_start":17831,"ident_end":17849,"extent_start":17770,"extent_end":18586,"fully_qualified_name":"ChessGameTests::whiteTeamCheckmate","ident_utf16":{"start":{"line_number":449,"utf16_col":16},"end":{"line_number":449,"utf16_col":34}},"extent_utf16":{"start":{"line_number":447,"utf16_col":4},"end":{"line_number":468,"utf16_col":5}}},{"name":"blackTeamPawnCheckmate","kind":"method","ident_start":18663,"ident_end":18685,"extent_start":18593,"extent_end":19422,"fully_qualified_name":"ChessGameTests::blackTeamPawnCheckmate","ident_utf16":{"start":{"line_number":473,"utf16_col":16},"end":{"line_number":473,"utf16_col":38}},"extent_utf16":{"start":{"line_number":471,"utf16_col":4},"end":{"line_number":492,"utf16_col":5}}},{"name":"stalemate","kind":"method","ident_start":19500,"ident_end":19509,"extent_start":19429,"extent_end":20249,"fully_qualified_name":"ChessGameTests::stalemate","ident_utf16":{"start":{"line_number":497,"utf16_col":16},"end":{"line_number":497,"utf16_col":25}},"extent_utf16":{"start":{"line_number":495,"utf16_col":4},"end":{"line_number":515,"utf16_col":5}}},{"name":"scholarsMate","kind":"method","ident_start":20318,"ident_end":20330,"extent_start":20256,"extent_end":22972,"fully_qualified_name":"ChessGameTests::scholarsMate","ident_utf16":{"start":{"line_number":520,"utf16_col":16},"end":{"line_number":520,"utf16_col":28}},"extent_utf16":{"start":{"line_number":518,"utf16_col":4},"end":{"line_number":627,"utf16_col":5}}},{"name":"ValidMoveTests","kind":"class","ident_start":23041,"ident_end":23055,"extent_start":22979,"extent_end":28301,"fully_qualified_name":"ChessGameTests::ValidMoveTests","ident_utf16":{"start":{"line_number":632,"utf16_col":17},"end":{"line_number":632,"utf16_col":31}},"extent_utf16":{"start":{"line_number":630,"utf16_col":4},"end":{"line_number":772,"utf16_col":5}}},{"name":"forcedMove","kind":"method","ident_start":23138,"ident_end":23148,"extent_start":23066,"extent_end":24039,"fully_qualified_name":"ChessGameTests::ValidMoveTests::forcedMove","ident_utf16":{"start":{"line_number":635,"utf16_col":20},"end":{"line_number":635,"utf16_col":30}},"extent_utf16":{"start":{"line_number":633,"utf16_col":8},"end":{"line_number":658,"utf16_col":9}}},{"name":"moveIntoCheck","kind":"method","ident_start":24124,"ident_end":24137,"extent_start":24050,"extent_end":24823,"fully_qualified_name":"ChessGameTests::ValidMoveTests::moveIntoCheck","ident_utf16":{"start":{"line_number":663,"utf16_col":20},"end":{"line_number":663,"utf16_col":33}},"extent_utf16":{"start":{"line_number":661,"utf16_col":8},"end":{"line_number":683,"utf16_col":9}}},{"name":"rookPinnedToKing","kind":"method","ident_start":24908,"ident_end":24924,"extent_start":24833,"extent_end":25564,"fully_qualified_name":"ChessGameTests::ValidMoveTests::rookPinnedToKing","ident_utf16":{"start":{"line_number":687,"utf16_col":20},"end":{"line_number":687,"utf16_col":36}},"extent_utf16":{"start":{"line_number":685,"utf16_col":8},"end":{"line_number":704,"utf16_col":9}}},{"name":"kingInDanger","kind":"method","ident_start":25655,"ident_end":25667,"extent_start":25575,"extent_end":27515,"fully_qualified_name":"ChessGameTests::ValidMoveTests::kingInDanger","ident_utf16":{"start":{"line_number":709,"utf16_col":20},"end":{"line_number":709,"utf16_col":32}},"extent_utf16":{"start":{"line_number":707,"utf16_col":8},"end":{"line_number":747,"utf16_col":9}}},{"name":"noPutSelfInDanger","kind":"method","ident_start":27604,"ident_end":27621,"extent_start":27526,"extent_end":28295,"fully_qualified_name":"ChessGameTests::ValidMoveTests::noPutSelfInDanger","ident_utf16":{"start":{"line_number":752,"utf16_col":20},"end":{"line_number":752,"utf16_col":37}},"extent_utf16":{"start":{"line_number":750,"utf16_col":8},"end":{"line_number":771,"utf16_col":9}}},{"name":"assertMoves","kind":"method","ident_start":28321,"ident_end":28332,"extent_start":28308,"extent_end":28606,"fully_qualified_name":"ChessGameTests::assertMoves","ident_utf16":{"start":{"line_number":775,"utf16_col":17},"end":{"line_number":775,"utf16_col":28}},"extent_utf16":{"start":{"line_number":775,"utf16_col":4},"end":{"line_number":779,"utf16_col":5}}}]}},"copilotInfo":null,"copilotAccessAllowed":false,"csrf_tokens":{"/softwareconstruction240/softwareconstruction/branches":{"post":"TmPXVegO7HyBY93GoCh-P1831B2B7B-Ecx_IvF8o9WeycoqRaZGNplmh1XU3mrnXIAMC9qSyBx0righk19QEaA"},"/repos/preferences":{"post":"4dpcGIj-BYyRYB6Q08fzbjHF3mctvevLRdbacMx1VINTZa0hN76Ng_eOwmKxBsWaj772Xtkp0FozpX-EOj_sHQ"}}},"title":"softwareconstruction/chess/1-chess-game/starter-code/passoffTests/chessTests/ChessGameTests.java at main · softwareconstruction240/softwareconstruction"}
+package passoffTests.chessTests;
+
+import chess.*;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static passoffTests.TestFactory.*;
+
+public class ChessGameTests {
+    @Test
+    public void makeValidMoves() throws InvalidMoveException {
+
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                | | | | | | | | |
+                | | | | | | | |q|
+                | | |n| | | |p| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | |B| | | | | |
+                | |K| | | | | |R|
+                """));
+        game.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+        //king
+        var kingStartPosition = getNewPosition(1, 2);
+        var kingEndPosition = getNewPosition(1, 1);
+        game.makeMove(getNewMove(kingStartPosition, kingEndPosition, null));
+
+        Assertions.assertEquals(game.getBoard(), loadBoard("""
+                | | | | | | | | |
+                | | | | | | | |q|
+                | | |n| | | |p| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | |B| | | | | |
+                |K| | | | | | |R|
+                """));
+
+        //queen
+        var queenStartPosition = getNewPosition(7, 8);
+        var queenEndPosition = getNewPosition(8, 7);
+        game.makeMove(getNewMove(queenStartPosition, queenEndPosition, null));
+
+        Assertions.assertEquals(game.getBoard(), loadBoard("""
+                | | | | | | |q| |
+                | | | | | | | | |
+                | | |n| | | |p| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | |B| | | | | |
+                |K| | | | | | |R|
+                """));
+
+        //rook
+        var rookStartPosition = getNewPosition(1, 8);
+        ChessPosition rookEndPosition = getNewPosition(3, 8);
+        game.makeMove(getNewMove(rookStartPosition, rookEndPosition, null));
+
+        Assertions.assertEquals(game.getBoard(), loadBoard("""
+                | | | | | | |q| |
+                | | | | | | | | |
+                | | |n| | | |p| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | |R|
+                | | |B| | | | | |
+                |K| | | | | | | |
+                """));
+
+        //knight
+        var knightStartPosition = getNewPosition(6, 3);
+        ChessPosition knightEndPosition = getNewPosition(7, 5);
+        game.makeMove(getNewMove(knightStartPosition, knightEndPosition, null));
+
+        Assertions.assertEquals(game.getBoard(), loadBoard("""
+                | | | | | | |q| |
+                | | | | |n| | | |
+                | | | | | | |p| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | |R|
+                | | |B| | | | | |
+                |K| | | | | | | |
+                """));
+
+
+        //bishop
+        var bishopStartPosition = getNewPosition(2, 3);
+        ChessPosition bishopEndPosition = getNewPosition(1, 2);
+        game.makeMove(getNewMove(bishopStartPosition, bishopEndPosition, null));
+
+        Assertions.assertEquals(game.getBoard(), loadBoard("""
+                | | | | | | |q| |
+                | | | | |n| | | |
+                | | | | | | |p| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | |R|
+                | | | | | | | | |
+                |K|B| | | | | | |
+                """));
+
+        //pawn
+        var pawnStartPosition = getNewPosition(6, 7);
+        var pawnEndPosition = getNewPosition(5, 7);
+        game.makeMove(getNewMove(pawnStartPosition, pawnEndPosition, null));
+
+        Assertions.assertEquals(game.getBoard(), loadBoard("""
+                | | | | | | |q| |
+                | | | | |n| | | |
+                | | | | | | | | |
+                | | | | | | |p| |
+                | | | | | | | | |
+                | | | | | | | |R|
+                | | | | | | | | |
+                |K|B| | | | | | |
+                """));
+    }
+
+
+    @Test
+    @DisplayName("Invalid Make Move")
+    public void invalidMoves() throws InvalidMoveException {
+        var board = getNewBoard();
+        board.resetBoard();
+        var game = getNewGame();
+        game.setBoard(board);
+        game.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n|b|q|k|b|n|r|
+                        |p|p|p|p|p|p|p|p|
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P|P|P|P|P|P|P|P|
+                        |R|N|B|Q|K|B|N|R|
+                        """));
+
+        //move further than can go
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(2, 1), getNewPosition(5, 1), null)));
+
+        game.makeMove(getNewMove(getNewPosition(2, 1), getNewPosition(3, 1), null));
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n|b|q|k|b|n|r|
+                        |p|p|p|p|p|p|p|p|
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P| | | | | | | |
+                        | |P|P|P|P|P|P|P|
+                        |R|N|B|Q|K|B|N|R|
+                        """));
+
+        //pawn diagonal when no capture
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(7, 2), getNewPosition(6, 3), null)));
+
+        game.makeMove(getNewMove(getNewPosition(7, 2), getNewPosition(6, 2), null));
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n|b|q|k|b|n|r|
+                        |p| |p|p|p|p|p|p|
+                        | |p| | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P| | | | | | | |
+                        | |P|P|P|P|P|P|P|
+                        |R|N|B|Q|K|B|N|R|
+                        """));
+
+        //make move out of turn
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(6, 2), getNewPosition(5, 2), null)));
+
+        //pawn in way
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(1, 1), getNewPosition(4, 1), null)));
+
+
+        game.makeMove(getNewMove(getNewPosition(1, 1), getNewPosition(2, 1), null));
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n|b|q|k|b|n|r|
+                        |p| |p|p|p|p|p|p|
+                        | |p| | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P| | | | | | | |
+                        |R|P|P|P|P|P|P|P|
+                        | |N|B|Q|K|B|N|R|
+                        """));
+
+        //not a move the piece can ever take
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(8, 7), getNewPosition(5, 5), null)));
+
+
+        game.makeMove(getNewMove(getNewPosition(8, 7), getNewPosition(6, 6), null));
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n|b|q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        | |p| | | |n| | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P| | | | | | | |
+                        |R|P|P|P|P|P|P|P|
+                        | |N|B|Q|K|B|N|R|
+                        """));
+
+        //same team at destination
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(1, 6), getNewPosition(2, 5), null)));
+
+
+        game.makeMove(getNewMove(getNewPosition(2, 5), getNewPosition(4, 5), null));
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n|b|q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        | |p| | | |n| | |
+                        | | | | | | | | |
+                        | | | | |P| | | |
+                        |P| | | | | | | |
+                        |R|P|P|P| |P|P|P|
+                        | |N|B|Q|K|B|N|R|
+                        """));
+
+        //same team blocking path
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(8, 4), getNewPosition(6, 4), null)));
+
+
+        game.makeMove(getNewMove(getNewPosition(6, 6), getNewPosition(4, 5), null));
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n|b|q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        | |p| | | | | | |
+                        | | | | | | | | |
+                        | | | | |n| | | |
+                        |P| | | | | | | |
+                        |R|P|P|P| |P|P|P|
+                        | |N|B|Q|K|B|N|R|
+                        """));
+
+        //try moving captured piece
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(4, 5), getNewPosition(5, 5), null)));
+
+        game.makeMove(getNewMove(getNewPosition(1, 6), getNewPosition(3, 4), null));
+        game.makeMove(getNewMove(getNewPosition(8, 3), getNewPosition(6, 1), null));
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n| |q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        |b|p| | | | | | |
+                        | | | | | | | | |
+                        | | | | |n| | | |
+                        |P| | |B| | | | |
+                        |R|P|P|P| |P|P|P|
+                        | |N|B|Q|K| |N|R|
+                        """));
+
+        //try moving through enemy piece
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(3, 4), getNewPosition(5, 6), null)));
+
+        game.makeMove(getNewMove(getNewPosition(1, 7), getNewPosition(3, 6), null));
+        game.makeMove(getNewMove(getNewPosition(4, 5), getNewPosition(2, 4), null));
+        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.WHITE),
+                "White is not in check but isInCheck returned true");
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n| |q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        |b|p| | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P| | |B| |N| | |
+                        |R|P|P|n| |P|P|P|
+                        | |N|B|Q|K| | |R|
+                        """));
+
+        game.makeMove(getNewMove(getNewPosition(1, 8), getNewPosition(1, 7), null));
+        game.makeMove(getNewMove(getNewPosition(2, 4), getNewPosition(3, 6), null));
+        Assertions.assertTrue(game.isInCheck(ChessGame.TeamColor.WHITE),
+                "White is in check but isInCheck returned false");
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n| |q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        |b|p| | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P| | |B| |n| | |
+                        |R|P|P| | |P|P|P|
+                        | |N|B|Q|K| |R| |
+                        """));
+
+        //try not getting out of check
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(1, 7), getNewPosition(1, 8), null)));
+
+        game.makeMove(getNewMove(getNewPosition(2, 7), getNewPosition(3, 6), null));
+        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.WHITE),
+                "White is not in check but isInCheck returned true");
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n| |q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        |b|p| | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P| | |B| |P| | |
+                        |R|P|P| | |P| |P|
+                        | |N|B|Q|K| |R| |
+                        """));
+
+        //try double-moving moved pawn
+        Assertions.assertThrows(InvalidMoveException.class, () -> game.makeMove(
+                getNewMove(getNewPosition(6, 2), getNewPosition(4, 2), null)));
+
+        //few more moves to try
+        game.makeMove(getNewMove(getNewPosition(6, 2), getNewPosition(5, 2), null));
+        game.makeMove(getNewMove(getNewPosition(1, 7), getNewPosition(1, 8), null));
+        game.makeMove(getNewMove(getNewPosition(5, 2), getNewPosition(4, 2), null));
+
+        Assertions.assertEquals(game.getBoard(),
+                loadBoard("""
+                        |r|n| |q|k|b| |r|
+                        |p| |p|p|p|p|p|p|
+                        |b| | | | | | | |
+                        | | | | | | | | |
+                        | |p| | | | | | |
+                        |P| | |B| |P| | |
+                        |R|P|P| | |P| |P|
+                        | |N|B|Q|K| | |R|
+                        """));
+    }
+
+
+    @ParameterizedTest
+    @EnumSource(value = ChessPiece.PieceType.class, names = {"QUEEN", "ROOK", "KNIGHT", "BISHOP"})
+    @DisplayName("Pawn Promotion")
+    public void promotionMoves(ChessPiece.PieceType promotionType) throws InvalidMoveException {
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                | | | | | | | | |
+                | | |P| | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | |p| | | |
+                | | | | | |Q| | |
+                """));
+        game.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+        //White promotion
+        ChessMove whitePromotion = getNewMove(getNewPosition(7, 3),
+                getNewPosition(8, 3), promotionType);
+        game.makeMove(whitePromotion);
+
+        Assertions.assertNull(game.getBoard().getPiece(whitePromotion.getStartPosition()),
+                "After move, a piece is still present in the start position");
+        ChessPiece whiteEndPiece = game.getBoard().getPiece(whitePromotion.getEndPosition());
+        Assertions.assertNotNull(whiteEndPiece, "After move, no piece found at the end position");
+        Assertions.assertEquals(promotionType, whiteEndPiece.getPieceType(),
+                "Found piece at end position is not the correct piece type");
+        Assertions.assertEquals(ChessGame.TeamColor.WHITE, whiteEndPiece.getTeamColor(),
+                "Found piece at end position is the wrong team color");
+
+
+        //Black take + promotion
+        ChessMove blackPromotion = getNewMove(getNewPosition(2, 5),
+                getNewPosition(1, 6), promotionType);
+        game.makeMove(blackPromotion);
+
+        Assertions.assertNull(game.getBoard().getPiece(blackPromotion.getStartPosition()),
+                "After move, a piece is still present in the start position");
+        ChessPiece blackEndPiece = game.getBoard().getPiece(blackPromotion.getEndPosition());
+        Assertions.assertNotNull(blackEndPiece, "After move, no piece found at the end position");
+        Assertions.assertEquals(promotionType, blackEndPiece.getPieceType(),
+                "Found piece at end position is not the correct piece type");
+        Assertions.assertEquals(ChessGame.TeamColor.BLACK, blackEndPiece.getTeamColor(),
+                "Found piece at end position is the wrong team color");
+    }
+
+
+    @Test
+    @DisplayName("White in Check")
+    public void whiteCheck() {
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                | | | | | | | |k|
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | |K| | | |r| | |
+                | | | | | | | | |
+                | | | | | | | | |
+                """));
+
+        Assertions.assertTrue(game.isInCheck(ChessGame.TeamColor.WHITE),
+                "White is in check but isInCheck returned false");
+        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.BLACK),
+                "Black is not in check but isInCheck returned true");
+    }
+
+
+    @Test
+    @DisplayName("Black in Check")
+    public void blackCheck() {
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                | | | |K| | | | |
+                | | | | | | | | |
+                | | | |k| | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                |B| | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                """));
+
+        Assertions.assertTrue(game.isInCheck(ChessGame.TeamColor.BLACK),
+                "Black is in check but isInCheck returned false");
+        Assertions.assertFalse(game.isInCheck(ChessGame.TeamColor.WHITE),
+                "White is not in check but isInCheck returned true");
+    }
+
+
+    @Test
+    @DisplayName("White in Checkmate")
+    public void whiteTeamCheckmate() {
+
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                | | | | | | | | |
+                | | |b|q| | | | |
+                | | | | | | | | |
+                | | | |p| | | |k|
+                | | | | | |K| | |
+                | | |r| | | | | |
+                | | | | |n| | | |
+                | | | | | | | | |
+                """));
+        game.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+        Assertions.assertTrue(game.isInCheckmate(ChessGame.TeamColor.WHITE),
+                "White is in checkmate but isInCheckmate returned false");
+        Assertions.assertFalse(game.isInCheckmate(ChessGame.TeamColor.BLACK),
+                "Black is not in checkmate but isInCheckmate returned true");
+    }
+
+
+    @Test
+    @DisplayName("Black in Checkmate by Pawns")
+    public void blackTeamPawnCheckmate() {
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                | | | |k| | | | |
+                | | | |P|P| | | |
+                | |P| | |P|P| | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | |K| | | | |
+                """));
+        game.setTeamTurn(ChessGame.TeamColor.BLACK);
+
+        Assertions.assertTrue(game.isInCheckmate(ChessGame.TeamColor.BLACK),
+                "Black is in checkmate but isInCheckmate returned false");
+        Assertions.assertFalse(game.isInCheckmate(ChessGame.TeamColor.WHITE),
+                "White is not in checkmate but isInCheckmate returned true");
+
+    }
+
+
+    @Test
+    @DisplayName("Pinned King Causes Stalemate")
+    public void stalemate() {
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                |k| | | | | | | |
+                | | | | | | | |r|
+                | | | | | | | | |
+                | | | | |q| | | |
+                | | | |n| | |K| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | |b| | | |
+                """));
+        game.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+        Assertions.assertTrue(game.isInStalemate(ChessGame.TeamColor.WHITE),
+                "White is in a stalemate but isInStalemate returned false");
+        Assertions.assertFalse(game.isInStalemate(ChessGame.TeamColor.BLACK),
+                "Black is not in a stalemate but isInStalemate returned true");
+    }
+
+
+    @Test
+    @DisplayName("Full Game Checkmate")
+    public void scholarsMate() throws InvalidMoveException {
+        var board = getNewBoard();
+        board.resetBoard();
+        var game = getNewGame();
+        game.setBoard(board);
+        game.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+        Assertions.assertFalse(game.isInCheckmate(ChessGame.TeamColor.BLACK),
+                "Black is not in checkmate but isInCheckmate returned true");
+
+        /*
+        |r|n|b|q|k|b|n|r|
+		|p|p|p|p|p|p|p|p|
+		| | | | | | | | |
+		| | | | | | | | |
+		| | | | | | | | |
+		| | | | | | | | |
+		|P|P|P|P|P|P|P|P|
+		|R|N|B|Q|K|B|N|R|
+         */
+
+        game.makeMove(getNewMove(getNewPosition(2, 5), getNewPosition(4, 5), null));
+        /*
+        |r|n|b|q|k|b|n|r|
+		|p|p|p|p|p|p|p|p|
+		| | | | | | | | |
+		| | | | | | | | |
+		| | | | |P| | | |
+		| | | | | | | | |
+		|P|P|P|P| |P|P|P|
+		|R|N|B|Q|K|B|N|R|
+         */
+
+        game.makeMove(getNewMove(getNewPosition(7, 5), getNewPosition(5, 5), null));
+        /*
+        |r|n|b|q|k|b|n|r|
+		|p|p|p|p| |p|p|p|
+		| | | | | | | | |
+		| | | | |p| | | |
+		| | | | |P| | | |
+		| | | | | | | | |
+		|P|P|P|P| |P|P|P|
+		|R|N|B|Q|K|B|N|R|
+         */
+
+        game.makeMove(getNewMove(getNewPosition(1, 6), getNewPosition(4, 3), null));
+        /*
+        |r|n|b|q|k|b|n|r|
+		|p|p|p|p| |p|p|p|
+		| | | | | | | | |
+		| | | | |p| | | |
+		| | |B| |P| | | |
+		| | | | | | | | |
+		|P|P|P|P| |P|P|P|
+		|R|N|B|Q|K| |N|R|
+         */
+
+        game.makeMove(getNewMove(getNewPosition(8, 7), getNewPosition(6, 6), null));
+        /*
+        |r|n|b|q|k|b| |r|
+		|p|p|p|p| |p|p|p|
+		| | | | | |n| | |
+		| | | | |p| | | |
+		| | |B| |P| | | |
+		| | | | | | | | |
+		|P|P|P|P| |P|P|P|
+		|R|N|B|Q|K| |N|R|
+         */
+
+        game.makeMove(getNewMove(getNewPosition(1, 4), getNewPosition(5, 8), null));
+        /*
+        |r|n|b|q|k|b| |r|
+		|p|p|p|p| |p|p|p|
+		| | | | | |n| | |
+		| | | | |p| | |Q|
+		| | |B| |P| | | |
+		| | | | | | | | |
+		|P|P|P|P| |P|P|P|
+		|R|N|B| |K| |N|R|
+         */
+
+        game.makeMove(getNewMove(getNewPosition(8, 2), getNewPosition(6, 3), null));
+        /*
+        |r| |b|q|k|b| |r|
+		|p|p|p|p| |p|p|p|
+		| | |n| | |n| | |
+		| | | | |p| | |Q|
+		| | |B| |P| | | |
+		| | | | | | | | |
+		|P|P|P|P| |P|P|P|
+		|R|N|B| |K| |N|R|
+         */
+
+        game.makeMove(getNewMove(getNewPosition(5, 8), getNewPosition(7, 6), null));
+        /*
+        |r| |b|q|k|b| |r|
+		|p|p|p|p| |Q|p|p|
+		| | |n| | |n| | |
+		| | | | |p| | | |
+		| | |B| |P| | | |
+		| | | | | | | | |
+		|P|P|P|P| |P|P|P|
+		|R|N|B| |K| |N|R|
+         */
+
+        Assertions.assertTrue(game.isInCheckmate(ChessGame.TeamColor.BLACK),
+                "Black is in checkmate but isInCheckmate returned false");
+    }
+
+
+    @Nested
+    @DisplayName("Valid Move Tests")
+    public class ValidMoveTests {
+        @Test
+        @DisplayName("Check Forces Movement")
+        public void forcedMove() {
+
+            var game = getNewGame();
+            game.setBoard(loadBoard("""
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | |B| | | | | | |
+                    | | | | | |K| | |
+                    | | |n| | | | | |
+                    | | | | | | | | |
+                    | | | |q| |k| | |
+                    | | | | | | | | |
+                    """));
+
+            // Knight moves
+            ChessPosition knightPosition = getNewPosition(4, 3);
+            var validMoves = loadMoves(knightPosition, new int[][]{{3, 5}, {6, 2}});
+            assertMoves(game, validMoves, knightPosition);
+
+            // Queen Moves
+            ChessPosition queenPosition = getNewPosition(2, 4);
+            validMoves = loadMoves(queenPosition, new int[][]{{3, 5}, {4, 4}});
+            assertMoves(game, validMoves, queenPosition);
+        }
+
+
+        @Test
+        @DisplayName("Piece Partially Trapped")
+        public void moveIntoCheck() {
+
+            var game = getNewGame();
+            game.setBoard(loadBoard("""
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | |r| | | |R| |K|
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    """));
+
+            ChessPosition rookPosition = getNewPosition(5, 6);
+            var validMoves = loadMoves(rookPosition, new int[][]{
+                    {5, 7}, {5, 5}, {5, 4}, {5, 3}, {5, 2}
+            });
+
+            assertMoves(game, validMoves, rookPosition);
+        }
+
+        @Test
+        @DisplayName("Piece Completely Trapped")
+        public void rookPinnedToKing() {
+
+            var game = getNewGame();
+            game.setBoard(loadBoard("""
+                    | | | | | | | |Q|
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | |r| | | | |
+                    | | | | | | | | |
+                    | |k| | | | | | |
+                    | | | | | | | | |
+                    """));
+
+            ChessPosition position = getNewPosition(4, 4);
+            Assertions.assertTrue(game.validMoves(position).isEmpty(),
+                    "ChessGame validMoves returned valid moves for a trapped piece");
+        }
+
+
+        @Test
+        @DisplayName("Pieces Cannot Eliminate Check")
+        public void kingInDanger() {
+
+            var game = getNewGame();
+            game.setBoard(loadBoard("""
+                    |R| | | | | | | |
+                    | | | |k| | | |b|
+                    | | | | |P| | | |
+                    | | |Q|n| | | | |
+                    | | | | | | | | |
+                    | | | | | | | |r|
+                    | | | | | |p| | |
+                    | |q| | | | | | |
+                    """));
+
+            //get positions
+            ChessPosition kingPosition = getNewPosition(7, 4);
+            ChessPosition pawnPosition = getNewPosition(2, 6);
+            ChessPosition bishopPosition = getNewPosition(7, 8);
+            ChessPosition queenPosition = getNewPosition(1, 2);
+            ChessPosition knightPosition = getNewPosition(5, 4);
+            ChessPosition rookPosition = getNewPosition(3, 8);
+
+
+            var validMoves = loadMoves(kingPosition, new int[][]{{6, 5}});
+
+            assertMoves(game, validMoves, kingPosition);
+
+            //make sure teams other pieces are not allowed to move
+            Assertions.assertTrue(game.validMoves(pawnPosition).isEmpty(),
+                    "ChessGame validMoves returned valid moves for a trapped piece");
+            Assertions.assertTrue(game.validMoves(bishopPosition).isEmpty(),
+                    "ChessGame validMoves returned valid moves for a trapped piece");
+            Assertions.assertTrue(game.validMoves(queenPosition).isEmpty(),
+                    "ChessGame validMoves returned valid moves for a trapped piece");
+            Assertions.assertTrue(game.validMoves(knightPosition).isEmpty(),
+                    "ChessGame validMoves returned valid moves for a trapped piece");
+            Assertions.assertTrue(game.validMoves(rookPosition).isEmpty(),
+                    "ChessGame validMoves returned valid moves for a trapped piece");
+        }
+
+
+        @Test
+        @DisplayName("King Cannot Move Into Check")
+        public void noPutSelfInDanger() {
+
+            var game = getNewGame();
+            game.setBoard(loadBoard("""
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | | | | | | |
+                    | | | | | |k| | |
+                    | | | | | | | | |
+                    | | | | | |K| | |
+                    | | | | | | | | |
+                    """));
+
+            ChessPosition position = getNewPosition(2, 6);
+            var validMoves = loadMoves(position, new int[][]{
+                    {1, 5}, {1, 6}, {1, 7}, {2, 5}, {2, 7},
+            });
+            assertMoves(game, validMoves, position);
+        }
+    }
+
+
+    private void assertMoves(ChessGame game, Set<ChessMove> validMoves, ChessPosition position) {
+        var actualMoves = new HashSet<>(game.validMoves(position));
+        Assertions.assertEquals(validMoves, actualMoves,
+                "ChessGame validMoves did not return the correct moves");
+    }
+}
+
