@@ -54,7 +54,33 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         var piece = board.getPiece(startPosition);
-        return piece.pieceMoves(board, startPosition);
+        var color = piece.getTeamColor();
+        HashSet<ChessMove> validMoves =  new HashSet<>();
+        var moves = piece.pieceMoves(board, startPosition);
+        for (var move : moves) {
+            var replacedPiece = board.getPiece(move.getEndPosition());
+            board.addPiece(move.getStartPosition(), null);
+            if (move.getPromotionPiece() == null) {
+                board.addPiece(move.getEndPosition(), piece);
+            }
+            if (move.getPromotionPiece() != null) {
+                piece = new ChessPiece(color, move.getPromotionPiece());
+                board.addPiece(move.getEndPosition(), piece);
+            }
+            boolean checkCheck = isInCheck(color);
+            board.addPiece(move.getEndPosition(), replacedPiece);
+            if (move.getPromotionPiece() == null) {
+                board.addPiece(move.getStartPosition(), piece);
+            }
+            if (null != move.getPromotionPiece()) {
+                piece = new ChessPiece(color, ChessPiece.PieceType.PAWN);
+                board.addPiece(move.getStartPosition(), piece);
+            }
+            if (!checkCheck) {
+                validMoves.add(move);
+            }
+        }
+        return validMoves;
     }
 
     /**
@@ -69,26 +95,14 @@ public class ChessGame {
             throw new InvalidMoveException("color: " + piece.getTeamColor() + " doesn't match: " + teamColor);
         }
         var validMoves = validMoves(move.getStartPosition());
-        if(validMoves.contains(move)){
-                board.addPiece(move.getStartPosition(), null);
-            if(move.getPromotionPiece() == null) {
-                board.addPiece(move.getEndPosition(), piece);
-
-            }
-            else{
-                 piece = new ChessPiece(teamColor, move.getPromotionPiece());
+        if(validMoves.contains(move)) {
+            board.addPiece(move.getStartPosition(), null);
+            if (move.getPromotionPiece() == null) {
                 board.addPiece(move.getEndPosition(), piece);
             }
-            if(isInCheck(teamColor)){
-                board.addPiece(move.getEndPosition(), null);
-                if(move.getPromotionPiece() == null) {
-                    board.addPiece(move.getStartPosition(), piece);
-                }
-                else{
-                    piece = new ChessPiece(teamColor, ChessPiece.PieceType.PAWN);
-                    board.addPiece(move.getStartPosition(), piece);
-                }
-                throw new InvalidMoveException();
+            if (move.getPromotionPiece() != null) {
+                piece = new ChessPiece(piece.getTeamColor(), move.getPromotionPiece());
+                board.addPiece(move.getEndPosition(), piece);
             }
             if(getTeamTurn() == TeamColor.BLACK){
                 setTeamTurn(TeamColor.WHITE);
@@ -98,8 +112,9 @@ public class ChessGame {
             }
         }
         else{
-            throw new InvalidMoveException();
-        }
+                throw new InvalidMoveException();
+            }
+
     }
 
     /**
@@ -109,7 +124,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        var king = new ChessPosition(1,1);
+        ChessPosition king = null;
         for(int i = 1; i < 9; i++){
             for(int j = 1; j < 9; j++){
                 var position = new ChessPosition(i,j);
@@ -127,7 +142,7 @@ public class ChessGame {
                 var position = new ChessPosition(i,j);
                 var piece = board.getPiece(position);
                 if((piece != null) && (piece.getTeamColor() != teamColor)){
-                    var validMov = validMoves(position);
+                    var validMov = piece.pieceMoves(board, position);
                     var move = new ChessMove(position, king, null);
                     if(validMov.contains(move) || validMov.contains(new ChessMove(position, king, ChessPiece.PieceType.QUEEN))){
                         return true;
@@ -202,7 +217,32 @@ public class ChessGame {
                 if (piece != null && piece.getTeamColor() == teamColor) {
                     var moves = piece.pieceMoves(board, position);
                     if (!moves.isEmpty()) {
-                        return false;
+                        for (var move : moves) {
+                            var replacedPiece = board.getPiece(move.getEndPosition());
+                            board.addPiece(move.getStartPosition(), null);
+                            if (move.getPromotionPiece() == null) {
+                                board.addPiece(move.getEndPosition(), piece);
+                            }
+                            if (move.getPromotionPiece() != null) {
+                                piece = new ChessPiece(teamColor, move.getPromotionPiece());
+                                board.addPiece(move.getEndPosition(), piece);
+                            }
+                            boolean checkCheck = isInCheck(teamColor);
+                            board.addPiece(move.getEndPosition(), null);
+                            if (replacedPiece != null) {
+                                board.addPiece(move.getEndPosition(), replacedPiece);
+                            }
+                            if (move.getPromotionPiece() == null) {
+                                board.addPiece(move.getStartPosition(), piece);
+                            }
+                            if (null != move.getPromotionPiece()) {
+                                piece = new ChessPiece(teamColor, ChessPiece.PieceType.PAWN);
+                                board.addPiece(move.getStartPosition(), piece);
+                            }
+                            if (!checkCheck) {
+                                return false;
+                            }
+                        }
                     }
                 }
             }
