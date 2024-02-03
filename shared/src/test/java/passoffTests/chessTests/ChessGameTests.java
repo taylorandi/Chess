@@ -375,9 +375,9 @@ public class ChessGameTests {
                 getNewPosition(8, 3), promotionType);
         game.makeMove(whitePromotion);
 
-        Assertions.assertNull(game.getBoard().getPiece(whitePromotion.startPosition()),
+        Assertions.assertNull(game.getBoard().getPiece(whitePromotion.getStartPosition()),
                 "After move, a piece is still present in the start position");
-        ChessPiece whiteEndPiece = game.getBoard().getPiece(whitePromotion.endPosition());
+        ChessPiece whiteEndPiece = game.getBoard().getPiece(whitePromotion.getEndPosition());
         Assertions.assertNotNull(whiteEndPiece, "After move, no piece found at the end position");
         Assertions.assertEquals(promotionType, whiteEndPiece.getPieceType(),
                 "Found piece at end position is not the correct piece type");
@@ -390,9 +390,9 @@ public class ChessGameTests {
                 getNewPosition(1, 6), promotionType);
         game.makeMove(blackPromotion);
 
-        Assertions.assertNull(game.getBoard().getPiece(blackPromotion.startPosition()),
+        Assertions.assertNull(game.getBoard().getPiece(blackPromotion.getStartPosition()),
                 "After move, a piece is still present in the start position");
-        ChessPiece blackEndPiece = game.getBoard().getPiece(blackPromotion.endPosition());
+        ChessPiece blackEndPiece = game.getBoard().getPiece(blackPromotion.getEndPosition());
         Assertions.assertNotNull(blackEndPiece, "After move, no piece found at the end position");
         Assertions.assertEquals(promotionType, blackEndPiece.getPieceType(),
                 "Found piece at end position is not the correct piece type");
