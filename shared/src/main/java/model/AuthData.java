@@ -1,8 +1,9 @@
 package model;
+import java.util.UUID;
 
-public record AuthData() {
-    private static String userName;
-    private static String email;
-    private static String password;
 
+public record AuthData( String AuthToken, String userName) {
+    public AuthData createNewAuthToken(String username){
+        return new AuthData(username, UUID.randomUUID().toString());
+    }
 }
