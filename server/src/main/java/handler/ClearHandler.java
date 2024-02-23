@@ -2,8 +2,10 @@ package handler;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
+import service.ClearService;
 import spark.Request;
 import spark.Response;
+import com.google.gson.Gson;
 
 public class ClearHandler {
     private final AuthDAO authDao;
@@ -18,6 +20,13 @@ public class ClearHandler {
     }
 
     public Object handleRequest(Request req, Response res){
-       return null;
+       ClearService clear = new ClearService(userDao, authDao, gameDao);
+       try {
+           clear.clear();
+       } catch (Exception e){
+           res.status(500);
+       }
+       return res;
+
     }
 }

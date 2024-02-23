@@ -2,6 +2,7 @@ package server;
 import handler.ClearHandler;
 
 import dataAccess.*;
+import handler.RegisterHandler;
 import spark.*;
 
 public class Server {
@@ -16,6 +17,7 @@ public class Server {
         UserDAO userDao = new memoryUserDAO();
 
         Spark.delete("/db", new ClearHandler(authDao, gameDao, userDao)::handleRequest);
+        Spark.post("/user", new RegisterHandler(authDao, gameDao, userDao)::handleRequest);
 
         // Register your endpoints and handle exceptions here.
         Spark.init();
