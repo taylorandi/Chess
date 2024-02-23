@@ -8,7 +8,7 @@ import model.UserData;
 import service.RegisterService;
 import spark.Request;
 import spark.Response;
-import com.google.gson.Gson;
+
 import Exception.*;
 
 public class RegisterHandler {

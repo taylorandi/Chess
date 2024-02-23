@@ -5,7 +5,7 @@ import dataAccess.UserDAO;
 import service.ClearService;
 import spark.Request;
 import spark.Response;
-import com.google.gson.Gson;
+
 
 public class ClearHandler {
     private final AuthDAO authDao;
