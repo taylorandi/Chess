@@ -6,6 +6,6 @@ public interface AuthDAO {
 
     public void clear();
 
-    public void createAcount(UserData user) throws Exception;
+    public String createAcount(UserData user) throws Exception;
 
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class memoryUserDAO implements UserDAO{
 
-    private Map<String, UserData> users = new HashMap<>();
+    private static Map<String, UserData> users = new HashMap<>();
 
     @Override
     public void clear(){
@@ -20,6 +20,17 @@ public class memoryUserDAO implements UserDAO{
         }
         else {
             throw new Exception();
+        }
+    }
+
+    @Override
+    public boolean login(UserData user){
+        if(users.getOrDefault(user.username(), null) != null){
+            UserData verify = users.get(user.username());
+            return verify.password().equals(user.password());
+        }
+        else{
+            return false;
         }
     }
 }

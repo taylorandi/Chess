@@ -15,11 +15,12 @@ public class memoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public void createAcount(UserData user) throws Exception {
+    public String createAcount(UserData user) throws Exception {
         int response;
         if (authorizationTokens.getOrDefault(user.username(), null) == null) {
             AuthData newUser = createToken(user.username());
             authorizationTokens.put(user.email(), newUser);
+            return newUser.AuthToken();
         }
         else{
             throw new Exception();

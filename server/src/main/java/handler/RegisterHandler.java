@@ -1,15 +1,15 @@
 package handler;
 
-import Register.RegisterRequest;
+import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
-import model.UserData;
 import service.RegisterService;
 import spark.Request;
 import spark.Response;
 
-import Exception.*;
+
+import exception.*;
 
 public class RegisterHandler {
     private final AuthDAO authDao;
@@ -26,15 +26,17 @@ public class RegisterHandler {
     public Object handleRequest(Request request, Response response) {
         RegisterService register = new RegisterService(authDao, gameDao, userDao);
         try {
-            register.registerUser(request);
+            return new Gson().toJson(register.registerUser(request));
         }catch (BadRequest e){
             response.status(400);
+            return new Gson().toJson(e);
         }catch (AlreadyTaken e){
             response.status(403);
+            return new Gson().toJson(e);
         }
         catch (Exception e){
             response.status(500);
+            return new Gson().toJson(e);
         }
-        return response;
         }
 }

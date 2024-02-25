@@ -1,4 +1,5 @@
 package handler;
+import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
@@ -26,7 +27,7 @@ public class ClearHandler {
        } catch (Exception e){
            res.status(500);
        }
-       return res;
+       return new Gson().toJson(null);
 
     }
 }

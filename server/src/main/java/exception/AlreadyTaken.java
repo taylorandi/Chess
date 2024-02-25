@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 public class AlreadyTaken extends Exception{
     public AlreadyTaken(String error){

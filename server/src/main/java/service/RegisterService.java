@@ -1,14 +1,15 @@
 package service;
 
-import Register.RegisterRequest;
+import request.RegisterRequest;
+import response.RegisterResponse;
 import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import model.UserData;
 import spark.Request;
-import Exception.BadRequest;
-import Exception.AlreadyTaken;
+import exception.BadRequest;
+import exception.AlreadyTaken;
 
 public class RegisterService {
 
@@ -23,7 +24,7 @@ public class RegisterService {
         this.userDao = userDao;
     }
 
-    public void registerUser(Request request) throws BadRequest, AlreadyTaken {
+    public Object registerUser(Request request) throws BadRequest, AlreadyTaken {
         UserData user;
         try {
             RegisterRequest regesteredRequest = new Gson().fromJson(request.body(), RegisterRequest.class);
@@ -36,7 +37,8 @@ public class RegisterService {
         }
         try {
             userDao.addUser(user);
-            authDao.createAcount(user);
+            String token = authDao.createAcount(user);
+            return new RegisterResponse(user.username(), token);
         } catch (Exception e){
             throw new AlreadyTaken("Username is already taken");
         }
