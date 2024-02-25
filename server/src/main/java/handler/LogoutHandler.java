@@ -1,8 +1,11 @@
 package handler;
 
+import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
+import exception.Unauthorized;
+import service.LoginService;
 import service.LogoutService;
 import spark.Request;
 import spark.Response;
@@ -20,8 +23,16 @@ public class LogoutHandler {
     }
 
     public Object handleRequest(Request request, Response response){
-        LogoutService logout = new LogoutService(request);
-
+        LogoutService logout = new LogoutService(authDao, userDao, gameDao);
+        try {
+            logout.logout(request);
+        } catch (Unauthorized e){
+            response.status(401);
+            return new Gson().toJson(e.getMessage());
+        } catch (Exception e){
+            response.status(500);
+            return new Gson().toJson(e.getMessage());
+        }
         return null;
     }
 }

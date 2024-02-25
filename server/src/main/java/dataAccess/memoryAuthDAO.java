@@ -1,4 +1,5 @@
 package dataAccess;
+import exception.Unauthorized;
 import model.AuthData;
 import model.UserData;
 
@@ -19,11 +20,19 @@ public class memoryAuthDAO implements AuthDAO{
         int response;
         if (authorizationTokens.getOrDefault(user.username(), null) == null) {
             AuthData newUser = createToken(user.username());
-            authorizationTokens.put(user.email(), newUser);
+            authorizationTokens.put(newUser.AuthToken(), newUser);
             return newUser.AuthToken();
         }
         else{
             throw new Exception();
+        }
+    }
+
+    public void logoutUser(AuthData user) throws Unauthorized {
+        try {
+            authorizationTokens.remove(user.AuthToken());
+        } catch (Exception e){
+            throw new Unauthorized("unauthorized");
         }
     }
 
