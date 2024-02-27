@@ -1,14 +1,9 @@
 package service;
 
-import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import exception.Unauthorized;
-import model.AuthData;
-import model.UserData;
-import request.ListGamesRequest;
-import request.LoginRequest;
 import spark.Request;
 
 import java.util.ArrayList;

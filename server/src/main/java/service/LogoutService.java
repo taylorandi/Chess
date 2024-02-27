@@ -1,12 +1,10 @@
 package service;
 
-import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import exception.Unauthorized;
 import model.AuthData;
-import request.LogoutRequest;
 import spark.Request;
 
 public class LogoutService {
