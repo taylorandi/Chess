@@ -5,6 +5,7 @@ import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import exception.Unauthorized;
+import model.AuthData;
 import model.UserData;
 import request.LoginRequest;
 import request.RegisterRequest;
@@ -23,7 +24,7 @@ public class LoginService {
         this.gameDao = gameDao;
     }
 
-    public Object loginUser(Request request) throws Unauthorized {
+    public AuthData loginUser(Request request) throws Unauthorized {
         UserData user;
         try{
             LoginRequest loginRequest = new Gson().fromJson(request.body(), LoginRequest.class);
@@ -32,14 +33,13 @@ public class LoginService {
             UserData loginUser = new UserData(username, password, null);
             boolean verified = userDao.login(loginUser);
             if (verified) {
-                String token = authDao.createAcount(loginUser);
-                return new LoginResponse(loginUser.username(), token);
+                return authDao.createAcount(loginUser);
             }
             else{
-                throw new Unauthorized("unauthorized");
+                throw new Unauthorized("ERROR: unauthorized");
             }
         }catch (Exception e){
-            throw new Unauthorized("unauthorized");
+            throw new Unauthorized("ERROR: unauthorized");
         }
     }
 }

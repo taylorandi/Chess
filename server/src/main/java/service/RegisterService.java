@@ -1,7 +1,7 @@
 package service;
 
+import model.AuthData;
 import request.RegisterRequest;
-import response.RegisterResponse;
 import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
@@ -24,23 +24,26 @@ public class RegisterService {
         this.userDao = userDao;
     }
 
-    public Object registerUser(Request request) throws BadRequest, AlreadyTaken {
+    public AuthData registerUser(Request request) throws BadRequest, AlreadyTaken {
         UserData user;
         try {
             RegisterRequest regesteredRequest = new Gson().fromJson(request.body(), RegisterRequest.class);
-            String userName = RegisterRequest.getUserName();
-            String password = RegisterRequest.getPassword();
-            String email = RegisterRequest.getEmail();
+            String userName = regesteredRequest.getUsername();
+            String password = regesteredRequest.getPassword();
+            String email = regesteredRequest.getEmail();
+            if(userName == null || password == null || email == null){
+                throw new BadRequest("ERROR: bad request");
+            }
             user = new UserData(userName, password, email);
         } catch (Exception e){
-            throw new BadRequest("bad request");
+            throw new BadRequest("ERROR: bad request");
         }
         try {
             userDao.addUser(user);
-            String token = authDao.createAcount(user);
-            return new RegisterResponse(user.username(), token);
+            AuthData newUser = authDao.createAcount(user);
+            return newUser;
         } catch (Exception e){
-            throw new AlreadyTaken("Username is already taken");
+            throw new AlreadyTaken("ERROR: already taken");
         }
     }
 }

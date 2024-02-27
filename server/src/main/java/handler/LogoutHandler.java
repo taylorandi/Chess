@@ -28,10 +28,10 @@ public class LogoutHandler {
             logout.logout(request);
         } catch (Unauthorized e){
             response.status(401);
-            return new Gson().toJson(e.getMessage());
+            return e.getMessage();
         } catch (Exception e){
             response.status(500);
-            return new Gson().toJson(e.getMessage());
+            return e.getMessage();
         }
         return null;
     }

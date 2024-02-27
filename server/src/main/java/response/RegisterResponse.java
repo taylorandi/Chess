@@ -1,11 +1,11 @@
 package response;
 
 public class RegisterResponse {
-    private String userName;
+    private String username;
     private String authToken;
 
-    public RegisterResponse(String userName, String authToken) {
-        this.userName = userName;
+    public RegisterResponse(String username, String authToken) {
+        this.username = username;
         this.authToken = authToken;
     }
 }

@@ -2,6 +2,6 @@ package model;
 import java.util.UUID;
 
 
-public record AuthData( String AuthToken, String userName) {
+public record AuthData( String username, String authToken) {
 
 }

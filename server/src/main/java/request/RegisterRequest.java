@@ -1,25 +1,25 @@
 package request;
 
 public class RegisterRequest {
-    private static String userName;
-    private static String password;
-    private static String email;
+    private String username;
+    private String password;
+    private String email;
 
-    public RegisterRequest(String userName, String password, String email) {
-        this.userName = userName;
+    public RegisterRequest(String username, String password, String email) {
+        this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public static String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public static String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public static String getEmail() {
+    public String getEmail() {
         return email;
     }
 }

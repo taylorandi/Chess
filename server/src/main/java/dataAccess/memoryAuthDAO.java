@@ -4,11 +4,10 @@ import model.AuthData;
 import model.UserData;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class memoryAuthDAO implements AuthDAO{
-    private Map<String, AuthData> authorizationTokens = new HashMap<>();
+    private HashMap<String, AuthData> authorizationTokens = new HashMap<>();
 
     @Override
     public void clear(){
@@ -16,24 +15,29 @@ public class memoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public String createAcount(UserData user) throws Exception {
+    public AuthData createAcount(UserData user) throws Exception {
         int response;
-        if (authorizationTokens.getOrDefault(user.username(), null) == null) {
             AuthData newUser = createToken(user.username());
-            authorizationTokens.put(newUser.AuthToken(), newUser);
-            return newUser.AuthToken();
-        }
-        else{
-            throw new Exception();
-        }
+            authorizationTokens.put(newUser.authToken(), newUser);
+            return newUser;
     }
 
+    @Override
     public void logoutUser(AuthData user) throws Unauthorized {
         try {
-            authorizationTokens.remove(user.AuthToken());
+            authorizationTokens.remove(user.authToken());
         } catch (Exception e){
             throw new Unauthorized("unauthorized");
         }
+    }
+    @Override
+    public AuthData getUser(String authToken){
+        return authorizationTokens.get(authToken);
+    }
+
+    @Override
+    public boolean verify(String authToken){
+        return authorizationTokens.getOrDefault(authToken, null) != null;
     }
 
         public AuthData createToken(String username){

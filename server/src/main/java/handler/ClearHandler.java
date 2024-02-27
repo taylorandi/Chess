@@ -24,10 +24,13 @@ public class ClearHandler {
        ClearService clear = new ClearService(userDao, authDao, gameDao);
        try {
            clear.clear();
+           Object empty = "{}";
+           return empty;
        } catch (Exception e){
            res.status(500);
+           return e.getMessage();
        }
-       return new Gson().toJson(null);
+
 
     }
 }

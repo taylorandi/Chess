@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
+import model.AuthData;
+import model.UserData;
+import response.ExceptionMessage;
+import response.RegisterResponse;
 import service.RegisterService;
 import spark.Request;
 import spark.Response;
@@ -26,17 +30,18 @@ public class RegisterHandler {
     public Object handleRequest(Request request, Response response) {
         RegisterService register = new RegisterService(authDao, gameDao, userDao);
         try {
-            return new Gson().toJson(register.registerUser(request));
+            AuthData user = register.registerUser(request);
+            return new Gson().toJson(new RegisterResponse(user.username(), user.authToken()));
         }catch (BadRequest e){
             response.status(400);
-            return new Gson().toJson(e);
+            return new Gson().toJson(new ExceptionMessage(e.getMessage()));
         }catch (AlreadyTaken e){
             response.status(403);
-            return new Gson().toJson(e);
+            return new Gson().toJson(new ExceptionMessage(e.getMessage()));
         }
         catch (Exception e){
             response.status(500);
-            return new Gson().toJson(e);
+            return new Gson().toJson(new ExceptionMessage(e.getMessage()));
         }
         }
 }
