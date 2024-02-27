@@ -16,4 +16,5 @@ public interface GameDAO {
 
     void joinGame(String playerColor, int gameId, AuthData player) throws BadRequest, AlreadyTaken;
 
+    boolean verify(int gameId);
 }

@@ -3,6 +3,7 @@ import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
+import response.ExceptionMessage;
 import service.ClearService;
 import spark.Request;
 import spark.Response;
@@ -24,11 +25,10 @@ public class ClearHandler {
        ClearService clear = new ClearService(userDao, authDao, gameDao);
        try {
            clear.clear();
-           Object empty = "{}";
-           return empty;
+           return "{}";
        } catch (Exception e){
            res.status(500);
-           return e.getMessage();
+           return new Gson().toJson(new ExceptionMessage(e.getMessage()));
        }
 
 

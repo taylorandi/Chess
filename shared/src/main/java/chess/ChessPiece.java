@@ -1,5 +1,7 @@
 package chess;
 
+import chess.movesCalcuators.PieceMovesCalculator;
+
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -14,27 +16,10 @@ public class ChessPiece {
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
 
-    private boolean hasMoved;
-
-    private boolean movedTwoSpaces;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
-        hasMoved = false;
-        movedTwoSpaces = false;
-    }
-
-    /**
-     * The various different chess piece options
-     */
-    public enum PieceType {
-        KING,
-        QUEEN,
-        BISHOP,
-        KNIGHT,
-        ROOK,
-        PAWN
     }
 
     /**
@@ -45,28 +30,12 @@ public class ChessPiece {
        return pieceColor;
     }
 
-    public void SetMoved(){
-        this.hasMoved = true;
-    }
-
-    public boolean GetMoveStatus(){
-        return !hasMoved;
-    }
-
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
 
        return type;
-    }
-
-    public void SetTwoSpaceBool(boolean movedTwice){
-        movedTwoSpaces = movedTwice;
-    }
-
-    public boolean GetTwoMoveStatus(){
-        return movedTwoSpaces;
     }
 
     /**
@@ -77,469 +46,8 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public HashSet<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-       HashSet<ChessMove> moves =  new HashSet<>();
-       switch (type) {
-           case PAWN:
-               if(pieceColor == ChessGame.TeamColor.WHITE) {
-                   if (myPosition.getRow() == 2) {
-                      var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                            position = new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn());
-                           if (board.getPiece(position) == null) {
-                                newMove = new ChessMove(myPosition, position, null);
-                               moves.add(newMove);
-                           }
-                       }
-                   }
-                   if (myPosition.getRow() + 1 < 8) {
-                       var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() + 1 == 8) {
-                       var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() + 1 < 8 && myPosition.getColumn() + 1 < 9) {
-                       var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() + 1 < 8 && myPosition.getColumn() - 1 > 0) {
-                       var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() + 1 == 8 && myPosition.getColumn() + 1 < 9) {
-                       var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
-                           var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                           moves.add(newMove);
-                       }
-                   }
-                       if (myPosition.getRow() + 1 == 8 && myPosition.getColumn() - 1 > 0) {
-                           var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1);
-                           if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
-                               var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                               moves.add(newMove);
-                               newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                               moves.add(newMove);
-                               newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                               moves.add(newMove);
-                               newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                               moves.add(newMove);
-                           }
-                   }
-                   if (myPosition.getColumn() + 1 < 9) {
-                       var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).GetTwoMoveStatus() && board.getPiece(position).getPieceType() == PieceType.PAWN) {
-                           var newMove = new ChessMove(myPosition, new ChessPosition(position.getRow() + 1, position.getColumn()), null);
-                           moves.add(newMove);
-                       }
-                   }
-               if (myPosition.getColumn() - 1 > 0) {
-                   var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - 1);
-                   if (board.getPiece(position) != null && board.getPiece(position).GetTwoMoveStatus() && board.getPiece(position).getPieceType() == PieceType.PAWN) {
-                       var newMove = new ChessMove(myPosition, new ChessPosition(position.getRow() + 1, position.getColumn()), null);
-                       moves.add(newMove);
-                   }
-               }
-       }
-
-                //black pieces
-               else{
-                   if (myPosition.getRow() == 7) {
-                       var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                           position = new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn());
-                           if (board.getPiece(position) == null) {
-                                newMove = new ChessMove(myPosition, position, null);
-                               moves.add(newMove);
-                           }
-                       }
-
-
-                   }
-                   if (myPosition.getRow() - 1 > 1) {
-                       var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() - 1 == 1) {
-                       var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() - 1 > 1 && myPosition.getColumn() + 1 < 9) {
-                       var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() - 1 > 1 && myPosition.getColumn() - 1 > 0) {
-                       var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
-                           var newMove = new ChessMove(myPosition, position, null);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getRow() - 1 == 1 && myPosition.getColumn() - 1 > 0) {
-                       var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).pieceColor != pieceColor) {
-                           var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                           moves.add(newMove);
-                       }
-                        position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                           moves.add(newMove);
-                       }
-
-                   }
-                   if (myPosition.getRow() - 1 == 1 && myPosition.getColumn() + 1 < 9) {
-                       var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1);
-                       if ((board.getPiece(position) != null) && (board.getPiece(position).pieceColor != pieceColor)) {
-                           var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                           moves.add(newMove);
-                       }
-                        position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
-                       if (board.getPiece(position) == null) {
-                           var newMove = new ChessMove(myPosition, position, PieceType.QUEEN);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.ROOK);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.BISHOP);
-                           moves.add(newMove);
-                           newMove = new ChessMove(myPosition, position, PieceType.KNIGHT);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getColumn() + 1 < 9) {
-                       var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).GetTwoMoveStatus() && board.getPiece(position).getPieceType() == PieceType.PAWN) {
-                           var newMove = new ChessMove(myPosition, new ChessPosition(position.getRow() - 1, position.getColumn()), null);
-                           moves.add(newMove);
-                       }
-                   }
-                   if (myPosition.getColumn() - 1 > 0) {
-                       var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - 1);
-                       if (board.getPiece(position) != null && board.getPiece(position).GetTwoMoveStatus() && board.getPiece(position).getPieceType() == PieceType.PAWN) {
-                           var newMove = new ChessMove(myPosition, new ChessPosition(position.getRow() - 1, position.getColumn()), null);
-                           moves.add(newMove);
-                       }
-                   }
-               }
-               break;
-           case ROOK:
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getRow() + i < 9){
-                       var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn());
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getRow() - i > 0){
-                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn());
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getColumn() + i < 9){
-                       var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getColumn() - i > 0){
-                       var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               break;
-           case KNIGHT:
-               if(myPosition.getRow() + 1 < 9 && myPosition.getColumn() + 2 < 9){
-                   var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 2);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() + 2 < 9 && myPosition.getColumn() + 1 < 9){
-                   var position = new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn() + 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() + 1 < 9 && myPosition.getColumn() - 2 > 0){
-                   var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 2);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() + 2 < 9 && myPosition.getColumn() - 1 > 0){
-                   var position = new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn() - 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() - 1 > 0 && myPosition.getColumn() + 2 < 9){
-                   var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 2);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() - 2 > 0 && myPosition.getColumn() + 1 < 9){
-                   var position = new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn() + 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() - 1 > 0 && myPosition.getColumn() - 2 > 0){
-                   var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 2);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() - 2 > 0 && myPosition.getColumn() - 1 > 0){
-                   var position = new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn() -1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               break;
-           case BISHOP:
-               //up and left
-               for(int i = 1; i < 8; i++) {
-                   if (myPosition.getRow() - i > 0 && myPosition.getColumn() - i > 0) {
-                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() - i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-           }
-               // up and right
-               for(int i = 1; i < 8; i++) {
-                   if (myPosition.getRow() - i > 0 && myPosition.getColumn() + i < 9) {
-                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() + i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               // down and left
-               for(int i = 1; i < 8; i++) {
-                   if (myPosition.getRow() + i < 9 && myPosition.getColumn() - i > 0) {
-                       var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() - i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-                   // down and right
-                   for(int i = 1; i < 8; i++) {
-                       if (myPosition.getRow() + i < 9 && myPosition.getColumn() + i < 9) {
-                           var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + i);
-                           if(checkMove(board, myPosition, position, moves)){
-                               break;
-                           }
-                       }
-                   }
-               break;
-           case QUEEN:
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getRow() + i < 9){
-                       var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn());
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getRow() - i > 0){
-                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn());
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getColumn() + i < 9){
-                       var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               for(int i = 1; i < 8; i++){
-                   if(myPosition.getColumn() - i > 0){
-                       var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               //up and left
-               for(int i = 1; i < 8; i++) {
-                   if (myPosition.getRow() - i > 0 && myPosition.getColumn() - i > 0) {
-                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() - i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               // up and right
-               for(int i = 1; i < 8; i++) {
-                   if (myPosition.getRow() - i > 0 && myPosition.getColumn() + i < 9) {
-                       var position = new ChessPosition(myPosition.getRow() - i, myPosition.getColumn() + i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               // down and left
-               for(int i = 1; i < 8; i++) {
-                   if (myPosition.getRow() + i < 9 && myPosition.getColumn() - i > 0) {
-                       var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() - i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               // down and right
-               for(int i = 1; i < 8; i++) {
-                   if (myPosition.getRow() + i < 9 && myPosition.getColumn() + i < 9) {
-                       var position = new ChessPosition(myPosition.getRow() + i, myPosition.getColumn() + i);
-                       if(checkMove(board, myPosition, position, moves)){
-                           break;
-                       }
-                   }
-               }
-               break;
-           case KING:
-               if(myPosition.getRow() + 1 < 9){
-                   var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() - 1 > 0){
-                   var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getColumn() + 1 < 9){
-                   var position = new ChessPosition(myPosition.getRow() , myPosition.getColumn() + 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getColumn() - 1 > 0){
-                   var position = new ChessPosition(myPosition.getRow() , myPosition.getColumn() - 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() + 1 < 9 && myPosition.getColumn() + 1 < 9){
-                   var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() - 1 > 0 && myPosition.getColumn() - 1 > 0){
-                   var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() - 1 > 0 && myPosition.getColumn() + 1 < 9){
-                   var position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(myPosition.getRow() + 1 < 9 && myPosition.getColumn() - 1 > 0){
-                   var position = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1);
-                   checkMove(board, myPosition, position, moves);
-               }
-               if(!hasMoved){
-                   for(int i = 1; i < 9; i++){
-                       if(myPosition.getColumn() + i < 9) {
-                           var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + i);
-                           if(board.getPiece(position) != null) {
-                               if (board.getPiece(position).getPieceType() != PieceType.ROOK) {
-                                   break;
-                               } else if (board.getPiece(position).getPieceType() == PieceType.ROOK && board.getPiece(position).getTeamColor() == pieceColor && board.getPiece(position).GetMoveStatus() && position.getColumn() == 8) {
-                                   var move = new ChessMove(myPosition, new ChessPosition(position.getRow(), position.getColumn() - 1), null);
-                                   moves.add(move);
-                               }
-                           }
-                       }
-                   }
-               }
-               if(!hasMoved){
-                   for(int i = 1; i < 9; i++){
-                       if(myPosition.getColumn() - i > 0) {
-                           var position = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - i);
-                           if(board.getPiece(position) != null) {
-                               if (board.getPiece(position).getPieceType() != PieceType.ROOK) {
-                                   break;
-                               } else if (board.getPiece(position).getPieceType() == PieceType.ROOK && board.getPiece(position).getTeamColor() == pieceColor && board.getPiece(position).GetMoveStatus() && position.getColumn() == 1) {
-                                   var move = new ChessMove(myPosition, new ChessPosition(position.getRow(), myPosition.getColumn() - 2), null);
-                                   moves.add(move);
-                               }
-                           }
-                       }
-                   }
-               }
-               break;
-       }
-       return moves;
-    }
-
-    private boolean checkMove(ChessBoard board, ChessPosition myPosition, ChessPosition position, HashSet<ChessMove> moves ) {
-        if (board.getPiece(position) == null) {
-            var move = new ChessMove(myPosition, position, null);
-            moves.add(move);
-        } else {
-            if (board.getPiece(position).getTeamColor() != pieceColor) {
-                var move = new ChessMove(myPosition, position, null);
-                moves.add(move);
-            }
-            return true;
-        }
-        return false;
+        PieceMovesCalculator pieceMovesCalculator = new PieceMovesCalculator();
+        return pieceMovesCalculator.pieceMoves(board, myPosition);
     }
 
     @Override
@@ -597,5 +105,17 @@ public class ChessPiece {
     @Override
     public int hashCode() {
         return Objects.hash(pieceColor, type);
+    }
+
+    /**
+     * The various different chess piece options
+     */
+    public enum PieceType {
+        KING,
+        QUEEN,
+        BISHOP,
+        KNIGHT,
+        ROOK,
+        PAWN
     }
 }

@@ -1,18 +1,15 @@
 package handler;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import exception.Unauthorized;
 import response.ExceptionMessage;
-import response.GameResponse;
+import response.ListGamesResponse;
 import service.ListGameService;
 import spark.Request;
 import spark.Response;
-
-import java.util.ArrayList;
 
 public class ListGameHandler {
     private final UserDAO userDao;
@@ -29,12 +26,7 @@ public class ListGameHandler {
     public Object handleRequest(Request request, Response response){
         ListGameService listGame =  new ListGameService(userDao, authDao, gameDao);
         try {
-            ArrayList games = listGame.getGames(request);
-            JsonArray gamesJson = new JsonArray();
-            for(Object game : games) {
-                gamesJson.add(new Gson().toJson(game));
-            }
-            return new Gson().toJson(listGame.getGames(request));
+            return new Gson().toJson(new ListGamesResponse(listGame.getGames(request)));
         } catch (Unauthorized e){
             response.status(401);
             return new Gson().toJson(new ExceptionMessage(e.getMessage()));

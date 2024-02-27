@@ -31,7 +31,10 @@ public class JoinGameService {
         String playerColor = createGameRequest.getPlayerColor();
         int gameId = createGameRequest.getGameID();
         AuthData player = authDao.getUser(authToken);
-        if(playerColor == null){
+        if(gameId == 0){
+            throw new BadRequest("ERROR: bad request");
+        }
+        if(playerColor == null && gameDao.verify(gameId)){
             return;
         }
         try{

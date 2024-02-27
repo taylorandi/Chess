@@ -64,4 +64,9 @@ public class memoryGameDAO implements GameDAO{
         }
     }
 
+    @Override
+    public boolean verify(int gameId){
+        return createdGames.getOrDefault(gameId, null) != null;
+    }
+
 }
