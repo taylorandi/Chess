@@ -5,6 +5,7 @@ import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import exception.Unauthorized;
+import response.ExceptionMessage;
 import service.LoginService;
 import service.LogoutService;
 import spark.Request;
@@ -26,13 +27,13 @@ public class LogoutHandler {
         LogoutService logout = new LogoutService(authDao, userDao, gameDao);
         try {
             logout.logout(request);
+            return "{}";
         } catch (Unauthorized e){
             response.status(401);
-            return e.getMessage();
+            return new Gson().toJson(new ExceptionMessage(e.getMessage()));
         } catch (Exception e){
             response.status(500);
-            return e.getMessage();
+            return new Gson().toJson(new ExceptionMessage(e.getMessage()));
         }
-        return null;
     }
 }

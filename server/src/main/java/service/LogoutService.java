@@ -23,11 +23,13 @@ public class LogoutService {
     public void logout(Request request) throws Unauthorized {
         AuthData user;
         try{
-            LogoutRequest logoutRequest = new Gson().fromJson(request.body(), LogoutRequest.class);
-            AuthData logout = new AuthData(null, logoutRequest.getAuthToken());
-            authDao.logoutUser(logout);
+            String authToken = request.headers("Authorization");
+            if(authToken == null){
+                throw new Unauthorized("ERROR: unauthorized");
+            }
+            authDao.logoutUser(authToken);
         } catch (Exception e) {
-           throw new Unauthorized("unauthorized");
+           throw new Unauthorized("ERROR: unauthorized");
         }
     }
 }

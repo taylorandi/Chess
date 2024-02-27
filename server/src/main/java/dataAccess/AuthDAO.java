@@ -10,7 +10,7 @@ public interface AuthDAO {
 
     public AuthData createAcount(UserData user) throws Exception;
 
-    void logoutUser(AuthData logout) throws Unauthorized;
+    void logoutUser(String logout) throws Unauthorized;
 
     AuthData getUser(String authToken);
 

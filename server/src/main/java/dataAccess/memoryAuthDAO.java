@@ -23,11 +23,16 @@ public class memoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public void logoutUser(AuthData user) throws Unauthorized {
+    public void logoutUser(String authToken) throws Unauthorized {
         try {
-            authorizationTokens.remove(user.authToken());
+            if(authorizationTokens.containsKey(authToken)) {
+                authorizationTokens.remove(authToken);
+            }
+            else {
+                throw new Unauthorized("ERROR: unauthorized");
+            }
         } catch (Exception e){
-            throw new Unauthorized("unauthorized");
+            throw new Unauthorized("ERROR: unauthorized");
         }
     }
     @Override
