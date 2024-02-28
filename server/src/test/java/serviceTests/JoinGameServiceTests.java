@@ -7,12 +7,10 @@ import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import request.CreateGameRequest;
 import request.JoinGameRequest;
 import service.ClearService;
-import service.CreateGameService;
 
-public class JoinGameService {
+public class JoinGameServiceTests {
     private UserDAO userDao = new memoryUserDAO();
     private AuthDAO authDao = new memoryAuthDAO();
     private GameDAO gameDao = new memoryGameDAO();
