@@ -15,7 +15,6 @@ public class ChessGame {
     private TeamColor teamColor;
     private ChessBoard board = new ChessBoard();
 
-    private ChessPiece doubleMovedPiece;
 
     public ChessGame() {
         setTeamTurn(TeamColor.WHITE);
@@ -59,7 +58,6 @@ public class ChessGame {
         var color = piece.getTeamColor();
         HashSet<ChessMove> validMoves = new HashSet<>();
         var moves = piece.pieceMoves(board, startPosition);
-        ChessPiece passantPawn = null;
         for (var move : moves) {
             var replacedPiece = board.getPiece(move.getEndPosition());
             board.addPiece(move.getStartPosition(), null);

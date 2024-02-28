@@ -69,4 +69,9 @@ public class memoryGameDAO implements GameDAO{
         return createdGames.getOrDefault(gameId, null) != null;
     }
 
+    @Override
+    public boolean isEmpty(){
+        return createdGames.isEmpty();
+    }
+
 }

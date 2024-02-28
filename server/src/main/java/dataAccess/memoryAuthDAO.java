@@ -15,8 +15,7 @@ public class memoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public AuthData createAcount(UserData user) throws Exception {
-        int response;
+    public AuthData createAcount(UserData user) {
             AuthData newUser = createToken(user.username());
             authorizationTokens.put(newUser.authToken(), newUser);
             return newUser;
@@ -43,6 +42,11 @@ public class memoryAuthDAO implements AuthDAO{
     @Override
     public boolean verify(String authToken){
         return authorizationTokens.getOrDefault(authToken, null) != null;
+    }
+
+    @Override
+    public boolean isEmpty(){
+        return authorizationTokens.isEmpty();
     }
 
         public AuthData createToken(String username){

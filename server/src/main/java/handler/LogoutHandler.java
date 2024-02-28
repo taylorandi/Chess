@@ -25,8 +25,12 @@ public class LogoutHandler {
 
     public Object handleRequest(Request request, Response response){
         LogoutService logout = new LogoutService(authDao, userDao, gameDao);
-        try {
-            logout.logout(request);
+            try{
+                String authToken = request.headers("Authorization");
+                if(authToken == null){
+                    throw new Unauthorized("ERROR: unauthorized");
+                }
+            logout.logout(authToken);
             return "{}";
         } catch (Unauthorized e){
             response.status(401);

@@ -6,6 +6,7 @@ import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import exception.BadRequest;
 import exception.Unauthorized;
+import request.CreateGameRequest;
 import response.CreateGameResponse;
 import response.ExceptionMessage;
 import service.CreateGameService;
@@ -27,7 +28,12 @@ public class CreateGameHandler {
     public Object handleRequest(Request request, Response response){
         try {
             CreateGameService createGameService = new CreateGameService(userDao, authDao, gameDao);
-            return new Gson().toJson(new CreateGameResponse(createGameService.createGame(request)));
+            String authToken = request.headers("Authorization");
+            if (authToken == null || !authDao.verify(authToken)) {
+                throw new Unauthorized("ERROR: unauthorized");
+            }
+            CreateGameRequest createGameRequest = new Gson().fromJson(request.body(), CreateGameRequest.class);
+            return new Gson().toJson(new CreateGameResponse(createGameService.createGame(authToken, createGameRequest)));
         } catch (Unauthorized e){
             response.status(401);
             return new Gson().toJson(new ExceptionMessage(e.getMessage()));

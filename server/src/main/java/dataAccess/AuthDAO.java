@@ -16,4 +16,5 @@ public interface AuthDAO {
 
     boolean verify(String authToken);
 
+    boolean isEmpty();
 }

@@ -8,4 +8,6 @@ public interface UserDAO {
     void clear();
 
     void addUser(UserData user) throws Exception;
+
+    boolean isEmpty();
 }

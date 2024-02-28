@@ -27,10 +27,10 @@ public class RegisterService {
     public AuthData registerUser(Request request) throws BadRequest, AlreadyTaken {
         UserData user;
         try {
-            RegisterRequest regesteredRequest = new Gson().fromJson(request.body(), RegisterRequest.class);
-            String userName = regesteredRequest.getUsername();
-            String password = regesteredRequest.getPassword();
-            String email = regesteredRequest.getEmail();
+            RegisterRequest registeredRequest = new Gson().fromJson(request.body(), RegisterRequest.class);
+            String userName = registeredRequest.getUsername();
+            String password = registeredRequest.getPassword();
+            String email = registeredRequest.getEmail();
             if(userName == null || password == null || email == null){
                 throw new BadRequest("ERROR: bad request");
             }

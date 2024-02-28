@@ -33,4 +33,9 @@ public class memoryUserDAO implements UserDAO{
             return false;
         }
     }
+
+    @Override
+    public boolean isEmpty(){
+        return users.isEmpty();
+    }
 }

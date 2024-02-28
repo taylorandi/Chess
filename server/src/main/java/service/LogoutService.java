@@ -5,7 +5,6 @@ import dataAccess.GameDAO;
 import dataAccess.UserDAO;
 import exception.Unauthorized;
 import model.AuthData;
-import spark.Request;
 
 public class LogoutService {
     private AuthDAO authDao;
@@ -18,13 +17,9 @@ public class LogoutService {
         this.gameDao = gameDao;
     }
 
-    public void logout(Request request) throws Unauthorized {
+    public void logout(String authToken) throws Unauthorized {
         AuthData user;
         try{
-            String authToken = request.headers("Authorization");
-            if(authToken == null){
-                throw new Unauthorized("ERROR: unauthorized");
-            }
             authDao.logoutUser(authToken);
         } catch (Exception e) {
            throw new Unauthorized("ERROR: unauthorized");

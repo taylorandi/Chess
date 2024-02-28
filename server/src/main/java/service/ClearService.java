@@ -17,8 +17,14 @@ public class ClearService {
         this.gameDao = gameDao;
     }
     public void clear() {
-        userDao.clear();
-        authDao.clear();
-        gameDao.clear();
+        if(!userDao.isEmpty()) {
+            userDao.clear();
+        }
+        if(!authDao.isEmpty()) {
+            authDao.clear();
+        }
+        if(!gameDao.isEmpty()) {
+            gameDao.clear();
+        }
     }
 }

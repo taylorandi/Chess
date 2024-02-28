@@ -23,20 +23,13 @@ public class CreateGameService {
         this.gameDao = gameDao;
     }
 
-    public int createGame(Request request) throws Unauthorized, BadRequest {
+    public int createGame(String authToken, CreateGameRequest createGameRequest) throws Unauthorized, BadRequest {
         try {
-            String authToken = request.headers("Authorization");
-            if (authToken == null || !authDao.verify(authToken)) {
-                throw new Unauthorized("ERROR: unauthorized");
-            }
-            CreateGameRequest createGameRequest = new Gson().fromJson(request.body(), CreateGameRequest.class);
             String gameName = createGameRequest.getGameName();
             if(gameName == null){
                 throw new BadRequest("ERROR: bad request");
             }
             return gameDao.createGame(gameName);
-        } catch (Unauthorized e){
-            throw new Unauthorized("ERROR: unauthorized");
         } catch (Exception e){
             throw new BadRequest("ERROR: bad request");
         }
