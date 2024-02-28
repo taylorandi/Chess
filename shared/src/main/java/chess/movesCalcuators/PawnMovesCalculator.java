@@ -124,14 +124,7 @@ public class PawnMovesCalculator {
             }
             position = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
             if (board.getPiece(position) == null) {
-                var newMove = new ChessMove(myPosition, position, ChessPiece.PieceType.QUEEN);
-                moves.add(newMove);
-                newMove = new ChessMove(myPosition, position, ChessPiece.PieceType.ROOK);
-                moves.add(newMove);
-                newMove = new ChessMove(myPosition, position, ChessPiece.PieceType.BISHOP);
-                moves.add(newMove);
-                newMove = new ChessMove(myPosition, position, ChessPiece.PieceType.KNIGHT);
-                moves.add(newMove);
+                promotionMoves(myPosition, position, moves);
             }
         }
         return moves;
