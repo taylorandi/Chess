@@ -3,6 +3,7 @@ package dataAccess;
 import exception.AlreadyTaken;
 import exception.BadRequest;
 import model.AuthData;
+import model.GameData;
 
 import java.util.ArrayList;
 
@@ -19,4 +20,7 @@ public interface GameDAO {
     boolean verify(int gameId);
 
     boolean isEmpty();
+
+    GameData getGame(int gameID);
+
 }

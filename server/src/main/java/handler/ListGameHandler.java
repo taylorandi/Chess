@@ -26,7 +26,11 @@ public class ListGameHandler {
     public Object handleRequest(Request request, Response response){
         ListGameService listGame =  new ListGameService(userDao, authDao, gameDao);
         try {
-            return new Gson().toJson(new ListGamesResponse(listGame.getGames(request)));
+            String authToken = request.headers("Authorization");
+            if (authToken == null) {
+                throw new Unauthorized("ERROR: unauthorized");
+            }
+            return new Gson().toJson(new ListGamesResponse(listGame.getGames(authToken)));
         } catch (Unauthorized e){
             response.status(401);
             return new Gson().toJson(new ExceptionMessage(e.getMessage()));

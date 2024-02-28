@@ -21,12 +21,8 @@ public class ListGameService {
         this.gameDao = gameDao;
     }
 
-    public ArrayList getGames(Request request) throws Unauthorized {
+    public ArrayList getGames(String authToken) throws Unauthorized {
         try {
-            String authToken = request.headers("Authorization");
-            if (authToken == null) {
-                throw new Unauthorized("ERROR: unauthorized");
-            }
             if(!authDao.verify(authToken)){
                 throw new Unauthorized("ERROR: unauthorized");
             }

@@ -74,4 +74,8 @@ public class memoryGameDAO implements GameDAO{
         return createdGames.isEmpty();
     }
 
+    public GameData getGame(int gameId){
+        return createdGames.getOrDefault(gameId, null);
+    }
+
 }

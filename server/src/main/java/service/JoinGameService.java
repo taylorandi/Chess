@@ -1,6 +1,5 @@
 package service;
 
-import com.google.gson.Gson;
 import dataAccess.AuthDAO;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
@@ -9,7 +8,6 @@ import exception.BadRequest;
 import exception.Unauthorized;
 import model.AuthData;
 import request.JoinGameRequest;
-import spark.Request;
 
 public class JoinGameService {
     private final UserDAO userDao;
@@ -22,12 +20,7 @@ public class JoinGameService {
         this.gameDao = gameDao;
     }
 
-    public void joinGame(Request request) throws Unauthorized, BadRequest, AlreadyTaken {
-        String authToken = request.headers("Authorization");
-        if (authToken == null || !authDao.verify(authToken)) {
-            throw new Unauthorized("ERROR: unauthorized");
-        }
-        JoinGameRequest createGameRequest = new Gson().fromJson(request.body(), JoinGameRequest.class);
+    public void joinGame(String authToken, JoinGameRequest createGameRequest) throws Unauthorized, BadRequest, AlreadyTaken {
         String playerColor = createGameRequest.getPlayerColor();
         int gameId = createGameRequest.getGameID();
         AuthData player = authDao.getUser(authToken);
