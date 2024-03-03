@@ -8,8 +8,6 @@ import exception.Unauthorized;
 import model.AuthData;
 import model.UserData;
 import request.LoginRequest;
-import request.RegisterRequest;
-import response.LoginResponse;
 import spark.Request;
 
 public class LoginService {
@@ -33,7 +31,7 @@ public class LoginService {
             UserData loginUser = new UserData(username, password, null);
             boolean verified = userDao.login(loginUser);
             if (verified) {
-                return authDao.createAcount(loginUser);
+                return authDao.createAccount(loginUser);
             }
             else{
                 throw new Unauthorized("ERROR: unauthorized");

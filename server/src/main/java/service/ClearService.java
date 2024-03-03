@@ -17,14 +17,12 @@ public class ClearService {
         this.gameDao = gameDao;
     }
     public void clear() {
-        if(!userDao.isEmpty()) {
+        try {
             userDao.clear();
-        }
-        if(!authDao.isEmpty()) {
             authDao.clear();
-        }
-        if(!gameDao.isEmpty()) {
             gameDao.clear();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

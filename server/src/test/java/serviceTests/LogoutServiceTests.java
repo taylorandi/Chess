@@ -20,7 +20,7 @@ public class LogoutServiceTests {
         ClearService clearService = new ClearService(userDao, authDao, gameDao);
         clearService.clear();
         userDao.addUser(userData);
-        this.authToken = authDao.createAcount(userData).authToken();
+        this.authToken = authDao.createAccount(userData).authToken();
     }
 
     @Test

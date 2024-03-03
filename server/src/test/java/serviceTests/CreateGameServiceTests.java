@@ -2,7 +2,6 @@ package serviceTests;
 
 import dataAccess.*;
 import exception.BadRequest;
-import exception.Unauthorized;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ public class CreateGameServiceTests {
         ClearService clearService = new ClearService(userDao, authDao, gameDao);
         clearService.clear();
         userDao.addUser(userData);
-        this.authToken = authDao.createAcount(userData).authToken();
+        this.authToken = authDao.createAccount(userData).authToken();
     }
 
     @Test

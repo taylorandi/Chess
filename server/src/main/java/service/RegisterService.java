@@ -40,7 +40,7 @@ public class RegisterService {
         }
         try {
             userDao.addUser(user);
-            AuthData newUser = authDao.createAcount(user);
+            AuthData newUser = authDao.createAccount(user);
             return newUser;
         } catch (Exception e){
             throw new AlreadyTaken("ERROR: already taken");

@@ -2,6 +2,7 @@ package dataAccess;
 import exception.Unauthorized;
 import model.AuthData;
 import model.UserData;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -15,14 +16,14 @@ public class memoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public AuthData createAcount(UserData user) {
+    public AuthData createAccount(UserData user) {
             AuthData newUser = createToken(user.username());
             authorizationTokens.put(newUser.authToken(), newUser);
             return newUser;
     }
 
     @Override
-    public void logoutUser(String authToken) throws Unauthorized {
+    public Executable logoutUser(String authToken) throws Unauthorized {
         try {
             if(authorizationTokens.containsKey(authToken)) {
                 authorizationTokens.remove(authToken);
@@ -33,6 +34,7 @@ public class memoryAuthDAO implements AuthDAO{
         } catch (Exception e){
             throw new Unauthorized("ERROR: unauthorized");
         }
+        return null;
     }
     @Override
     public AuthData getUser(String authToken){

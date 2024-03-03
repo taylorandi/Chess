@@ -1,7 +1,6 @@
 package serviceTests;
 
 import dataAccess.*;
-import exception.BadRequest;
 import exception.Unauthorized;
 import model.AuthData;
 import model.GameData;
@@ -9,7 +8,6 @@ import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import request.JoinGameRequest;
 import service.ClearService;
 import service.ListGameService;
 
@@ -28,7 +26,7 @@ public class ListGamesServiceTest {
         ClearService clearService = new ClearService(userDao, authDao, gameDao);
         clearService.clear();
         userDao.addUser(userData);
-        this.authToken = authDao.createAcount(userData).authToken();
+        this.authToken = authDao.createAccount(userData).authToken();
         this.gameID = gameDao.createGame("yup");
         this.gameID = gameDao.createGame("partay");
         gameDao.joinGame("WHITE", gameID, new AuthData("paul", authToken));

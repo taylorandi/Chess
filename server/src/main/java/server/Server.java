@@ -8,12 +8,23 @@ public class Server {
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
+        try {
+            DatabaseManager.createDatabase();
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
 
         Spark.staticFiles.location("web");
-
-        AuthDAO authDao = new memoryAuthDAO();
+        AuthDAO authDao = null;
         GameDAO gameDao = new memoryGameDAO();
-        UserDAO userDao = new memoryUserDAO();
+        UserDAO userDao = null;
+        try {
+            authDao = new SqlAuthDAO();
+            userDao = new SqlUserDAO();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
 
         Spark.delete("/db", new ClearHandler(authDao, gameDao, userDao)::handleRequest);
         Spark.post("/user", new RegisterHandler(authDao, gameDao, userDao)::handleRequest);

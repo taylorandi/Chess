@@ -3,16 +3,17 @@ package dataAccess;
 import exception.Unauthorized;
 import model.AuthData;
 import model.UserData;
+import org.junit.jupiter.api.function.Executable;
 
 public interface AuthDAO {
 
-    public void clear();
+    public void clear() throws DataAccessException;
 
-    public AuthData createAcount(UserData user) throws Exception;
+    public AuthData createAccount(UserData user) throws Exception;
 
-    void logoutUser(String logout) throws Unauthorized;
+    Executable logoutUser(String logout) throws Exception;
 
-    AuthData getUser(String authToken);
+    AuthData getUser(String authToken) throws Unauthorized;
 
     boolean verify(String authToken);
 

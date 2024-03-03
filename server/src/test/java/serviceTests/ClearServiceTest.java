@@ -27,7 +27,7 @@ public class ClearServiceTest {
             throw new Exception("ERROR: couldn't add user");
         }
         try {
-            authDAO.createAcount(new UserData("paul", "1234", "pauljones@jo.com"));
+            authDAO.createAccount(new UserData("paul", "1234", "pauljones@jo.com"));
         } catch (Exception e){
             throw new Exception("ERROR: couldn't create auth");
         }
