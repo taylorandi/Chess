@@ -69,7 +69,7 @@ public class DatabaseUserDaoTests {
     }
 
     @Test
-    public void invalidLogin() throws DataAccessException {
+    public void invalidlogin() throws DataAccessException {
         UserData newUser = new UserData("Mithra Mut", "Larisa Lycurgus", "job.com");
         UserData badPassword = new UserData("Mithra Mut", "Baladeva Nuadu", "job.com");
         try {
