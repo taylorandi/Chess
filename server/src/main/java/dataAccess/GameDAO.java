@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public interface GameDAO {
 
-    public void clear();
+    public void clear() throws DataAccessException;
 
     ArrayList getGames();
 
-    int createGame(String gameName);
+    int createGame(String gameName) throws DataAccessException;
 
     void joinGame(String playerColor, int gameId, AuthData player) throws BadRequest, AlreadyTaken;
 

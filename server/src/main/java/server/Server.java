@@ -16,11 +16,12 @@ public class Server {
 
         Spark.staticFiles.location("web");
         AuthDAO authDao = null;
-        GameDAO gameDao = new memoryGameDAO();
+        GameDAO gameDao = null;
         UserDAO userDao = null;
         try {
             authDao = new SqlAuthDAO();
             userDao = new SqlUserDAO();
+            gameDao = new SqlGameDAO();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
