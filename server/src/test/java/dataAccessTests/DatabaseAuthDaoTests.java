@@ -42,7 +42,7 @@ public class DatabaseAuthDaoTests {
     public void LoginUser() throws Exception {
         String authToken;
         authToken =  authDAO.createAccount(new UserData("Ferdo Maša", "1234", "joe.com")).authToken();
-        Assertions.assertFalse(authDAO.verify(authToken));
+        Assertions.assertTrue(authDAO.verify(authToken));
     }
     @Test
     public void unauthorizedLogin(){
@@ -99,7 +99,6 @@ public class DatabaseAuthDaoTests {
         AuthData authData;
         try {
             authData = authDAO.createAccount(new UserData("Tina Khumbo", "Abiodun Spartak", "jpe.com"));
-            authDAO.logoutUser(authData.authToken());
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -115,7 +114,7 @@ public class DatabaseAuthDaoTests {
         }catch (Exception e){
             throw new RuntimeException(e);
         }
-        Assertions.assertTrue (authDAO.verify("Chloe Käthe"));
+        Assertions.assertFalse (authDAO.verify("Chloe Käthe"));
     }
 
     }

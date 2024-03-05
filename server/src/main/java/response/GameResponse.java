@@ -12,4 +12,8 @@ public class GameResponse {
         this.blackUsername = blackUsername;
         this.gameName = gameName;
     }
+
+    public int getGameID() {
+        return gameID;
+    }
 }

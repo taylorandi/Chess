@@ -85,7 +85,10 @@ public class SqlGameDAO implements GameDAO {
     }
 
     @Override
-    public int createGame(String gameName) throws DataAccessException {
+    public int createGame(String gameName) throws DataAccessException, BadRequest {
+        if(gameName == null){
+            throw new BadRequest("ERROR: bad request");
+        }
         String sql = "INSERT INTO gameDao (gameName, game) Values (?, ?)";
         ChessGame game = new ChessGame();
         try (var connection = DatabaseManager.getConnection()) {
@@ -168,8 +171,10 @@ public class SqlGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData getGame(int gameID) throws DataAccessException {
-        int gameId;
+    public GameData getGame(int gameID) throws DataAccessException, BadRequest {
+        if(!verify(gameID)){
+            throw new BadRequest("ERROR: bad request");
+        }
         String whiteUsername = null;
         String blackUsername = null;
         String gameName = null;
