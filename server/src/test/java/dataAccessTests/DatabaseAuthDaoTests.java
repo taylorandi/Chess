@@ -1,6 +1,7 @@
 package dataAccessTests;
 
 import dataAccess.*;
+import exception.BadRequest;
 import exception.Unauthorized;
 import model.AuthData;
 import model.UserData;
@@ -71,7 +72,7 @@ public class DatabaseAuthDaoTests {
     }
 
     @Test
-    public void getUser() throws Unauthorized {
+    public void getUser() throws BadRequest, Unauthorized {
         AuthData authData;
         try {
             authData = authDAO.createAccount(new UserData("Berenhard Marcela", "Abiodun Spartak", "jpe.com"));

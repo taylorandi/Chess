@@ -18,24 +18,26 @@ public class SqlGameDAO implements GameDAO{
     }
     private final String[] createTable = {
             """
-    CREATE TABLE IF NOT EXISTS gameDao(
-        `gameID` int not null AUTO_INCREMENT,
-        `whiteUsername` Varchar(256) default null,
-        `blackUsername` varchar(256) default null,
+        CREATE TABLE IF NOT EXISTS gameDao(
+        `gameID` integer not null AUTO_INCREMENT,
+        `whiteUsername` Varchar(256),
+        `blackUserName` varchar(256),
         `gameName` varchar(256) not null,
         `game` TEXT not null,
         primary key (`gameID`)
         )
-                """
+        """
     };
 
-    private void configureDatabase() throws DataAccessException{
-        try (var connection = DatabaseManager.getConnection()){
-            for(var statement : createTable) {
-                try (var statements = connection.prepareStatement(statement)){
+    private void configureDatabase() throws DataAccessException {
+        try (var connection = DatabaseManager.getConnection()) {
+            for (var statement : createTable) {
+                try (var statements = connection.prepareStatement(statement)) {
                     statements.executeUpdate();
                 }
             }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
         }catch (Exception e){
             throw new DataAccessException("Unable to configure Database");
         }
@@ -61,12 +63,12 @@ public class SqlGameDAO implements GameDAO{
 
     @Override
     public int createGame(String gameName) throws DataAccessException {
-        String sql = "INSERT INTO gameDao (gameName, game) Values (?)";
+        String sql = "INSERT INTO gameDao (gameName, game) Values (?, ?)";
         ChessGame game = new ChessGame();
         try (var connection = DatabaseManager.getConnection()) {
             try (var preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(4, gameName);
-                preparedStatement.setString(5, new Gson().toJson(game));
+                preparedStatement.setString(1, gameName);
+                preparedStatement.setString(2, new Gson().toJson(game));
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e){
@@ -116,7 +118,8 @@ public class SqlGameDAO implements GameDAO{
         String sql = "Select gameID from gameDao Where gameName = ?";
         try (var connection = DatabaseManager.getConnection()) {
             try (var preparedStatement = connection.prepareStatement(sql)) {
-                ResultSet rs = preparedStatement.executeQuery(sql);
+                preparedStatement.setString(1, gameName);
+                ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()){
                     gameId = rs.getInt(1);
                 }

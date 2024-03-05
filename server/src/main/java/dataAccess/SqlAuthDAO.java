@@ -69,7 +69,7 @@ public class SqlAuthDAO implements  AuthDAO{
 
     @Override
     public Executable logoutUser(String authToken) throws Exception {
-        if(verify(authToken)){
+        if(!verify(authToken)){
             throw new Unauthorized("ERROR: unauthorized");
         }
         String sql = "DELETE from authDao Where authToken = ?";
@@ -96,7 +96,7 @@ public class SqlAuthDAO implements  AuthDAO{
     @Override
     public boolean verify(String authToken) {
         AuthData authData = getPerson(authToken);
-        return (authData.username() == null);
+        return (authData.username() != null);
     }
 
     @Override
