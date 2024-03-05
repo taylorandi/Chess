@@ -20,7 +20,7 @@ public class JoinGameService {
         this.gameDao = gameDao;
     }
 
-    public void joinGame(String authToken, JoinGameRequest createGameRequest) throws Unauthorized, BadRequest, AlreadyTaken {
+    public void joinGame(String authToken, JoinGameRequest createGameRequest) throws Exception {
         String playerColor = createGameRequest.getPlayerColor();
         int gameId = createGameRequest.getGameID();
         AuthData player = authDao.getUser(authToken);
@@ -37,6 +37,8 @@ public class JoinGameService {
         }
         catch (AlreadyTaken e){
             throw new AlreadyTaken("ERROR: already taken");
+        } catch (Exception e){
+            throw new Exception(e);
         }
     }
 }

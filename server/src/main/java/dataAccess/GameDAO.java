@@ -11,16 +11,16 @@ public interface GameDAO {
 
     public void clear() throws DataAccessException;
 
-    ArrayList getGames();
+    ArrayList getGames() throws DataAccessException;
 
     int createGame(String gameName) throws DataAccessException;
 
-    void joinGame(String playerColor, int gameId, AuthData player) throws BadRequest, AlreadyTaken;
+    void joinGame(String playerColor, int gameId, AuthData player) throws BadRequest, AlreadyTaken, DataAccessException;
 
-    boolean verify(int gameId);
+    boolean verify(int gameId) throws DataAccessException;
 
     boolean isEmpty();
 
-    GameData getGame(int gameID);
+    GameData getGame(int gameID) throws DataAccessException;
 
 }
