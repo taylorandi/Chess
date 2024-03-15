@@ -19,7 +19,7 @@ public class PreLoginUI {
 
             try {
                 result = preLoginClient.evaluate(line);
-                System.out(EscapeSequences.SET_TEXT_COLOR_BLUE + result);
+                System.out.println(EscapeSequences.SET_TEXT_COLOR_BLUE + result);
             } catch (Throwable e){
                 var message = e.getMessage();
                 System.out.print(message);
