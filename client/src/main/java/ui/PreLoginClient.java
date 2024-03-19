@@ -1,5 +1,7 @@
 package ui;
 
+import model.UserData;
+import response.LoginResponse;
 import server.ServerFacade;
 
 import java.lang.reflect.Array;
@@ -7,7 +9,12 @@ import java.util.Arrays;
 
 
 public class PreLoginClient {
+
+    private final String serverUrl;
+    private final ServerFacade server;
     public PreLoginClient(String serverUrl, PreLoginUI preLoginUI) {
+        this.serverUrl = serverUrl;
+        server = new ServerFacade(serverUrl);
     }
 
     public String evaluate(String line) {
@@ -28,12 +35,38 @@ public class PreLoginClient {
     }
 
     private String register(String[] parameters) {
-
-        return "yo sup boi";
+        if(parameters.length < 3){
+            return "ERROR: invalid input";
+        }
+        String username = parameters[0];
+        String password = parameters[1];
+        String email = parameters[2];
+        UserData user = new UserData(username, password, email);
+        try {
+            LoginResponse login = server.makeRequest("POST", "/user", user, LoginResponse.class);
+            PostLoginUi postLoginUi = new PostLoginUi(serverUrl, login.getAuthToken());
+            postLoginUi.run();
+            return "Welcome: " + login.getUsername();
+        } catch (Exception e){
+            return e.getMessage();
+        }
     }
 
     private String login(String[] parameters) {
-        return "welcome \n";
+        if(parameters.length < 2){
+            return "ERROR: invalid input";
+        }
+        String username = parameters[0];
+        String password = parameters[1];
+        UserData user = new UserData(username, password, null);
+        try {
+            LoginResponse login = server.makeRequest("POST", "/session", user, LoginResponse.class);
+            PostLoginUi postLoginUi = new PostLoginUi(serverUrl, login.getAuthToken());
+            postLoginUi.run();
+            return "Welcome: " + login.getUsername();
+        } catch (Exception e){
+            return e.getMessage();
+        }
     }
 
     private String help() {
