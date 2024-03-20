@@ -6,6 +6,18 @@ public class GameResponse {
     private String blackUsername;
     private String gameName;
 
+    public String getWhiteUsername() {
+        return whiteUsername;
+    }
+
+    public String getBlackUsername() {
+        return blackUsername;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
     public GameResponse(int gameId, String whiteUsername, String blackUsername, String gameName) {
         this.gameID = gameId;
         this.whiteUsername = whiteUsername;

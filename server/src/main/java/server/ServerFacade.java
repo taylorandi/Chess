@@ -14,12 +14,15 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public  <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+    public  <T> T makeRequest(String method, String path, String authToken,  Object request, Class<T> responseClass) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
+            if(authToken != null){
+                http.addRequestProperty("authorization", authToken);
+            }
             writeRequestBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);

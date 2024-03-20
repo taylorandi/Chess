@@ -8,4 +8,8 @@ public class ListGamesResponse {
     public ListGamesResponse(ArrayList<GameResponse> games) {
         this.games = games;
     }
+
+    public ArrayList<GameResponse> getGames() {
+        return games;
+    }
 }

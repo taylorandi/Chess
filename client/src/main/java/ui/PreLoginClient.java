@@ -36,17 +36,17 @@ public class PreLoginClient {
 
     private String register(String[] parameters) {
         if(parameters.length < 3){
-            return "ERROR: invalid input";
+            return EscapeSequences.SET_TEXT_COLOR_RED +  "ERROR: invalid input" + EscapeSequences.SET_TEXT_COLOR_WHITE;
         }
         String username = parameters[0];
         String password = parameters[1];
         String email = parameters[2];
         UserData user = new UserData(username, password, email);
         try {
-            LoginResponse login = server.makeRequest("POST", "/user", user, LoginResponse.class);
+            LoginResponse login = server.makeRequest("POST", "/user", null, user, LoginResponse.class);
             PostLoginUi postLoginUi = new PostLoginUi(serverUrl, login.getAuthToken());
             postLoginUi.run();
-            return "Welcome: " + login.getUsername();
+            return EscapeSequences.SET_TEXT_COLOR_MAGENTA + "type help to get started" + EscapeSequences.SET_TEXT_COLOR_WHITE;
         } catch (Exception e){
             return e.getMessage();
         }
@@ -54,16 +54,16 @@ public class PreLoginClient {
 
     private String login(String[] parameters) {
         if(parameters.length < 2){
-            return "ERROR: invalid input";
+            return EscapeSequences.SET_TEXT_COLOR_RED +  "ERROR: invalid input" + EscapeSequences.SET_TEXT_COLOR_WHITE;
         }
         String username = parameters[0];
         String password = parameters[1];
         UserData user = new UserData(username, password, null);
         try {
-            LoginResponse login = server.makeRequest("POST", "/session", user, LoginResponse.class);
+            LoginResponse login = server.makeRequest("POST", "/session", null, user, LoginResponse.class);
             PostLoginUi postLoginUi = new PostLoginUi(serverUrl, login.getAuthToken());
             postLoginUi.run();
-            return "Welcome: " + login.getUsername();
+            return EscapeSequences.SET_TEXT_COLOR_MAGENTA + "type help to get started" + EscapeSequences.SET_TEXT_COLOR_WHITE;
         } catch (Exception e){
             return e.getMessage();
         }

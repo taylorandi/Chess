@@ -1,14 +1,23 @@
 package ui;
 
+import response.CreateGameResponse;
+import response.GameResponse;
+import response.ListGamesResponse;
+import server.ServerFacade;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PostLoginClient {
 
     private final String url;
     private final String authToken;
-    public PostLoginClient(String url, String authtoken, PostLoginUi postLoginUi) {
+    private final ServerFacade server;
+    private int game1;
+    public PostLoginClient(String url, String authtoken ,PostLoginUi postLoginUi) {
         this.url = url;
         this.authToken = authtoken;
+        this.server = new ServerFacade(url);
     }
 
     public String evaluate(String line){
@@ -17,13 +26,102 @@ public class PostLoginClient {
             var command = (tokens.length > 0) ? tokens[0] : "help";
             var parameters = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (command) {
-                case "help" -> "ya";
-                case "quit" -> "quit";
-                case "login" -> "";
-                case "register" -> " ";
-                default -> "  ";
+                case "help" -> help();
+                case "create_game" -> createGame(parameters);
+                case "logout" -> logOut();
+                case "list_games" -> listGames();
+                case "join_game" -> joinGame(parameters);
+                case "join_observer" -> joinObserve(parameters);
+                default -> help();
             };
         } catch(Exception e){
+            return e.getMessage();
+        }
+    }
+
+    private String joinObserve(String[] parameters) {
+        try {
+            int game = Integer.parseInt(parameters[0]);
+            game += game1;
+            server.makeRequest("PUT", "/game", authToken, new JoinGameObject(null, game), null );
+            GamePlayUi gamePlayUi = new GamePlayUi();
+            GamePlayUi.run();
+            return EscapeSequences.SET_TEXT_COLOR_MAGENTA
+                    + "Welcome to the Lobby: enter a command or type help for a list of options"
+                    + EscapeSequences.SET_TEXT_COLOR_WHITE;
+        } catch (Exception e){
+            return e.getMessage();
+        }
+    }
+
+    private String joinGame(String[] parameters) {
+        try {
+            if(parameters.length < 2){
+                return EscapeSequences.SET_TEXT_COLOR_RED +  "ERROR: invalid input" + EscapeSequences.SET_TEXT_COLOR_WHITE;
+            }
+            int game = Integer.parseInt(parameters[1]);
+            game += game1;
+            server.makeRequest("PUT", "/game", authToken, new JoinGameObject(parameters[0], game), null );
+            return EscapeSequences.SET_TEXT_COLOR_MAGENTA
+                    + "Welcome to the Lobby: enter a command or type help for a list of options"
+                    + EscapeSequences.SET_TEXT_COLOR_WHITE;
+        } catch (Exception e){
+            return e.getMessage();
+        }
+
+    }
+
+    private String listGames() {
+        try {
+            ListGamesResponse listGamesResponse = server.makeRequest("GET", "/game", authToken, null, ListGamesResponse.class);
+            ArrayList<GameResponse> games = listGamesResponse.getGames();
+            String megaLongList = "";
+            this.game1 = games.get(0).getGameID() - 1;
+            for(int i = 0; i < games.size(); i++){
+                megaLongList = megaLongList + "game ID: " + (i + 1) + " game name: "+ games.get(i).getGameName()
+                        + " black player: " + games.get(i).getBlackUsername() + " white player: " + games.get(i).getWhiteUsername() + "\n";
+            }
+            return megaLongList;
+        } catch (Exception e){
+            return e.getMessage();
+        }
+    }
+
+    private String createGame(String[] parameters) {
+        try {
+            if(parameters.length < 1){
+                return EscapeSequences.SET_TEXT_COLOR_RED +  "ERROR: invalid input" + EscapeSequences.SET_TEXT_COLOR_WHITE;
+            }
+            String gameName = parameters[0];
+            CreateGameResponse createGameResponse = server.makeRequest("POST", "/game", authToken, new LoginObject(gameName), CreateGameResponse.class);
+            return "Your game ID is: " + String.valueOf(createGameResponse.getGameID());
+        } catch (Exception e){
+            return e.getMessage();
+        }
+    }
+
+    private String help() {
+        String out = EscapeSequences.SET_TEXT_COLOR_BLUE + "logout "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + " - to logout\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "create_game <GAME NAME> "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- to create a new game\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "list_games "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- list currently created games\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "join_game <PLAYER COLOR> <GAME ID> "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- join the game with given game id\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "join_observer <GAME ID> "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- observe the game with given game id\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "help "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- understand possible commands\n"
+                + EscapeSequences.SET_TEXT_COLOR_WHITE;
+        return out;
+    }
+
+    private String logOut() {
+        try{
+            server.makeRequest("DELETE", "/session", authToken, null, null);
+            return "logout";
+        } catch (Exception e){
             return e.getMessage();
         }
     }
