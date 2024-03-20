@@ -62,6 +62,8 @@ public class PostLoginClient {
             int game = Integer.parseInt(parameters[1]);
             game += game1;
             server.makeRequest("PUT", "/game", authToken, new JoinGameObject(parameters[0], game), null );
+            GamePlayUi gamePlayUi = new GamePlayUi();
+            GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
                     + "Welcome to the Lobby: enter a command or type help for a list of options"
                     + EscapeSequences.SET_TEXT_COLOR_WHITE;
@@ -78,8 +80,8 @@ public class PostLoginClient {
             String megaLongList = "";
             this.game1 = games.get(0).getGameID() - 1;
             for(int i = 0; i < games.size(); i++){
-                megaLongList = megaLongList + "game ID: " + (i + 1) + " game name: "+ games.get(i).getGameName()
-                        + " black player: " + games.get(i).getBlackUsername() + " white player: " + games.get(i).getWhiteUsername() + "\n";
+                megaLongList = megaLongList + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "game ID: " + EscapeSequences.SET_TEXT_COLOR_BLUE + (i + 1) + EscapeSequences.SET_TEXT_COLOR_MAGENTA +  " game name: " + EscapeSequences.SET_TEXT_COLOR_BLUE + games.get(i).getGameName()
+                       + EscapeSequences.SET_TEXT_COLOR_MAGENTA + " black player: " + EscapeSequences.SET_TEXT_COLOR_BLUE + games.get(i).getBlackUsername() + EscapeSequences.SET_TEXT_COLOR_MAGENTA + " white player: " + EscapeSequences.SET_TEXT_COLOR_BLUE + games.get(i).getWhiteUsername() + "\n";
             }
             return megaLongList;
         } catch (Exception e){

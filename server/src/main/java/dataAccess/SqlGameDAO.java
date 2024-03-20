@@ -109,7 +109,7 @@ public class SqlGameDAO implements GameDAO {
     public void joinGame(String playerColor, int gameId, AuthData player) throws BadRequest, AlreadyTaken, DataAccessException {
         GameData game = getGame(gameId);
         String sql;
-        if(playerColor.equals("WHITE")){
+        if(playerColor.equals("white") || playerColor.equals("WHITE")){
             sql = "Update gameDao set whiteUsername = ? Where gameId = ?";
             if(game.whiteUserName() != null){
                 throw new AlreadyTaken("ERROR: already taken");
