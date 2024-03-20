@@ -39,11 +39,7 @@ public class ServerFacadeTests {
 
     @Test
     public void validLoginTest() {
-        try{
         Assertions.assertDoesNotThrow(() -> serverFacade.makeRequest("POST", "/user", null, new UserData("papi", "luca", "123"), LoginResponse.class));
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
     }
 
     @Test
