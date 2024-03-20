@@ -44,7 +44,6 @@ public class ServerFacadeTests {
         }catch (Exception e){
             throw new RuntimeException(e);
         }
-        Assertions.assertTrue(true);
     }
 
     @Test
