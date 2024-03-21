@@ -2,6 +2,9 @@ package server;
 
 import com.google.gson.Gson;
 import exception.ResponseException;
+import exception.Unauthorized;
+import model.UserData;
+import response.LoginResponse;
 
 import java.io.*;
 import java.net.*;
@@ -14,7 +17,38 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public  <T> T makeRequest(String method, String path, String authToken,  Object request, Class<T> responseClass) throws ResponseException {
+    public LoginResponse registerServerFacade(String[] parameters) throws ResponseException, Unauthorized {
+        if(parameters.length < 3){
+            throw new Unauthorized("invalid inputs");
+        }
+        String username = parameters[0];
+        String password = parameters[1];
+        String email = parameters[2];
+        UserData user = new UserData(username, password, email);
+        String method = "POST";
+        String path = "/user";
+        String authToken = null;
+        return makeRequest(method, path, authToken, user, LoginResponse.class);
+    }
+
+    public LoginResponse loginServerFacade(String[] parameters) throws ResponseException, Unauthorized {
+        if(parameters.length < 2){
+            throw new Unauthorized("invalid inputs");
+        }
+        String username = parameters[0];
+        String password = parameters[1];
+        UserData user = new UserData(username, password, null);
+        String method = "POST";
+        String path = "/session";
+        String authToken = null;
+        return makeRequest(method, path, authToken, user, LoginResponse.class);
+    }
+
+    public void logoutServerFacade(String authToken){
+
+    }
+
+    private  <T> T makeRequest(String method, String path, String authToken,  Object request, Class<T> responseClass) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
