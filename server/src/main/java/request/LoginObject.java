@@ -1,4 +1,4 @@
-package ui;
+package request;
 
 public class LoginObject {
     private final String gameName;

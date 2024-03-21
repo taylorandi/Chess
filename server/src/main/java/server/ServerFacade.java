@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import exception.ResponseException;
 import exception.Unauthorized;
 import model.UserData;
+import request.JoinGameObject;
+import request.LoginObject;
+import response.CreateGameResponse;
+import response.ListGamesResponse;
 import response.LoginResponse;
 
 import java.io.*;
@@ -27,8 +31,7 @@ public class ServerFacade {
         UserData user = new UserData(username, password, email);
         String method = "POST";
         String path = "/user";
-        String authToken = null;
-        return makeRequest(method, path, authToken, user, LoginResponse.class);
+        return makeRequest(method, path, null, user, LoginResponse.class);
     }
 
     public LoginResponse loginServerFacade(String[] parameters) throws ResponseException, Unauthorized {
@@ -40,12 +43,23 @@ public class ServerFacade {
         UserData user = new UserData(username, password, null);
         String method = "POST";
         String path = "/session";
-        String authToken = null;
-        return makeRequest(method, path, authToken, user, LoginResponse.class);
+        return makeRequest(method, path, null, user, LoginResponse.class);
     }
 
-    public void logoutServerFacade(String authToken){
+    public void logoutServerFacade(String authToken) throws ResponseException {
+        String method = "DELETE";
+        String path = "/session";
+        makeRequest(method, path, authToken, null, null);
+    }
 
+    public void createGameServerFacade(String[] parameters, String authToken) throws Unauthorized, ResponseException {
+        if(parameters.length < 1){
+            throw new Unauthorized("invalid inputs");
+        }
+        String gameName = parameters[0];
+        String method = "POST";
+        String path = "/game";
+        makeRequest(method, path, authToken, new LoginObject(gameName), CreateGameResponse.class);
     }
 
     private  <T> T makeRequest(String method, String path, String authToken,  Object request, Class<T> responseClass) throws ResponseException {
@@ -98,6 +112,36 @@ public class ServerFacade {
             }
         }
         return response;
+    }
+
+    public ListGamesResponse listGameServerFacade(String authToken) throws ResponseException {
+        String method = "GET";
+        String path = "/game";
+        return makeRequest(method, path, authToken, null, ListGamesResponse.class);
+    }
+
+    public void joinGameServerFacade(String[] parameters, int game, String authToken) throws ResponseException, Unauthorized {
+        if(parameters.length < 2){
+            throw new Unauthorized("invalid inputs");
+        }
+        String method = "PUT";
+        String path = "/game";
+        String playerColor = parameters[0];
+        JoinGameObject join = new JoinGameObject(playerColor, game);
+        makeRequest(method, path, authToken, join, null);
+    }
+
+    public void joinGameObserverServerFacade(int game, String authToken) throws ResponseException {
+        String method = "PUT";
+        String path = "/game";
+        JoinGameObject join = new JoinGameObject(null, game);
+        makeRequest(method, path, authToken, join, null);
+    }
+
+    public void clearServerFacade() throws ResponseException {
+        String method = "DELETE";
+        String path = "/db";
+        makeRequest(method, path, null, null, null);
     }
 
 }

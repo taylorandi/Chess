@@ -1,6 +1,6 @@
 package ui;
 
-import response.CreateGameResponse;
+
 import response.GameResponse;
 import response.ListGamesResponse;
 import server.ServerFacade;
@@ -43,8 +43,7 @@ public class PostLoginClient {
         try {
             int game = Integer.parseInt(parameters[0]);
             game += game1;
-            server.makeRequest("PUT", "/game", authToken, new JoinGameObject(null, game), null );
-            GamePlayUi gamePlayUi = new GamePlayUi();
+            server.joinGameObserverServerFacade(game, authToken);
             GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
                     + "Welcome to the Lobby: enter a command or type help for a list of options"
@@ -56,12 +55,9 @@ public class PostLoginClient {
 
     private String joinGame(String[] parameters) {
         try {
-            if(parameters.length < 2){
-                return EscapeSequences.SET_TEXT_COLOR_RED +  "ERROR: invalid input" + EscapeSequences.SET_TEXT_COLOR_WHITE;
-            }
             int game = Integer.parseInt(parameters[1]);
             game += game1;
-            server.makeRequest("PUT", "/game", authToken, new JoinGameObject(parameters[0], game), null );
+            server.joinGameServerFacade(parameters, game, authToken);
             GamePlayUi gamePlayUi = new GamePlayUi();
             GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
@@ -75,7 +71,7 @@ public class PostLoginClient {
 
     private String listGames() {
         try {
-            ListGamesResponse listGamesResponse = server.makeRequest("GET", "/game", authToken, null, ListGamesResponse.class);
+            ListGamesResponse listGamesResponse = server.listGameServerFacade(authToken);
             ArrayList<GameResponse> games = listGamesResponse.getGames();
             String megaLongList = "";
             this.game1 = games.get(0).getGameID() - 1;
@@ -91,12 +87,8 @@ public class PostLoginClient {
 
     private String createGame(String[] parameters) {
         try {
-            if(parameters.length < 1){
-                return EscapeSequences.SET_TEXT_COLOR_RED +  "ERROR: invalid input" + EscapeSequences.SET_TEXT_COLOR_WHITE;
-            }
-            String gameName = parameters[0];
-            CreateGameResponse createGameResponse = server.makeRequest("POST", "/game", authToken, new LoginObject(gameName), CreateGameResponse.class);
-            return "Your game ID is: " + String.valueOf(createGameResponse.getGameID());
+            server.createGameServerFacade(parameters, authToken);
+            return "Your game ID is: " + game1 + 1;
         } catch (Exception e){
             return e.getMessage();
         }
@@ -121,7 +113,7 @@ public class PostLoginClient {
 
     private String logOut() {
         try{
-            server.makeRequest("DELETE", "/session", authToken, null, null);
+            server.logoutServerFacade(authToken);
             return "logout";
         } catch (Exception e){
             return e.getMessage();

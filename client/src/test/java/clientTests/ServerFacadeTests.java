@@ -30,7 +30,7 @@ public class ServerFacadeTests {
     @AfterEach
     public void clear() {
         try {
-            serverFacade.makeRequest("DELETE", "/db", null, null, null);
+            serverFacade.clearServerFacade();
         } catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -38,13 +38,20 @@ public class ServerFacadeTests {
 
 
     @Test
-    public void validLoginTest() {
-        Assertions.assertDoesNotThrow(() -> serverFacade.makeRequest("POST", "/user", null, new UserData("papi", "luca", "123"), LoginResponse.class));
+    public void validRegisterTest() {
+        String[] user = {"bobby", "joe", "123"};
+        Assertions.assertDoesNotThrow(() -> serverFacade.registerServerFacade(user));
     }
 
     @Test
-    public void invalidLoginUserDoesntExist(){
-        Assertions.assertThrows(Exception.class, () -> serverFacade.makeRequest("POST", "/session", null, new UserData("super-man", "lex", "123"), LoginResponse.class));
+    public void invalidInput(){
+        String[] user = {"bobby", "joe"};
+        Assertions.assertThrows(Unauthorized.class, () -> serverFacade.registerServerFacade(user));
+    }
+    @Test
+    public void invalidLoginUserDoesNotExist(){
+        String[] user = {"joseph", "jones"};
+        Assertions.assertThrows(Exception.class, () -> serverFacade.loginServerFacade(user));
     }
 
 }

@@ -1,4 +1,4 @@
-package ui;
+package request;
 
 public class JoinGameObject {
     private final int gameID;
