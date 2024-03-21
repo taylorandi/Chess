@@ -189,7 +189,7 @@ public class ServerFacadeTests {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-        String[] colors = {"black" , "1"};
+        String[] colors = {"black" , "0"};
         CreateGameResponse finalCreateGameResponse = createGameResponse;
         Assertions.assertDoesNotThrow( () -> serverFacade.joinGameServerFacade(colors, finalCreateGameResponse.getGameID(), authToken));
     }
@@ -242,7 +242,8 @@ public class ServerFacadeTests {
             System.out.println(e.getMessage());
         }
         CreateGameResponse finalCreateGameResponse = createGameResponse;
-        Assertions.assertDoesNotThrow( () -> serverFacade.joinGameObserverServerFacade( finalCreateGameResponse.getGameID(), authToken));
+        String[] parameters = {"0"};
+        Assertions.assertDoesNotThrow( () -> serverFacade.joinGameObserverServerFacade(parameters, finalCreateGameResponse.getGameID(), authToken));
     }
 
     @Test
@@ -269,7 +270,7 @@ public class ServerFacadeTests {
 
     @Test
     public void invalidAuthJoin(){
-        Assertions.assertThrows(Exception.class, () -> serverFacade.joinGameObserverServerFacade(5, "mom"));
+        Assertions.assertThrows(Exception.class, () -> serverFacade.joinGameObserverServerFacade(new String[]{"5"}, 5, "mom"));
     }
 
     @Test

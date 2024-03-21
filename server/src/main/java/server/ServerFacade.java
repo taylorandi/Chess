@@ -120,21 +120,23 @@ public class ServerFacade {
         return makeRequest(method, path, authToken, null, ListGamesResponse.class);
     }
 
-    public void joinGameServerFacade(String[] parameters, int game, String authToken) throws ResponseException, Unauthorized {
+    public void joinGameServerFacade(String[] parameters, int lowestGameNumber, String authToken) throws ResponseException, Unauthorized {
         if(parameters.length != 2){
             throw new Unauthorized("invalid inputs");
         }
         String method = "PUT";
         String path = "/game";
         String playerColor = parameters[0];
-        JoinGameObject join = new JoinGameObject(playerColor, game);
+        int gameNumber = Integer.parseInt(parameters[1] + lowestGameNumber);
+        JoinGameObject join = new JoinGameObject(playerColor, gameNumber);
         makeRequest(method, path, authToken, join, null);
     }
 
-    public void joinGameObserverServerFacade(int game, String authToken) throws ResponseException {
+    public void joinGameObserverServerFacade(String[] parameters ,int lowestGameID, String authToken) throws ResponseException {
         String method = "PUT";
         String path = "/game";
-        JoinGameObject join = new JoinGameObject(null, game);
+        int gameNumber = Integer.parseInt(parameters[0] + lowestGameID);
+        JoinGameObject join = new JoinGameObject(null, gameNumber);
         makeRequest(method, path, authToken, join, null);
     }
 

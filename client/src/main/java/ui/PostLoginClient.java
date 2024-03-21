@@ -42,9 +42,7 @@ public class PostLoginClient {
 
     private String joinObserve(String[] parameters) {
         try {
-            int game = Integer.parseInt(parameters[0]);
-            game += game1;
-            server.joinGameObserverServerFacade(game, authToken);
+            server.joinGameObserverServerFacade(parameters, game1, authToken);
             GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
                     + "Welcome to the Lobby: enter a command or type help for a list of options"
@@ -56,9 +54,7 @@ public class PostLoginClient {
 
     private String joinGame(String[] parameters) {
         try {
-            int game = Integer.parseInt(parameters[1]);
-            game += game1;
-            server.joinGameServerFacade(parameters, game, authToken);
+            server.joinGameServerFacade(parameters, game1, authToken);
             GamePlayUi gamePlayUi = new GamePlayUi();
             GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
