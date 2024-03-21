@@ -54,6 +54,7 @@ public class PostLoginClient {
 
     private String joinGame(String[] parameters) {
         try {
+            int game = Integer.parseInt(parameters[1]);
             server.joinGameServerFacade(parameters, game1, authToken);
             GamePlayUi gamePlayUi = new GamePlayUi();
             GamePlayUi.run();

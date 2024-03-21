@@ -127,7 +127,8 @@ public class ServerFacade {
         String method = "PUT";
         String path = "/game";
         String playerColor = parameters[0];
-        int gameNumber = Integer.parseInt(parameters[1] + lowestGameNumber);
+        int gameNumber = Integer.parseInt(parameters[1]);
+        gameNumber += lowestGameNumber;
         JoinGameObject join = new JoinGameObject(playerColor, gameNumber);
         makeRequest(method, path, authToken, join, null);
     }
@@ -135,7 +136,8 @@ public class ServerFacade {
     public void joinGameObserverServerFacade(String[] parameters ,int lowestGameID, String authToken) throws ResponseException {
         String method = "PUT";
         String path = "/game";
-        int gameNumber = Integer.parseInt(parameters[0] + lowestGameID);
+        int gameNumber = Integer.parseInt(parameters[0]);
+        gameNumber += lowestGameID;
         JoinGameObject join = new JoinGameObject(null, gameNumber);
         makeRequest(method, path, authToken, join, null);
     }
