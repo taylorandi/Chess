@@ -52,14 +52,14 @@ public class ServerFacade {
         makeRequest(method, path, authToken, null, null);
     }
 
-    public void createGameServerFacade(String[] parameters, String authToken) throws Unauthorized, ResponseException {
+    public CreateGameResponse createGameServerFacade(String[] parameters, String authToken) throws Unauthorized, ResponseException {
         if(parameters.length < 1){
             throw new Unauthorized("invalid inputs");
         }
         String gameName = parameters[0];
         String method = "POST";
         String path = "/game";
-        makeRequest(method, path, authToken, new LoginObject(gameName), CreateGameResponse.class);
+       return makeRequest(method, path, authToken, new LoginObject(gameName), CreateGameResponse.class);
     }
 
     private  <T> T makeRequest(String method, String path, String authToken,  Object request, Class<T> responseClass) throws ResponseException {

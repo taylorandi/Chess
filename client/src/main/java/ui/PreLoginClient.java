@@ -39,6 +39,7 @@ public class PreLoginClient {
         try {
             LoginResponse response = server.registerServerFacade(parameters);
             PostLoginUi postLoginUi = new PostLoginUi(serverUrl, response.getAuthToken());
+            postLoginUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA + "type help to get started" + EscapeSequences.SET_TEXT_COLOR_WHITE;
         } catch (Exception e){
             return e.getMessage();

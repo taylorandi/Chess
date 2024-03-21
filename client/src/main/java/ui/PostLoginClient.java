@@ -1,6 +1,7 @@
 package ui;
 
 
+import response.CreateGameResponse;
 import response.GameResponse;
 import response.ListGamesResponse;
 import server.ServerFacade;
@@ -87,8 +88,9 @@ public class PostLoginClient {
 
     private String createGame(String[] parameters) {
         try {
-            server.createGameServerFacade(parameters, authToken);
-            return "Your game ID is: " + game1 + 1;
+           CreateGameResponse game = server.createGameServerFacade(parameters, authToken);
+           int i = game.getGameID() - game1;
+            return "Your game ID is: " + i;
         } catch (Exception e){
             return e.getMessage();
         }
