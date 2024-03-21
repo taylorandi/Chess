@@ -22,7 +22,7 @@ public class ServerFacade {
     }
 
     public LoginResponse registerServerFacade(String[] parameters) throws ResponseException, Unauthorized {
-        if(parameters.length < 3){
+        if(parameters.length != 3){
             throw new Unauthorized("invalid inputs");
         }
         String username = parameters[0];
@@ -35,7 +35,7 @@ public class ServerFacade {
     }
 
     public LoginResponse loginServerFacade(String[] parameters) throws ResponseException, Unauthorized {
-        if(parameters.length < 2){
+        if(parameters.length != 2){
             throw new Unauthorized("invalid inputs");
         }
         String username = parameters[0];
@@ -53,7 +53,7 @@ public class ServerFacade {
     }
 
     public CreateGameResponse createGameServerFacade(String[] parameters, String authToken) throws Unauthorized, ResponseException {
-        if(parameters.length < 1){
+        if(parameters.length != 1){
             throw new Unauthorized("invalid inputs");
         }
         String gameName = parameters[0];
@@ -121,7 +121,7 @@ public class ServerFacade {
     }
 
     public void joinGameServerFacade(String[] parameters, int game, String authToken) throws ResponseException, Unauthorized {
-        if(parameters.length < 2){
+        if(parameters.length != 2){
             throw new Unauthorized("invalid inputs");
         }
         String method = "PUT";

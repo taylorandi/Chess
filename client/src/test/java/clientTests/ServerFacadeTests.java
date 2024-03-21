@@ -68,7 +68,8 @@ public class ServerFacadeTests {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-        Assertions.assertDoesNotThrow(() -> serverFacade.loginServerFacade(user));
+        String[] login = {"bobby", "joe"};
+        Assertions.assertDoesNotThrow(() -> serverFacade.loginServerFacade(login));
 
     }
 
@@ -263,13 +264,35 @@ public class ServerFacadeTests {
             System.out.println(e.getMessage());
         }
         String[] colors = {"black" , "1"};
-        CreateGameResponse finalCreateGameResponse = createGameResponse;
         Assertions.assertThrows(Exception.class, () -> serverFacade.joinGameServerFacade(colors, 7, authToken));
     }
 
     @Test
     public void invalidAuthJoin(){
         Assertions.assertThrows(Exception.class, () -> serverFacade.joinGameObserverServerFacade(5, "mom"));
+    }
+
+    @Test
+    public void invalidInputs(){
+        Assertions.assertThrows(Exception.class, () -> serverFacade.joinGameServerFacade(null, 5, "mom"));
+    }
+
+    @Test
+    public void noUsername(){
+        String[] user = {null, "joe", "paul"};
+        Assertions.assertThrows(Exception.class, () -> serverFacade.registerServerFacade(user));
+    }
+
+    @Test
+    public void noPassword(){
+        String[] user = {"joe", null, "paul"};
+        Assertions.assertThrows(Exception.class, () -> serverFacade.registerServerFacade(user));
+    }
+
+    @Test
+    public void noMethodsInTheClient(){
+        String[] badUser = {"POST", "DELETE", "PUT", "GET"};
+        Assertions.assertThrows(Exception.class, () -> serverFacade.registerServerFacade(badUser));
     }
 
     @Test
