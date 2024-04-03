@@ -12,7 +12,7 @@ public class WebSocketHandler {
     private final WebSocketSessions connectionManager = new WebSocketSessions();
 
     @OnWebSocketConnect
-    public void onMessage(Session session){
+    public void onConnect(Session session){
 
     }
 
@@ -22,7 +22,7 @@ public class WebSocketHandler {
     }
 
     @OnWebSocketMessage
-    public void onMessage(Session session, String message){
+    public void onError(Session session, String message){
 
     }
 

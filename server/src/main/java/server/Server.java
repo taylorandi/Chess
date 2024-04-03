@@ -6,13 +6,19 @@ import spark.*;
 
 public class Server {
 
+    private WebSocketHandler webSocketHandler;
+
+
     public int run(int desiredPort) {
         Spark.port(desiredPort);
+        webSocketHandler = new WebSocketHandler();
+        Spark.webSocket("/connect", webSocketHandler);
         try {
             DatabaseManager.createDatabase();
         } catch (Exception e){
             throw new RuntimeException(e);
         }
+
 
         Spark.staticFiles.location("web");
         AuthDAO authDao = null;

@@ -56,7 +56,8 @@ public class PostLoginClient {
         try {
             int game = Integer.parseInt(parameters[1]);
             server.joinGameServerFacade(parameters, game1, authToken);
-            GamePlayUi gamePlayUi = new GamePlayUi();
+            int gameId = game + game1;
+            GamePlayUi gamePlayUi = new GamePlayUi(url, authToken, gameId );
             GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
                     + "Welcome to the Lobby: enter a command or type help for a list of options"

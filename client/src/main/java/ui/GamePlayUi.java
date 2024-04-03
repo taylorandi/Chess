@@ -1,11 +1,19 @@
 package ui;
 
+import javax.websocket.DeploymentException;
+import javax.websocket.Session;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class GamePlayUi {
 
-    public GamePlayUi(String url, String authtoken) {
-        GamePlayClient gamePlayClient = new GamePlayClient(url, authtoken);
+    private static GamePlayClient gamePlayClient;
+
+
+
+    public GamePlayUi(String url, String authtoken, int baseGame) throws DeploymentException, IOException {
+        this.gamePlayClient = new GamePlayClient(url, authtoken, baseGame);
+
     }
 
     public static void run() {
@@ -14,14 +22,7 @@ public class GamePlayUi {
         var result = "";
         while (!result.equals("logout")) {
             String line = scanner.nextLine();
-
-            try {
-                result = GamePlayClient.evaluate(line);
-                System.out.println(EscapeSequences.SET_TEXT_COLOR_BLUE + result);
-            } catch (Throwable e) {
-                var message = e.getMessage();
-                System.out.print(message);
-            }
+            gamePlayClient.evaluate(String.valueOf(scanner));
         }
     }
 

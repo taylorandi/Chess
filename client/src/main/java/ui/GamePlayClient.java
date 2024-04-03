@@ -6,16 +6,23 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import server.ServerFacade;
 
+import javax.websocket.*;
+import java.io.IOException;
+
 public class GamePlayClient {
 
-    private final String url;
     private final String authToken;
     private final ServerFacade server;
+    public WebSocketFacade facade;
 
-    public GamePlayClient(String url, String authToken) {
-        this.url = url;
+    private final Integer gameId;
+
+    public GamePlayClient(String url, Session session, String authToken, int gameId) throws DeploymentException, IOException {
         this.authToken = authToken;
+        this.facade = new WebSocketFacade(url);
+        this.gameId = gameId;
         this.server = new ServerFacade(url);
+
     }
 
     public static String evaluate(String line) {
