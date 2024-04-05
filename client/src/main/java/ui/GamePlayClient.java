@@ -4,10 +4,12 @@ import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import exception.ResponseException;
 import server.ServerFacade;
 
-import javax.websocket.*;
+import javax.websocket.DeploymentException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class GamePlayClient {
 
@@ -17,9 +19,9 @@ public class GamePlayClient {
 
     private final Integer gameId;
 
-    public GamePlayClient(String url, Session session, String authToken, int gameId) throws DeploymentException, IOException {
+    public GamePlayClient(String url, String authToken, int gameId, GameHandler gameHandler) throws DeploymentException, IOException, ResponseException, URISyntaxException {
         this.authToken = authToken;
-        this.facade = new WebSocketFacade(url);
+        this.facade = new WebSocketFacade(url, gameHandler);
         this.gameId = gameId;
         this.server = new ServerFacade(url);
 
@@ -152,6 +154,5 @@ public class GamePlayClient {
                 return EscapeSequences.EMPTY;
         }
     }
-
 
 }

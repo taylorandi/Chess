@@ -1,18 +1,24 @@
 package ui;
 
+import chess.ChessGame;
+import com.google.gson.JsonElement;
+import exception.ResponseException;
+
 import javax.websocket.DeploymentException;
-import javax.websocket.Session;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Scanner;
 
-public class GamePlayUi {
+public class GamePlayUi implements GameHandler {
 
     private static GamePlayClient gamePlayClient;
+    private GameHandler gameHandler;
 
 
 
-    public GamePlayUi(String url, String authtoken, int baseGame) throws DeploymentException, IOException {
-        this.gamePlayClient = new GamePlayClient(url, authtoken, baseGame);
+    public GamePlayUi(String url, String authtoken, int baseGame) throws DeploymentException, IOException, ResponseException, URISyntaxException {
+        this.gamePlayClient = new GamePlayClient(url, authtoken, baseGame, this);
+
 
     }
 
@@ -26,4 +32,13 @@ public class GamePlayUi {
         }
     }
 
+    @Override
+    public void updateGame(ChessGame game) {
+
+    }
+
+    @Override
+    public void printMessage(JsonElement message) {
+
+    }
 }

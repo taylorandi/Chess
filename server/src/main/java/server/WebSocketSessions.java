@@ -34,5 +34,9 @@ public class WebSocketSessions {
         }
     }
 
+    public Map<String, Session> getSessionsForGame(int gameId){
+        return sessions.get(gameId);
+    }
+
 
 }
