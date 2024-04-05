@@ -1,11 +1,15 @@
 package server;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import dataAccess.SqlAuthDAO;
+import dataAccess.SqlGameDAO;
+import exception.Unauthorized;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.eclipse.jetty.websocket.api.annotations.*;
+import webSocketmessages.Notification;
+import webSocketmessages.userCommands.JoinPlayer;
+import webSocketmessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
 import java.util.Map;
@@ -14,10 +18,18 @@ import java.util.Map;
 public class WebSocketHandler {
 
     private WebSocketSessions connectionManager;
+    private SqlAuthDAO authDAO;
+    private SqlGameDAO gameDAO;
     private Session session;
 
     public void WebsocketHandler(){
         connectionManager = new WebSocketSessions();
+        try {
+            gameDAO = new SqlGameDAO();
+            authDAO = new SqlAuthDAO();
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     public void sendMessage(int gameId, JsonElement message, String authToken) throws IOException {
@@ -32,7 +44,7 @@ public class WebSocketHandler {
         }
     }
 
-    public void broadcastMessage(int gameId, JsonElement message, String authToken) throws IOException {
+    public void broadcastMessage(int gameId, String message, String authToken) throws IOException {
         Map<String, Session> game;
         game = connectionManager.getSessionsForGame(gameId);
         for (Map.Entry<String, Session> user : game.entrySet()) {
@@ -56,9 +68,34 @@ public class WebSocketHandler {
 
     }
 
-    @OnWebSocketMessage
-    public void onError(Session session, String message){
+    @OnWebSocketError
+    public void onError(Throwable throwable){
 
     }
 
+    @OnWebSocketMessage
+    public void onMessage(Session session, String message) throws Unauthorized {
+        String authToken = connectionManager.getAuthToken(session);
+        UserGameCommand action = new Gson().fromJson(message, UserGameCommand.class);
+        switch (action.getCommandType()){
+            case JOIN_PLAYER -> joinPlayer(action, session);
+        }
+
+
+    }
+
+    private void joinPlayer(UserGameCommand action, Session session) throws Unauthorized {
+        JoinPlayer joinPlayer = new JoinPlayer(action);
+        try {
+            String user = String.valueOf(authDAO.getUser(joinPlayer.getAuthString()));
+            connectionManager.addSessionToGame(joinPlayer.getGameId(), joinPlayer.getAuthString(), session);
+            String message = user + ": has joined our glorious game\n";
+            broadcastMessage(action.getGameId(), new Gson().toJson(new Notification(message)), joinPlayer.getAuthString());
+
+        } catch (Unauthorized e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

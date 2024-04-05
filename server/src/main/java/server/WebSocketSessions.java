@@ -34,6 +34,17 @@ public class WebSocketSessions {
         }
     }
 
+    public String getAuthToken(Session session){
+        for(Map<String, Session> game: sessions.values()){
+            for(Map.Entry<String, Session> user : game.entrySet()){
+                if(user.getValue().equals(session)){
+                    return user.getKey();
+                }
+            }
+        }
+        return null;
+    }
+
     public Map<String, Session> getSessionsForGame(int gameId){
         return sessions.get(gameId);
     }

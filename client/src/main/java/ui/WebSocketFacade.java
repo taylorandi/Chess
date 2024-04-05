@@ -20,6 +20,7 @@ public class WebSocketFacade extends Endpoint implements MessageHandler {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, URI);
             this.gameHandler = gameHandler;
+
             //set message handler
         } catch (Exception ex) {
             throw new ResponseException(500, ex.getMessage());
