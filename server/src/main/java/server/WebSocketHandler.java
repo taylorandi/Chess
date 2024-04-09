@@ -79,6 +79,7 @@ public class WebSocketHandler {
         UserGameCommand action = new Gson().fromJson(message, UserGameCommand.class);
         switch (action.getCommandType()){
             case JOIN_PLAYER -> joinPlayer(action, session);
+
         }
 
 

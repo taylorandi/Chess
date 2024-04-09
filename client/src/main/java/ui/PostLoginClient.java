@@ -1,6 +1,7 @@
 package ui;
 
 
+import chess.ChessGame;
 import response.CreateGameResponse;
 import response.GameResponse;
 import response.ListGamesResponse;
@@ -43,6 +44,9 @@ public class PostLoginClient {
     private String joinObserve(String[] parameters) {
         try {
             server.joinGameObserverServerFacade(parameters, game1, authToken);
+            int game = Integer.parseInt(parameters[0]);
+            int gameId = game + game1;
+            GamePlayUi gamePlayUi = new GamePlayUi(url, authToken, gameId, null);
             GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
                     + "Welcome to the Lobby: enter a command or type help for a list of options"
@@ -57,7 +61,14 @@ public class PostLoginClient {
             int game = Integer.parseInt(parameters[1]);
             server.joinGameServerFacade(parameters, game1, authToken);
             int gameId = game + game1;
-            GamePlayUi gamePlayUi = new GamePlayUi(url, authToken, gameId );
+            ChessGame.TeamColor color;
+            if(parameters[0].equals("white")){
+                color = ChessGame.TeamColor.WHITE;
+            }
+            else{
+                color = ChessGame.TeamColor.BLACK;
+            }
+            GamePlayUi gamePlayUi = new GamePlayUi(url, authToken, gameId, color);
             GamePlayUi.run();
             return EscapeSequences.SET_TEXT_COLOR_MAGENTA
                     + "Welcome to the Lobby: enter a command or type help for a list of options"

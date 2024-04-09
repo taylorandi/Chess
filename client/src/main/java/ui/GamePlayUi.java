@@ -16,8 +16,8 @@ public class GamePlayUi implements GameHandler {
 
 
 
-    public GamePlayUi(String url, String authtoken, int baseGame) throws DeploymentException, IOException, ResponseException, URISyntaxException {
-        this.gamePlayClient = new GamePlayClient(url, authtoken, baseGame, this);
+    public GamePlayUi(String url, String authtoken, int baseGame, ChessGame.TeamColor color) throws DeploymentException, IOException, ResponseException, URISyntaxException {
+        this.gamePlayClient = new GamePlayClient(url, authtoken, baseGame, color, this);
 
 
     }
@@ -26,9 +26,9 @@ public class GamePlayUi implements GameHandler {
         System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "Game Successfully joined" + EscapeSequences.SET_TEXT_COLOR_WHITE);
         Scanner scanner = new Scanner(System.in);
         var result = "";
-        while (!result.equals("logout")) {
+        while (!result.equals("quit")) {
             String line = scanner.nextLine();
-            gamePlayClient.evaluate(String.valueOf(scanner));
+            GamePlayClient.evaluate(String.valueOf(scanner));
         }
     }
 

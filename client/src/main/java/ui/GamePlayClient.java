@@ -10,6 +10,7 @@ import server.ServerFacade;
 import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 public class GamePlayClient {
 
@@ -19,22 +20,65 @@ public class GamePlayClient {
 
     private final Integer gameId;
 
-    public GamePlayClient(String url, String authToken, int gameId, GameHandler gameHandler) throws DeploymentException, IOException, ResponseException, URISyntaxException {
+    private static ChessBoard board;
+    private static ChessGame.TeamColor color = null;
+
+    public GamePlayClient(String url, String authToken, int gameId, ChessGame.TeamColor color, GameHandler gameHandler) throws DeploymentException, IOException, ResponseException, URISyntaxException {
         this.authToken = authToken;
         this.facade = new WebSocketFacade(url, gameHandler);
         this.gameId = gameId;
         this.server = new ServerFacade(url);
-
+        this.board = new ChessBoard();
+        this.color = color;
     }
 
     public static String evaluate(String line) {
-        return "";
+
+        try{
+            var tokens = line.toLowerCase().split(" ");
+            var command = (tokens.length > 0) ? tokens[0] : "help";
+            var parameters = Arrays.copyOfRange(tokens, 1, tokens.length);
+            return switch (command) {
+                case "help" -> help();
+                case "reprint_board" -> printBoard();
+                case "leave" -> "quit";
+
+                default -> help();
+            };
+        } catch(Exception e){
+            return e.getMessage();
+        }
+    }
+
+    private static String printBoard() {
+        if(color == ChessGame.TeamColor.WHITE){
+           return printWhiteBoard();
+        }
+        else {
+            return printBlackBoard();
+        }
+    }
+
+    private static String help() {
+        String out = EscapeSequences.SET_TEXT_COLOR_BLUE + "resign "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + " - to resign lame\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "leave "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- to leave the game\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "reprint_board "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- reprint the board\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "see available moves <a-h> <1-8> "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "to see all possible moves for piece\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "make_move (original position, new position) <a-h> <1-8> <a-h> <1-8> "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- to make a move\n"
+                + EscapeSequences.SET_TEXT_COLOR_BLUE + "help "
+                + EscapeSequences.SET_TEXT_COLOR_MAGENTA + "- understand possible commands\n"
+                + EscapeSequences.SET_TEXT_COLOR_WHITE;
+        return out;
     }
 
 
-    private static void printBlackBoard(ChessBoard board) {
+    private static String printBlackBoard() {
         Boolean alternate = true;
-        board.resetBoard();
         String chessBoard = "";
         chessBoard = EscapeSequences.SET_BG_COLOR_LIGHT_GREY + EscapeSequences.EMPTY
                 + " a "  + " b " + " c " + " d " +  " e " + " f "
@@ -66,13 +110,12 @@ public class GamePlayClient {
                 + " g " + " h " + EscapeSequences.EMPTY + EscapeSequences.SET_BG_COLOR_BLACK + "\n \n \n";
 
 
-        System.out.print(chessBoard);
+        return chessBoard;
 
     }
 
-    private static void printWhiteBoard(ChessBoard board) {
+    private static String printWhiteBoard() {
         Boolean alternate = true;
-        board.resetBoard();
         String chessBoard = "";
         chessBoard = EscapeSequences.SET_BG_COLOR_LIGHT_GREY + EscapeSequences.EMPTY
                 + " h "  + " g " + " f " + " e " +  " d " + " c "
@@ -104,7 +147,7 @@ public class GamePlayClient {
                 + " b " + " a " + EscapeSequences.EMPTY + EscapeSequences.SET_BG_COLOR_BLACK + "\n \n \n";
 
 
-        System.out.print(chessBoard);
+        return chessBoard;
 
     }
 
